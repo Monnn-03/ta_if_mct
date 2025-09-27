@@ -2,6 +2,9 @@
 
 ## September
 
+### 2025-09-27
+- Preview MFCC dari https://github.com/bissessk/Musical-Instrument-Classification-Using-Deep-Learning di Python.
+
 ### 2025-09-19
 - Brainstorming tentang genre yang dibawakan apakah tetap atau harus diganti
 
