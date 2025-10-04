@@ -1,5 +1,10 @@
 # Research Logbook
 
+## Oktober
+
+### 2025-10-04
+- Mencari genre baru dan saran jenis Klasifikasi Musik, berkaitan dengan musik tradisional di Indonesia (Untuk Sementara, Ansambel Gamolan Lampung secara SingleClass).
+
 ## September
 
 ### 2025-09-27
@@ -31,7 +36,7 @@
 ### 2025-09-15
 - Mempelajari mengenai Singleclass, Multiclass, Singlelabel dan Multilabel.
 
-## August
+## Agustus
 
 ### 2025-08-29
 - Meeting TA pertama dengan Pak Martin 
