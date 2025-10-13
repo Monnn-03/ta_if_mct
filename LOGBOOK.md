@@ -3,7 +3,7 @@
 ## Oktober
 
 ### 2025-10-12
-- Menentukan domain untuk klasifikasi apakah musik atau berganti ke suara?
+- Menentukan domain untuk klasifikasi apakah musik atau berganti ke suara??
 - Menentukan untuk melakukan klasifikasi suara perkotaan (Urban) dengan domain Public Safety (Keamanan, seperti suara tembakan, sirene, dll). Tetapi untuk topik alternatif yang sesuai dengan topik awal, mengganti genre menjadi pop daerah dengan adanya transfer learning.
 
 ### 2025-10-04
