@@ -2,6 +2,25 @@
 
 ## Oktober
 
+### 2025-10-22
+1. Mencari aspek yang berbeda untuk kebaruan penelitian.
+2. Didapatkan dua pilihan, ganti model atau ganti domain?
+3. Apakah kita bandingkan menggunakan Transfer Learning (PANNs) dari pre-model? Mari kita saksikan pada bimbingan berikutnya.
+
+### 2025-10-13
+1. Lihat topik Bang Julio dan cari aspek yang sekiranya tidak ada pada topiknya.
+2. Aspek Beliau :
+- Domain tentang Keselamatan Tuna Rungu
+- Best Model, One DB (Mencari yang terbaik)
+- Data yang masuk digeser geser (time shift)
+- Noise -> Spectro -> Spec Augment, atur awal time shift random (Ada kemungkinan 50:50 data di skip ke proses berikutnya)
+- Direkam HP, waktunya berapa, jaraknya berapa, situasi lingkungan
+- Metode Piczak CNN
+- Checkpointing Auto Dari Model
+- Suara -> Klakson Mobil, Ambulans, Knalpot Motor, Mesin Mobil.
+3. Aspek pengembangan. Cari Model, Augmentasi, Domain, Param yang berbeda dengan punya Bang Jul, lalu Bandingkan.
+4. Pytorch is a must
+
 ### 2025-10-12
 - Menentukan domain untuk klasifikasi apakah musik atau berganti ke suara??
 - Menentukan untuk melakukan klasifikasi suara perkotaan (Urban) dengan domain Public Safety (Keamanan, seperti suara tembakan, sirene, dll). Tetapi untuk topik alternatif yang sesuai dengan topik awal, mengganti genre menjadi pop daerah dengan adanya transfer learning.
