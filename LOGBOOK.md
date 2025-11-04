@@ -2,6 +2,9 @@
 
 ## Oktober
 
+### 2025-11-04
+- Membuat simulasi kode di Colab untuk memproyeksikan Spectrogram dari suara sirene.
+
 ### 2025-10-22
 1. Mencari aspek yang berbeda untuk kebaruan penelitian.
 2. Didapatkan dua pilihan, ganti model atau ganti domain?
