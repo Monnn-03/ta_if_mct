@@ -2,6 +2,12 @@
 
 ## Oktober
 
+### 2025-11-05
+- Catatan dari Pak Martin (Bimbingan TA):
+1. Transfer learning untuk Piczak gunakan model pretrained dari Bang julio, tambahkan class, layer terakhir ganti nanti untuk train suara dari saya.
+2. Compare dengan model pretrained github quiqiangkong
+3. Pastikan strategi pemilihan dataset (5 fold) 1,2 = 1; 3,4 = 2 ....
+
 ### 2025-11-04
 - Membuat simulasi kode di Colab untuk memproyeksikan Spectrogram dari suara sirene.
 
