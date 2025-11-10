@@ -2,6 +2,21 @@
 
 ## Oktober
 
+### 2025-11-10
+- Membuat model sendiri pada Google Colab. Tetapi masih terdapat kendala teknis pada import dataset.
+- Catatan Bimbingan TA dari Pak Martin:
+1. Susun ulang fold jadi 5 fold (buat aja dalam folder):
+- Dilebur, jadiin satu, baru dipisah jadi 5 fold lagi
+- Distribusi kelas di tiap fold itu sebisa mungkin sama.
+2. Solusi dataset:
+- upload ke googledrive, pakai package gdrive
+- opsi lain pakai huggingface
+3. buat data reader (pelajari dari julio). Kalau julio belum ngirim sampai minggu ini, kabarin.
+4. buat model (model.py), jalankan dengan torchinfo summary (ngeprint layer per layer model).
+
+### 2025-11-09
+- Menghitung setiap class pada dataset UrbanSound8K dan diproyeksikan pada histogram.
+
 ### 2025-11-05
 - Catatan dari Pak Martin (Bimbingan TA):
 1. Transfer learning untuk Piczak gunakan model pretrained dari Bang julio, tambahkan class, layer terakhir ganti nanti untuk train suara dari saya.
