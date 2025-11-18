@@ -2,6 +2,16 @@
 
 ## Oktober
 
+### 2025-11-16
+- Mempelajari Data Reader yang dibuat di tutorial Pak Martin.
+
+### 2025-11-14
+- Memanipulasi Dataset pada GoogleDrive Package dan menjalankan di Google Colab.
+
+### 2025-11-11
+- Menonton tutorial Audio Classification dari Pak Martin yang diberikan oleh Bang Julio.
+- Mencoba model sederhana dari AI.
+
 ### 2025-11-10
 - Membuat model sendiri pada Google Colab. Tetapi masih terdapat kendala teknis pada import dataset.
 - Catatan Bimbingan TA dari Pak Martin:
