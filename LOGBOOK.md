@@ -2,6 +2,23 @@
 
 ## Oktober
 
+### 2025-11-24
+- Belajar library dan sintaks dasar `model.py`
+1. `torch`
+2. `torch.nn`
+3. `torch.nn.Functional`
+4. Class dan `nn.Module`
+5. `Conv2D`, `ReLU`, `Dropout`, `MaxPooling2D`.
+
+### 2025-11-23
+- Menonton tutorial membuat struktur dasar `model.py`
+
+### 2025-11-21
+- Menjalankan `datareader.py` dan berhasil membaca 2000+ data `.wav` dan menampilkan mel-spectrogram.
+
+### 2025-11-20
+- Membuat dan menyesuaikan 4 kelas yang ada ke `datareader.py`
+
 ### 2025-11-16
 - Mempelajari Data Reader yang dibuat di tutorial Pak Martin.
 
