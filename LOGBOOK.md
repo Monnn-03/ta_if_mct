@@ -2,6 +2,9 @@
 
 ## Oktober
 
+### 2025-11-25
+- Menyelesaikan PiczakCNN pada `model.py` dan menjalankannya.
+
 ### 2025-11-24
 - Belajar library dan sintaks dasar `model.py`
 1. `torch`
