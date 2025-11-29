@@ -2,6 +2,10 @@
 
 ## Oktober
 
+### 2025-11-28
+- Menyelesaikan PANNs Transfer pada `model.py` dan menjalankan.
+- Mendapatkan hasil dengan torchinfo dari kedua model.
+
 ### 2025-11-25
 - Menyelesaikan PiczakCNN pada `model.py` dan menjalankannya.
 
