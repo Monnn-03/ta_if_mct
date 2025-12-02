@@ -1,6 +1,21 @@
 # Research Logbook
 
-## Oktober
+## Desember
+
+### 2025-12-02
+- Untuk seluruh notulensi, harap ditulis juga pada website sistem TA.
+- Catatan Bimbingan TA dari Pak Martin:
+1. Nama audio dari UrbanSound8K masih terkontaminasi dengan kata "Fold". Harus diperhatikan dan jangan terkecoh dengan kontaminasi nama file audio tersebut.
+2. Berdasarkan observasi, beberapa model PANNs Qiuqiangkong inputnya langsung audio, sedangkan piczakCNN itu hanya melihat spectrogram.
+3. Fokus explore model dengan tiga jenis input, yaitu waveform, hybrid dan spectrogram.
+4. Kemungkinan Judul Penelitian : Perbandingan Hasil Ketiga Model dengan Input Spectrogram, Hybrid, dan Audio Langsung (Waveform).
+5. Model CNN, Resnet, Mobile, Itu Spectrogram
+6. Model Dainet - Wavegram CNN itu audio mentah
+7. Model Wavegram Logmel itu Hybrid
+8. Ambil 1 perwakilan dari tiap jenis model, kita ambil yang terbaik.
+9. Post kode di github TA (untuk dataset cukup di `.gitignore`).
+
+## November
 
 ### 2025-11-28
 - Menyelesaikan PANNs Transfer pada `model.py` dan menjalankan.
@@ -59,6 +74,8 @@
 
 ### 2025-11-04
 - Membuat simulasi kode di Colab untuk memproyeksikan Spectrogram dari suara sirene.
+
+## Oktober
 
 ### 2025-10-22
 1. Mencari aspek yang berbeda untuk kebaruan penelitian.
