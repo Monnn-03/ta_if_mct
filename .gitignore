@@ -1,3 +1,23 @@
+# --- DATASET (JANGAN DI-UPLOAD) ---
+# Abaikan folder dataset utama
+UrbanSound8K/
+data/
+datasets/
+
+# Abaikan file audio mentah di mana pun dia berada
+*.wav
+
+# Abaikan file arsip (zip/tar.gz)
+*.zip
+*.tar.gz
+*.rar
+
+# --- MODEL CHECKPOINTS ---
+# File bobot model (.pth) biasanya besar (>100MB)
+# Kalau mau simpan model final, hapus baris ini nanti.
+*.pth
+*.pt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -130,6 +150,10 @@ ENV/
 env.bak/
 venv.bak/
 
+# IDE Settings (VSCode)
+.vscode/
+.idea/
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -160,3 +184,9 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+# File Log/Output
+*.log
+*.txt
+!requirements.txt
+!readme.txt
