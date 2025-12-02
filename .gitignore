@@ -1,8 +1,11 @@
+# --- External Repos (Download otomatis) ---
+code/audioset_tagging_cnn/
+
 # --- DATASET (JANGAN DI-UPLOAD) ---
 # Abaikan folder dataset utama
-UrbanSound8K/
-data/
-datasets/
+code/UrbanSound8K/
+code/data/
+code/datasets/
 
 # Abaikan file audio mentah di mana pun dia berada
 *.wav
@@ -143,7 +146,7 @@ celerybeat.pid
 
 # Environments
 .env
-.venv
+.venv/
 env/
 venv/
 ENV/
@@ -190,3 +193,4 @@ cython_debug/
 *.txt
 !requirements.txt
 !readme.txt
+!TorchInfoModel.txt
