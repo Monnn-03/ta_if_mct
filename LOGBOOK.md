@@ -14,6 +14,7 @@
 7. Model Wavegram Logmel itu Hybrid
 8. Ambil 1 perwakilan dari tiap jenis model, kita ambil yang terbaik.
 9. Post kode di github TA (untuk dataset cukup di `.gitignore`).
+- Memindahkan semua code dari komputer lokal ke folder yang sudah remote dengan repo TA.
 
 ## November
 
