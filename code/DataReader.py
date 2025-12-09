@@ -5,36 +5,39 @@ import torchaudio.transforms as T
 import json
 from create_5fold_split import make_5fold_split
 import random
-import torch.nn.functional as F
-from utils import preview_mel_spectrogram
-import warnings
-import librosa  # <--- KITA PAKAI INI SEKARANG
+import librosa
 import numpy as np
+import warnings
 
 warnings.filterwarnings("ignore")
 
 class AudioDataset(Dataset):
-    def __init__(self, root_dir, fold=0, split_json="split.json", split_type="train", segment_length=41):
+    def __init__(self, root_dir, fold=0, split_json="split.json", split_type="train", target_sr=32000, fixed_length=320000):
+        """
+        Args:
+            target_sr: Sample rate tujuan (Default PANNs = 32000 Hz)
+            fixed_length: Panjang audio dalam sample. 
+                          32000 Hz * 10 detik = 320000 sample.
+                          Ini penting agar bisa dibatch.
+        """
+        self.target_sr = target_sr
+        self.fixed_length = fixed_length
+        
+        # Mapping label UrbanSound8K
         self.labels_map = {
-            'car_horn': 0,
-            'dog_bark': 1,
-            'gun_shot': 2,
-            'siren': 3
+            'car_horn': 0, 'dog_bark': 1, 'gun_shot': 2, 'siren': 3
         }
-        
-        self.segment_length = segment_length
-        
-        # --- KONFIGURASI AUDIO (Sesuaikan dengan PANNs: 32000Hz) ---
-        self.target_sample_rate = 32000  
         
         ### -- SPLIT HANDLING --
         split_path = os.path.join(os.getcwd(), split_json)
         
+        # Cek apakah file split JSON ada
         if os.path.exists(split_path):
             with open(split_path, 'r') as f:
                 self.splits = json.load(f)
         else:
-            # Plan B: Scan manual jika JSON tidak ada
+            # Plan B: Scan manual (Safety Net)
+            print("[INFO] File split.json tidak ditemukan, mencoba scan manual...")
             all_samples = []
             for label in self.labels_map:
                 label_dir = os.path.join(root_dir, label)
@@ -44,128 +47,113 @@ class AudioDataset(Dataset):
                         if fname.endswith('.wav') and os.path.isfile(fpath):
                             all_samples.append((fpath, label))
             
-            try:
-                folds = make_5fold_split(all_samples, n_folds=5)
-                with open(split_path, 'w') as f:
-                    json.dump(folds, f, indent=2)
-                self.splits = folds
-            except Exception as e:
-                print(f"Gagal membuat split: {e}")
+            # Buat split baru
+            if all_samples:
+                try:
+                    folds = make_5fold_split(all_samples, n_folds=5)
+                    with open(split_path, 'w') as f:
+                        json.dump(folds, f, indent=2)
+                    self.splits = folds
+                except Exception as e:
+                    print(f"[ERROR] Gagal membuat split: {e}")
+                    self.splits = []
+            else:
                 self.splits = []
-        
-        # Transformasi Mel Spectrogram
-        self.mel_spectrogram = T.MelSpectrogram(
-            sample_rate=self.target_sample_rate,
-            n_fft=1024,
-            hop_length=320, # 10ms hop untuk 32k
-            n_mels=64
-        )
-        
-        self.delta_transform = T.ComputeDeltas()
-        self.amplitude_to_db = T.AmplitudeToDB(stype="power", top_db=80)
-        
-        # Memuat daftar sampel
-        if self.splits:
+
+        # Memuat daftar sampel berdasarkan fold dan tipe (train/val)
+        if self.splits and len(self.splits) > fold:
             self.samples = [(item["file_path"], item["label"]) for item in self.splits[fold][split_type]]
         else:
             self.samples = []
-    
+            print(f"[WARN] Split kosong untuk fold {fold} tipe {split_type}")
+
     def __len__(self):
         return len(self.samples)
 
     def __getitem__(self, idx):
         file_path, label = self.samples[idx]
         
-        # Cek file
-        if not os.path.isfile(file_path):
-            print(f"File tidak ditemukan: {file_path}")
-            return file_path, label, None
-        
+        # 1. Parsing Label yang Aman (Sesuai Arahan Pak Martin)
+        # Nama file: 100032-3-0-0.wav -> Angka '3' adalah class ID asli
         try:
-            # === [PERUBAHAN UTAMA: GANTI KE LIBROSA] ===
-            # Kita GANTI torchaudio.load dengan librosa.load
-            # sr=None agar sample rate asli terbaca
-            audio_array, sr = librosa.load(file_path, sr=None) 
+            filename = os.path.basename(file_path)
+            parts = filename.split('-')
+            # Ambil bagian index 1 (Class ID)
+            original_class_id = int(parts[1])
             
-            # Ubah Numpy ke Tensor
+            # Kita punya mapping sendiri (0-3), pastikan labelnya valid
+            # Jika label di JSON string ('siren'), convert ke int
+            if isinstance(label, str):
+                label_id = self.labels_map.get(label, 0)
+            else:
+                label_id = label
+        except:
+            # Fallback jika nama file tidak standar US8K
+            label_id = label if isinstance(label, int) else 0
+
+        # 2. Load Audio (Waveform) pakai Librosa
+        try:
+            # sr=None agar membaca sample rate asli dulu
+            audio_array, sr = librosa.load(file_path, sr=None)
+            
+            # Konversi ke Tensor PyTorch
             waveform = torch.tensor(audio_array, dtype=torch.float32)
             
-            # Tambah dimensi Channel (Mono -> [1, time])
+            # Tambah dimensi Channel: (Time) -> (1, Time)
             if waveform.ndim == 1:
                 waveform = waveform.unsqueeze(0)
-            # ===========================================
-            
-            # 1. Resampling
-            if sr != self.target_sample_rate:
-                resampler = T.Resample(sr, self.target_sample_rate)
+
+            # 3. Resampling ke 32k (Standar PANNs)
+            if sr != self.target_sr:
+                resampler = T.Resample(sr, self.target_sr)
                 waveform = resampler(waveform)
-            
-            # Mixdown Stereo ke Mono
+
+            # 4. Mix Down to Mono (Jaga-jaga kalau stereo)
             if waveform.shape[0] > 1:
                 waveform = torch.mean(waveform, dim=0, keepdim=True)
 
-            # 2. Ekstraksi Fitur Mel Spectrogram
-            mel_spec = self.mel_spectrogram(waveform)
-            log_mel_spec = self.amplitude_to_db(mel_spec)
+            # 5. Padding / Cutting (Agar panjangnya SAMA semua)
+            # PANNs butuh input batch yang seragam panjangnya
+            current_len = waveform.shape[1]
             
-            # 3. Segmentasi (Padding)
-            current_len = log_mel_spec.shape[2]
-            if current_len < self.segment_length:
-                padding = self.segment_length - current_len
-                log_mel_spec = F.pad(log_mel_spec, (0, padding))
-                current_len = self.segment_length # Update panjang setelah padding
+            if current_len > self.fixed_length:
+                # KEPANJANGAN: Potong Random (Random Crop)
+                # Biar model belajar bagian yang beda-beda tiap epoch
+                start = random.randint(0, current_len - self.fixed_length)
+                waveform = waveform[:, start:start+self.fixed_length]
+            elif current_len < self.fixed_length:
+                # KEPENDEKAN: Padding dengan nol di belakang
+                padding = self.fixed_length - current_len
+                waveform = torch.nn.functional.pad(waveform, (0, padding))
             
-            # 4. Random Crop
-            if current_len > self.segment_length:
-                start_frame = random.randint(0, current_len - self.segment_length)
-                segment = log_mel_spec[:, :, start_frame:start_frame + self.segment_length]
-            else:
-                segment = log_mel_spec # Jika pas, ambil semua
-            
-            # 5. Delta Features
-            deltas = self.delta_transform(segment)
-            
-            # 6. Stack
-            stacked_features = torch.cat((segment, deltas), dim=0)
-            
-            # Handle label jika masih string
-            if isinstance(label, str):
-                label_id = self.labels_map[label]
-            else:
-                label_id = label
-            
-            return file_path, label_id, stacked_features
+            # RETURN: 
+            # waveform: [1, 320000] (Audio Mentah)
+            # label_id: int (0-3)
+            return waveform, label_id
 
         except Exception as e:
-            print(f"Error processing file {file_path}: {e}")
-            # Return dummy biar gak crash total
-            return file_path, label, None
-        
+            print(f"[ERROR] Corrupt file {file_path}: {e}")
+            # Return dummy nol biar training gak crash
+            return torch.zeros(1, self.fixed_length), 0
+
 if __name__ == "__main__":
-    # Sesuaikan path data Anda
-    data_dir = os.path.join(os.getcwd(), 'data') # Asumsi folder utama UrbanSound8K
+    # Test DataReader
+    print("--- Test DataReader (Waveform Output) ---")
     
-    # Pastikan split.json sudah ada (dari create_splits.py)
-    dataset = AudioDataset(root_dir=data_dir, fold=0, split_json="split.json", split_type="train")
+    # Asumsi folder data ada di sini
+    base_dir = os.path.join(os.getcwd(), 'UrbanSound8K') 
+    # Atau sesuaikan path dataset Anda
+    if not os.path.exists(base_dir):
+        base_dir = os.path.join(os.getcwd(), 'data')
+
+    dataset = AudioDataset(root_dir=base_dir, fold=0, split_type="train")
     
-    print(f"Jumlah sampel dalam dataset: {len(dataset)}")
+    print(f"Total Samples: {len(dataset)}")
     
     if len(dataset) > 0:
-        # Ambil sampel random
-        random_idx = random.randint(0, len(dataset) - 1)
-        sample_data = dataset[random_idx]
-        file_path, label, features = sample_data
+        wave, lbl = dataset[0]
+        print(f"\nSample 0:")
+        print(f"Shape Waveform: {wave.shape}") # Harusnya [1, 320000]
+        print(f"Label ID: {lbl}")
         
-        print(f"File path: {file_path}") 
-        print(f"Label ID: {label}")
-        
-        if features is not None:
-            print(f"Stacked features shape: {features.shape}")
-            # Preview Channel 0 (Spectrogram Asli)
-            # Pastikan utils.py Anda sudah benar atau matikan baris ini jika masih error
-            try:
-                preview_mel_spectrogram(file_path, label, features[0].unsqueeze(0))
-            except Exception as e:
-                print(f"Gagal preview gambar (tapi data aman): {e}")
-        else:
-            print("Fitur kosong (Error loading).")
+        print("\n✅ DataReader Siap! Input sekarang adalah Audio Mentah.")

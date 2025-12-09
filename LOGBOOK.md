@@ -2,6 +2,9 @@
 
 ## Desember
 
+### 2025-12-09
+- Memasukkan model ResNet38 (Input Spectro), Res1dNet31 (Input Waveform), dan Wavegram-Logmel-CNN (Input Hybrid) ke dalam `model.py`.
+
 ### 2025-12-02
 - Untuk seluruh notulensi, harap ditulis juga pada website sistem TA.
 - Catatan Bimbingan TA dari Pak Martin:
