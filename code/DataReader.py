@@ -141,10 +141,7 @@ if __name__ == "__main__":
     print("--- Test DataReader (Waveform Output) ---")
     
     # Asumsi folder data ada di sini
-    base_dir = os.path.join(os.getcwd(), 'UrbanSound8K') 
-    # Atau sesuaikan path dataset Anda
-    if not os.path.exists(base_dir):
-        base_dir = os.path.join(os.getcwd(), 'data')
+    base_dir = os.path.join(os.getcwd(), 'data') 
 
     dataset = AudioDataset(root_dir=base_dir, fold=0, split_type="train")
     
