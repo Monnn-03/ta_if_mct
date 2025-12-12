@@ -8,7 +8,7 @@ from tqdm import tqdm
 import time
 
 # --- IMPORT DARI KODE KITA SENDIRI ---
-from code.datareaderr import AudioDataset
+from code.datareader import AudioDataset
 from model import ModelSpectrogram, ModelWaveform, ModelHybrid
 
 # ==============================================================================
