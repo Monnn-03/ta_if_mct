@@ -6,9 +6,12 @@ import os
 import numpy as np
 from tqdm import tqdm
 import time
+import pandas as pd
+import matplotlib.pyplot as pd_plt
+import matplotlib.pyplot as plt
 
 # --- IMPORT DARI KODE KITA SENDIRI ---
-from code.datareader import AudioDataset
+from datareader import AudioDataset
 from model import ModelSpectrogram, ModelWaveform, ModelHybrid
 
 # ==============================================================================
@@ -16,74 +19,103 @@ from model import ModelSpectrogram, ModelWaveform, ModelHybrid
 # ==============================================================================
 CONFIG = {
     "project_name": "TA_SoundClassification",
-    "model_type": "waveform",  # PILIHAN: 'spectrogram', 'waveform', 'hybrid'
+    # GANTI INI SESUAI MODEL YANG MAU DILATIH (spectrogram / waveform / hybrid)
+    "model_type": "spectrogram",  
     "num_classes": 4,
-    "batch_size": 16,        # Turunkan jadi 8 jika VRAM GPU habis/Error Out of Memory
-    "learning_rate": 0.001,  # Standar PANNs 1e-3
-    "epochs": 15,            # Jumlah putaran belajar per fold
-    "folds": 5,              # Total Fold (0-4)
-    "num_workers": 2,        # Jumlah asisten CPU untuk load data (Windows max 2-4 aman)
+    "batch_size": 16,        
+    "learning_rate": 0.001,  
+    "epochs": 15,            
+    "folds": 5,              
+    "num_workers": 2,        
     "device": "cuda" if torch.cuda.is_available() else "cpu",
-    "save_dir": "models_saved"
+    "save_dir": "models_saved",
+    "report_dir": "reports" # Folder baru untuk simpan grafik & excel
 }
 
-# Buat folder penyimpanan jika belum ada
+# Buat folder penyimpanan
 os.makedirs(CONFIG["save_dir"], exist_ok=True)
+os.makedirs(CONFIG["report_dir"], exist_ok=True)
 
 # ==============================================================================
-# 2. FUNGSI PELATIHAN (Loop Satu Epoch)
+# 2. HELPER: VISUALISASI GRAFIK
+# ==============================================================================
+def plot_history(history, model_name, fold):
+    """
+    Fungsi ini menggambar grafik Loss dan Akurasi secara otomatis
+    dan menyimpannya sebagai file PNG.
+    """
+    epochs = range(1, len(history['train_loss']) + 1)
+
+    plt.figure(figsize=(12, 5))
+
+    # GRAFIK 1: LOSS (Error) - Harusnya Turun
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs, history['train_loss'], 'b-o', label='Training Loss')
+    plt.plot(epochs, history['val_loss'], 'r-o', label='Validation Loss')
+    plt.title(f'Loss Curve - {model_name} Fold {fold}')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.grid(True)
+
+    # GRAFIK 2: ACCURACY (Kepintaran) - Harusnya Naik
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs, history['train_acc'], 'b-o', label='Training Acc')
+    plt.plot(epochs, history['val_acc'], 'r-o', label='Validation Acc')
+    plt.title(f'Accuracy Curve - {model_name} Fold {fold}')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy (%)')
+    plt.legend()
+    plt.grid(True)
+
+    plt.tight_layout()
+    
+    # Simpan Gambar
+    filename = f"{CONFIG['report_dir']}/{model_name}_fold{fold}_chart.png"
+    plt.savefig(filename)
+    plt.close()
+    print(f"📊 Grafik disimpan: {filename}")
+
+# ==============================================================================
+# 3. FUNGSI PELATIHAN
 # ==============================================================================
 def train_one_epoch(model, loader, criterion, optimizer, device):
-    model.train() # Mode Latihan (Aktifkan Dropout)
+    model.train()
     running_loss = 0.0
     correct = 0
     total = 0
     
-    # Pakai tqdm untuk progress bar yang keren
     progress_bar = tqdm(loader, desc="Training", leave=False)
     
     for inputs, labels in progress_bar:
         inputs, labels = inputs.to(device), labels.to(device)
         
-        # 1. Reset Gradients (Hapus sisa hitungan sebelumnya)
         optimizer.zero_grad()
-        
-        # 2. Forward Pass (Menebak)
-        outputs = model(inputs) # Output shape: [Batch, 4]
-        
-        # 3. Hitung Error (Loss)
+        outputs = model(inputs)
         loss = criterion(outputs, labels)
-        
-        # 4. Backward Pass (Belajar/Koreksi Bobot)
         loss.backward()
         optimizer.step()
         
-        # Hitung Statistik
         running_loss += loss.item()
-        _, predicted = outputs.max(1) # Ambil kelas dengan skor tertinggi
+        _, predicted = outputs.max(1)
         total += labels.size(0)
         correct += predicted.eq(labels).sum().item()
         
-        # Update progress bar
         progress_bar.set_postfix({'loss': loss.item()})
         
     avg_loss = running_loss / len(loader)
     accuracy = 100. * correct / total
     return avg_loss, accuracy
 
-# ==============================================================================
-# 3. FUNGSI VALIDASI (Ujian)
-# ==============================================================================
 def validate(model, loader, criterion, device):
-    model.eval() # Mode Ujian (Matikan Dropout, Bekukan BatchNorm)
+    model.eval()
     running_loss = 0.0
     correct = 0
     total = 0
     
-    with torch.no_grad(): # Jangan hitung gradien (Hemat memori)
+    with torch.no_grad():
         for inputs, labels in loader:
             inputs, labels = inputs.to(device), labels.to(device)
-            
             outputs = model(inputs)
             loss = criterion(outputs, labels)
             
@@ -97,7 +129,7 @@ def validate(model, loader, criterion, device):
     return avg_loss, accuracy
 
 # ==============================================================================
-# 4. FUNGSI UTAMA (MAIN LOOP)
+# 4. MAIN LOOP
 # ==============================================================================
 def run_training():
     print(f"🚀 Memulai Training Project: {CONFIG['project_name']}")
@@ -105,18 +137,20 @@ def run_training():
     print(f"⚙️  Device: {CONFIG['device']}")
     print("="*60)
 
-    # Dataset Folder (Sesuaikan dengan komputer Anda)
-    # Cek folder 'UrbanSound8K' atau 'data'
+    # Auto-detect folder data
     base_dir = os.path.join(os.getcwd(), 'UrbanSound8K')
     if not os.path.exists(base_dir):
         base_dir = os.path.join(os.getcwd(), 'data')
     
-    # Loop untuk 5-Fold Cross Validation
+    # List untuk menampung hasil semua fold (buat laporan akhir)
+    final_results = []
+
     for fold in range(CONFIG["folds"]):
         print(f"\n📦 --- FOLD {fold + 1}/{CONFIG['folds']} ---")
         
-        # A. Siapkan Data Loader
-        # DataReader kita sudah pintar, tinggal panggil
+        # Reset History per Fold
+        history = {'train_loss': [], 'train_acc': [], 'val_loss': [], 'val_acc': []}
+        
         train_ds = AudioDataset(root_dir=base_dir, fold=fold, split_type="train")
         val_ds = AudioDataset(root_dir=base_dir, fold=fold, split_type="val")
         
@@ -125,7 +159,7 @@ def run_training():
         val_loader = DataLoader(val_ds, batch_size=CONFIG["batch_size"], 
                                 shuffle=False, num_workers=CONFIG["num_workers"])
         
-        # B. Pilih Model (Sesuai Config)
+        # Pilih Model
         if CONFIG["model_type"] == "spectrogram":
             model = ModelSpectrogram(num_classes=CONFIG["num_classes"])
         elif CONFIG["model_type"] == "waveform":
@@ -133,46 +167,62 @@ def run_training():
         elif CONFIG["model_type"] == "hybrid":
             model = ModelHybrid(num_classes=CONFIG["num_classes"])
         else:
-            raise ValueError("Tipe model tidak dikenali! Pilih: spectrogram, waveform, hybrid")
+            raise ValueError("Model tidak dikenal")
             
         model = model.to(CONFIG["device"])
-        
-        # C. Optimizer & Loss
-        # Adam biasanya pilihan terbaik untuk Audio
         optimizer = optim.Adam(model.parameters(), lr=CONFIG["learning_rate"])
-        criterion = nn.CrossEntropyLoss() # Standar klasifikasi
+        criterion = nn.CrossEntropyLoss()
         
-        # D. Loop Epoch
         best_acc = 0.0
         
         for epoch in range(CONFIG["epochs"]):
             start_time = time.time()
             
-            # Latih & Uji
             train_loss, train_acc = train_one_epoch(model, train_loader, criterion, optimizer, CONFIG["device"])
             val_loss, val_acc = validate(model, val_loader, criterion, CONFIG["device"])
             
-            # Cek Juara
+            # SIMPAN DATA KE HISTORY
+            history['train_loss'].append(train_loss)
+            history['train_acc'].append(train_acc)
+            history['val_loss'].append(val_loss)
+            history['val_acc'].append(val_acc)
+            
             is_best = val_acc > best_acc
             if is_best:
                 best_acc = val_acc
-                # Simpan Model Juara
                 save_name = f"{CONFIG['model_type']}_fold{fold}_best.pth"
-                save_path = os.path.join(CONFIG["save_dir"], save_name)
-                torch.save(model.state_dict(), save_path)
+                torch.save(model.state_dict(), os.path.join(CONFIG["save_dir"], save_name))
             
             end_time = time.time()
             epoch_mins = (end_time - start_time) / 60
             
-            # Laporan per Epoch
             print(f"Epoch {epoch+1}/{CONFIG['epochs']} | "
-                  f"Train: Loss {train_loss:.4f} Acc {train_acc:.2f}% | "
-                  f"Val: Loss {val_loss:.4f} Acc {val_acc:.2f}% | "
-                  f"Time: {epoch_mins:.1f}m | "
+                  f"Train: {train_acc:.2f}% | Val: {val_acc:.2f}% | "
                   f"{'🏆 BEST' if is_best else ''}")
+
+        # --- SETELAH FOLD SELESAI: GENERATE LAPORAN ---
+        print(f"🏁 Menyimpan laporan Fold {fold}...")
         
-        print(f"🏁 Selesai Fold {fold}. Akurasi Terbaik: {best_acc:.2f}%")
+        # 1. Simpan Excel (CSV)
+        df = pd.DataFrame(history)
+        df.index.name = 'Epoch'
+        csv_name = f"{CONFIG['report_dir']}/{CONFIG['model_type']}_fold{fold}_log.csv"
+        df.to_csv(csv_name)
+        print(f"📄 Excel disimpan: {csv_name}")
+        
+        # 2. Simpan Grafik (PNG)
+        plot_history(history, CONFIG['model_type'], fold)
+        
+        # Catat skor akhir
+        final_results.append(best_acc)
         print("-" * 60)
+
+    # --- LAPORAN FINAL ---
+    avg_acc = sum(final_results) / len(final_results)
+    print("\n" + "="*60)
+    print(f"🎉 TRAINING SELESAI UNTUK MODEL: {CONFIG['model_type'].upper()}")
+    print(f"📊 Rata-rata Akurasi 5-Fold: {avg_acc:.2f}%")
+    print("="*60)
 
 if __name__ == "__main__":
     run_training()
