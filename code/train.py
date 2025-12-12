@@ -9,7 +9,7 @@ from sklearn.metrics import confusion_matrix, classification_report
 import pandas as pd
 
 # Import kode kita
-from DataReader import AudioDataset
+from datareader import AudioDataset
 from model import ModelSpectrogram, ModelWaveform, ModelHybrid
 
 # ==============================================================================
