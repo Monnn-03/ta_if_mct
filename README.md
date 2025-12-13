@@ -1,2 +1,5 @@
 # Analisis Metode Klasifikasi Suara Untuk Keselamatan Tunarungu
-This is the short explanation about the title of the project.
+
+## 📊 Hasil Eksperimen
+Berikut adalah grafik perbandingan model Spectrogram vs Waveform:
+![Grafik Spectrogram](reports/spectrogram_fold1_chart.png)
