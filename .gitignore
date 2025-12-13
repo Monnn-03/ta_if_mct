@@ -18,6 +18,7 @@ code/datasets/
 # --- MODEL CHECKPOINTS ---
 # File bobot model (.pth) biasanya besar (>100MB)
 # Kalau mau simpan model final, hapus baris ini nanti.
+code/models_saved/
 *.pth
 *.pt
 
