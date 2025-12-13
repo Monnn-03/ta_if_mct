@@ -22,6 +22,9 @@ code/models_saved/
 *.pth
 *.pt
 
+# JSON split
+*.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
