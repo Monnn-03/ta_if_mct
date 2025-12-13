@@ -2,4 +2,4 @@
 
 ## 📊 Hasil Eksperimen
 Berikut adalah grafik perbandingan model Spectrogram vs Waveform:
-![Grafik Spectrogram](reports/spectrogram_fold1_log.png)
+![Grafik Spectrogram](code/reports/spectrogram_fold1_log.png)
