@@ -7,7 +7,7 @@ from model import AudioClassifier  # Pastikan file model.py ada di sebelah scrip
 # --- KONFIGURASI ---
 # Ganti dengan path model JUARA ANDA (Spectrogram Fold 3)
 MODEL_PATH = "models_saved/spectrogram_fold2_best.pth" 
-TEST_FILE = "tes_suara_sirine.wav"  # Ganti dengan nama file suara yang mau dites
+TEST_FILE = "audio_test/siren.wav"  # Ganti dengan nama file suara yang mau dites
 MODEL_TYPE = "spectrogram"          # Wajib spectrogram
 
 # Label Kelas (Urutan harus sama dengan saat training!)
