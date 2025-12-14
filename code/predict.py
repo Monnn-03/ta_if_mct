@@ -6,7 +6,7 @@ from model import AudioClassifier
 # --- KONFIGURASI ---
 # Pastikan path model benar
 MODEL_PATH = "models_saved/spectrogram_fold2_best.pth" 
-TEST_FILE = "audio_test/siren.wav"  # File audio yang mau dites
+TEST_FILE = "audio_test/gun_shot.wav"  # File audio yang mau dites
 MODEL_TYPE = "spectrogram"          # Tetap "spectrogram" (karena arsitekturnya ResNet38)
 
 # Label Kelas
