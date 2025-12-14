@@ -1,60 +1,57 @@
 import torch
 import librosa
 import numpy as np
-import cv2
-from model import AudioClassifier  # Pastikan file model.py ada di sebelah script ini
+from model import AudioClassifier 
 
 # --- KONFIGURASI ---
-# Ganti dengan path model JUARA ANDA (Spectrogram Fold 3)
+# Pastikan path model benar
 MODEL_PATH = "models_saved/spectrogram_fold2_best.pth" 
-TEST_FILE = "audio_test/siren.wav"  # Ganti dengan nama file suara yang mau dites
-MODEL_TYPE = "spectrogram"          # Wajib spectrogram
+TEST_FILE = "audio_test/siren.wav"  # File audio yang mau dites
+MODEL_TYPE = "spectrogram"          # Tetap "spectrogram" (karena arsitekturnya ResNet38)
 
-# Label Kelas (Urutan harus sama dengan saat training!)
+# Label Kelas
 LABELS = ['Car Horn', 'Dog Bark', 'Gun Shot', 'Siren']
 
 def preprocess_audio(file_path):
     # 1. Load Audio
-    y, sr = librosa.load(file_path, sr=22050)
+    # PANNs dilatih pada sample rate 32000 Hz, jadi kita ikut standar itu
+    y, sr = librosa.load(file_path, sr=32000)
     
-    # 2. Potong/Padding jadi 4 detik (sama seperti saat training)
-    max_len = 22050 * 4
+    # 2. Potong/Padding jadi 4 detik (Standar PANNs UrbanSound)
+    # 32000 Hz x 4 detik = 128000 samples
+    max_len = 32000 * 4
+    
     if len(y) > max_len:
+        # Kalau kepanjangan, potong
         y = y[:max_len]
     else:
+        # Kalau kependekan, tambah nol (padding)
         padding = max_len - len(y)
         y = np.pad(y, (0, padding))
         
-    # 3. Ubah ke Spectrogram (Sama persis logic training)
-    spec = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128, fmax=8000)
-    spec_db = librosa.power_to_db(spec, ref=np.max)
+    # 3. Ubah ke Tensor
+    # PANNs menerima input Raw Audio (Batch, Time)
+    # Kita ubah jadi (1, Time) -> Batch size 1
+    input_tensor = torch.tensor(y, dtype=torch.float32).unsqueeze(0)
     
-    # Normalisasi ke 0-255
-    spec_norm = (spec_db - spec_db.min()) / (spec_db.max() - spec_db.min()) * 255
-    spec_img = spec_norm.astype(np.uint8)
-    
-    # Ubah jadi 3 Channel (RGB) agar bisa masuk ke ResNet
-    spec_img = cv2.cvtColor(spec_img, cv2.COLOR_GRAY2RGB)
-    
-    # Ubah ke Tensor (C, H, W)
-    input_tensor = torch.tensor(spec_img, dtype=torch.float32).permute(2, 0, 1) / 255.0
-    return input_tensor.unsqueeze(0) # Tambah batch dimension
+    return input_tensor
 
 def predict():
     print(f"🔍 Memuat model dari {MODEL_PATH}...")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    # Load Arsitektur
-    model = AudioClassifier(model_type=MODEL_TYPE, num_classes=4).to(device)
-    
-    # Load Otak (Weights)
-    # map_location='cpu' agar aman dijalankan di laptop tanpa GPU
-    state_dict = torch.load(MODEL_PATH, map_location=device)
-    model.load_state_dict(state_dict)
-    model.eval()
-    
-    print(f"🎧 Sedang mendengarkan file: {TEST_FILE}")
     try:
+        # Load Arsitektur
+        model = AudioClassifier(model_type=MODEL_TYPE, num_classes=4).to(device)
+        
+        # Load Otak (Weights)
+        state_dict = torch.load(MODEL_PATH, map_location=device)
+        model.load_state_dict(state_dict)
+        model.eval()
+        
+        print(f"🎧 Sedang mendengarkan file: {TEST_FILE}")
+        
+        # Preprocess (Sekarang jauh lebih simpel, cuma potong durasi)
         input_tensor = preprocess_audio(TEST_FILE).to(device)
         
         with torch.no_grad():
@@ -65,20 +62,23 @@ def predict():
         idx = predicted_class.item()
         score = confidence.item() * 100
         
-        print("\n" + "="*30)
+        print("\n" + "="*40)
         print(f"🗣️  HASIL PREDIKSI: {LABELS[idx].upper()}")
-        print(f"📊  Yakin: {score:.2f}%")
-        print("="*30)
+        print(f"📊  Tingkat Keyakinan: {score:.2f}%")
+        print("="*40)
         
         # Tampilkan detail persen semua kelas
-        print("\nDetail:")
+        print("\nDetail Probabilitas:")
         for i, label in enumerate(LABELS):
             probs = probabilities[0][i].item() * 100
-            print(f"- {label}: {probs:.2f}%")
+            print(f"- {label:<10}: {probs:.2f}%")
             
+    except FileNotFoundError:
+        print(f"❌ Error: File audio '{TEST_FILE}' tidak ditemukan.")
     except Exception as e:
-        print(f"❌ Error: {e}")
-        print("Pastikan file audio ada dan formatnya .wav")
+        print(f"❌ Error Sistem: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     predict()
