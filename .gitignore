@@ -9,6 +9,7 @@ code/datasets/
 
 # Abaikan file audio mentah di mana pun dia berada
 *.wav
+*.mp3
 
 # Abaikan file arsip (zip/tar.gz)
 *.zip
