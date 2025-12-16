@@ -2,21 +2,23 @@
 \chapter{PENDAHULUAN} \label{Bab I}
 
 \section{Latar Belakang} \label{I.Latar Belakang}
-Perkembangan teknologi di bidang pemrosesan sinyal digital, khususnya audio, telah memungkinkan berbagai aplikasi seperti pengenalan suara, klasifikasi genre musik, hingga identifikasi instrumen musik. Salah satu aspek yang menarik untuk diteliti adalah klasifikasi instrumen musik berdasarkan karakteristik audio-nya. \par
+Ceritakan tentang penyandang tunanetra yang mengandalkan pendengaran untuk melakukan navigasi. \par
 
-Genre Korean Ballad merupakan salah satu genre musik populer dari Korea Selatan yang dikenal dengan alunan melodi yang emosional dan harmoni yang lembut. Dalam versi instrumental dari genre ini, instrumen melodis seperti piano, biola, dan flute berperan penting dalam menyampaikan suasana lagu tanpa kehadiran vokal.\par
+Kenalkan Environmental Sound Classification (ESC) menggunakan Deep Learning.\par
 
-Dalam tugas akhir ini, dilakukan penelitian untuk mengklasifikasi jenis instrumen melodis pada musik instrumental Korean Ballad. Teknologi yang digunakan adalah Convolutional Neural Network (CNN), yang mampu mempelajari fitur dari representasi spectrogram, yaitu visualisasi frekuensi terhadap waktu dari sinyal audio.\par
+Disinilah Anda masuk. Sebutkan bahwa ada banyak metode: Input Suara Mentah (Waveform) dan Input Gambar (Spectrogram).
+Banyak penelitian mengejar model yang Kompleks (Hybrid) agar canggih.
+Masalahnya: Apakah model kompleks selalu cocok untuk dataset terbatas (seperti kasus spesifik ini)? Atau justru model yang lebih efisien (Spectrogram) lebih baik?\par
 
-Dengan memanfaatkan CNN dan spectrogram, sistem ini diharapkan mampu membedakan instrumen-instrumen melodis berdasarkan pola-pola karakteristik frekuensinya, sehingga bisa digunakan sebagai dasar sistem klasifikasi otomatis di bidang musik. \par
+Inilah alasan kenapa Anda meneliti perbandingan 3 model ini. \par
 
 \section{Rumusan Masalah} \label{I.Rumusan Masalah}
 Berdasarkan latar belakang yang telah diuraikan, maka dirumuskan masalah dalam penelitian ini : \par
 
 \begin{enumerate}[noitemsep]
-	\item Bagaimana cara memproses audio instrumental Korean Ballad menjadi representasi spectrogram? 
-	\item Bagaimana membangun dan melatih model CNN untuk mengklasifikasikan instrumen melodis dari spectrogram tersebut?
-	\item Bagaimana menguji dan mengevaluasi akurasi klasifikasi instrumen melodis yang dihasilkan?
+	\item Bagaimana merancang bangun sistem klasifikasi suara bahaya (Siren, Car Horn, Dog Bark, Gun Shot) menggunakan arsitektur Pre-trained Audio Neural Networks (PANNs)? 
+	\item Manakah arsitektur model yang memberikan performa terbaik (Akurasi, Presisi, Recall) di antara pendekatan Waveform (1D), Spectrogram (2D), dan Hybrid pada dataset UrbanSound8K?
+	\item Bagaimana pengaruh kompleksitas model terhadap efektivitas klasifikasi pada jumlah data yang terbatas?
 \end{enumerate}
 
 \section{Tujuan Penelitian} \label{I.Tujuan}
