@@ -1,0 +1,152 @@
+\newpage
+\chapter{METODE PENELITIAN} \label{Bab III}
+
+\section{Alur Penelitian} \label{III.Alur}
+
+\begin{figure}[H] % Kalau menggunakan H, posisi gambar akan tepat dibawah teks
+    \centering
+    \includegraphics[width=0.2\textwidth]{figure/Flowchart_TA.png}
+    \caption{Alur Penelitian}
+    \label{fig:3.alur}
+\end{figure}
+
+\section{Penjabaran Langkah Penelitian} \label{III.Jabar Alur}
+
+\subsection{Pengumpulan Dataset} \label{III.Langkah 1}
+Mengumpulkan audio instrumental Korean Ballad dari sumber daring (bebas lisensi) atau dataset open-source. \par
+
+\subsection{Preprocessing} \label{III.Langkah 2}
+Melakukan normalisasi audio (mono, sampling rate), segmentasi, dan trimming. \par
+
+\subsection{Konversi ke Spectrogram} \label{III.Langkah 3}
+Mengubah audio menjadi citra spectrogram menggunakan Short-Time Fourier Transform (STFT). \par
+
+\subsection{Pelatihan Model CNN} \label{III.Langkah 4}
+Melatih CNN pada dataset citra spectrogram untuk klasifikasi instrumen. \par
+
+\subsection{Evaluasi} \label{III.Langkah 5}
+Melakukan pengujian terhadap data uji dan mengevaluasi metrik seperti akurasi dan confusion matrix. \par
+
+\section{Alat dan Bahan Tugas Akhir} \label{III.Alat dan Bahan}
+Berisi alat-alat dan bahan-bahan yang digunakan dalam penelitian. \par
+
+\subsection{Alat} \label{III.Alat}
+\begin{enumerate}[noitemsep]
+	\item Laptop dengan spesifikasi minimum RAM 16GB, GPU opsional (NVIDIA).
+	\item Visual Studio Code.
+	\item Python 3.10 dan library: librosa, matplotlib, numpy, tensorflow.
+	\item Google Colab
+	\item Github
+\end{enumerate}
+
+\subsection{Bahan} \label{III.Bahan}
+Bahan yang digunakan/diperlukan untuk melakukan penelitian, dapat berupa: \par
+\begin{enumerate}[noitemsep]
+	\item Dataset audio instrumen melodis Korean Ballad (open-source atau dikumpulkan sendiri).
+	\item Dokumentasi teori CNN dan spectrogram.
+	\item Referensi dari jurnal ilmiah. 
+\end{enumerate}
+
+\section{Metode Pengembangan} \label{III.Metode}
+Penelitian ini menggunakan pendekatan rekayasa perangkat lunak berbasis data untuk mengembangkan sistem klasifikasi instrumen melodis pada musik instrumental Korean Ballad menggunakan metode Convolutional Neural Network (CNN) dan representasi spectrogram. Adapun metode pengembangan dalam penelitian ini dijelaskan sebagai berikut: \par
+
+\subsection{Alur Pengembangan Tugas Akhir}
+\begin{figure}[H] % Kalau menggunakan H, posisi gambar akan tepat dibawah teks
+    \centering
+    \includegraphics[width=0.1\textwidth]{figure/FlowchartTA_Waterfall.drawio.png}
+    \caption{Alur Pengembangan Tugas Akhir}
+    \label{fig:3.alurTA}
+\end{figure}
+
+\subsection{Cara Pengumpulan Data}
+Data dikumpulkan dengan cara sebagai berikut:
+\begin{enumerate}[noitemsep]
+	\item Dataset diperoleh dari platform seperti YouTube, Freesound, atau sumber dataset open-source.
+	\item Setiap potongan audio diklasifikasikan secara manual berdasarkan jenis instrumen utama yang terdengar (misalnya: piano, gitar, biola).
+	\item Untuk meningkatkan akurasi pelabelan, hasil labeling dapat divalidasi oleh seseorang yang memiliki latar belakang musik.
+\end{enumerate}
+
+\subsection{Metode Pengembangan Tugas Akhir}
+Penelitian ini menggunakan metode pengembangan Waterfall karena setiap tahapan dilakukan secara sistematis dan berurutan, dimulai dari pengumpulan data hingga analisis hasil. Tahapan Waterfall yang digunakan adalah sebagai berikut:
+\begin{enumerate}[noitemsep]
+	\item Analisis kebutuhan: Menentukan kebutuhan data dan sistem klasifikasi.
+	\item Desain sistem: Mendesain arsitektur CNN dan proses transformasi audio.
+	\item Implementasi: Melatih model CNN dengan dataset yang telah disiapkan.
+	\item Pengujian: Menguji model menggunakan data uji untuk memperoleh metrik evaluasi.
+	\item Pemeliharaan: Menyesuaikan model atau data jika terdapat ketidaksesuaian hasil.
+\end{enumerate}
+
+\subsection{Metode Pengujian Penelitian}
+Model CNN akan diuji menggunakan teknik Hold-Out Validation dengan pembagian data 80\% untuk pelatihan dan 20\% untuk pengujian. Pengujian dilakukan dengan mengukur: \par
+\begin{enumerate}[noitemsep]
+	\item Akurasi: Persentase data yang diklasifikasikan dengan benar.
+	\item Confusion Matrix: Untuk melihat distribusi kesalahan dan keberhasilan klasifikasi antar label.
+	\item Precision dan Recall: Untuk mengukur performa klasifikasi tiap label secara lebih mendalam.
+\end{enumerate}
+
+\section{Ilustrasi Perhitungan Metode} \label{III.Ilustrasi}
+Pada bagian ini dijelaskan ilustrasi proses klasifikasi instrumen musik melodis dengan menggunakan metode \textit{Convolutional Neural Network} (CNN) dan representasi spectrogram. Ilustrasi dilakukan pada sampel data audio dengan panjang potongan 10 detik.
+
+\subsection{Representasi Spectrogram}
+Salah satu file audio Korean Ballad dengan label \textit{biola} diubah ke dalam bentuk spectrogram menggunakan transformasi Short-Time Fourier Transform (STFT). Hasil transformasi berupa matriks dua dimensi dengan sumbu waktu dan frekuensi, yang kemudian digunakan sebagai input untuk model CNN.
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.7\textwidth]{figures/sample_spectrogram.png}
+%     \caption{Contoh Spectrogram Instrumen Biola}
+%     \label{fig:sample-spectrogram}
+% \end{figure}
+
+\subsection{Prediksi Model CNN}
+Spectrogram dari audio dimasukkan ke dalam model CNN. Arsitektur CNN yang digunakan terdiri dari beberapa lapisan konvolusi dan pooling, diakhiri dengan lapisan dense sebagai klasifikasi.
+
+Contoh hasil prediksi dari 10 data uji ditunjukkan pada Tabel \ref{tab:prediksi} berikut:
+
+\begin{table}[H]
+    \centering
+    \caption{Contoh Hasil Prediksi Model CNN}
+    \label{tab:prediksi}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Data Ke-} & \textbf{Label Sebenarnya} & \textbf{Prediksi Model} \\ \hline
+        1 & Biola & Biola \\ \hline
+        2 & Piano & Biola \\ \hline
+        3 & Gitar & Gitar \\ \hline
+        4 & Biola & Biola \\ \hline
+        5 & Piano & Piano \\ \hline
+        6 & Gitar & Gitar \\ \hline
+        7 & Biola & Biola \\ \hline
+        8 & Gitar & Piano \\ \hline
+        9 & Piano & Piano \\ \hline
+        10 & Biola & Biola \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Perhitungan Akurasi}
+Berdasarkan hasil pada Tabel \ref{tab:prediksi}, diketahui bahwa terdapat 9 prediksi yang benar dari 10 data uji. Akurasi model dihitung menggunakan rumus: \par
+
+\begin{equationcaptioned}[eq:2.sederhana]{
+	\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+}{
+	Rumus Accuracy % Caption rumus
+}
+\end{equationcaptioned}
+
+Misalnya model mengklasifikasikan dengan benar 9 dari 10 data, maka akurasi dihitung sebagai berikut: \par
+
+\begin{equationcaptioned}[eq:2.sederhana]{
+	\text{Accuracy} = \frac{9}{10} = 0.9 = 90\%
+}{
+	Contoh Perhitungan Accuracy % Caption rumus
+}
+\end{equationcaptioned}
+
+
+Dengan demikian, model CNN dengan input spectrogram pada ilustrasi ini memiliki akurasi sebesar 90\% terhadap data uji tersebut.
+
+\section{Rancangan Pengujian} \label{III.Rancang_Uji}
+\begin{enumerate}[noitemsep]
+	\item Pengujian Fungsional: apakah model dapat mengenali instrumen piano, flute, dan biola.
+	\item Pengujian Non-Fungsional: kecepatan pelatihan model dan ukuran file model.
+	\item Hipotesis: CNN dapat mencapai akurasi minimal 80\% dalam klasifikasi 3 instrumen.
+\end{enumerate}
