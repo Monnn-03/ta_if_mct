@@ -2,6 +2,15 @@
 
 ## Desember
 
+### 2025-12-16
+- Catatan dari bimbingan Pak Martin :
+1. Pelajari kenapa pada arsitektur ketiga jenis modelnya menggunakan angka 128000.
+2. Sudah boleh menyusun Bab I
+3. Pelajari asal usul untuk orang yang membuat arsitektur model tersebut (Kenapa menggunakan model ini? dll)
+
+### 2025-12-13
+- Melakukan train pada ketiga jenis model dan membandingkan ketiganya.
+
 ### 2025-12-09
 - Memasukkan model ResNet38 (Input Spectro), Res1dNet31 (Input Waveform), dan Wavegram-Logmel-CNN (Input Hybrid) ke dalam `model.py`.
 

@@ -5,9 +5,9 @@ from model import AudioClassifier
 
 # --- KONFIGURASI ---
 # Pastikan path model benar
-MODEL_PATH = "models_saved/spectrogram_fold2_best.pth" 
+MODEL_PATH = "models_saved/hybrid_fold2_best.pth" 
 TEST_FILE = "audio_test/gun_shot.wav"  # File audio yang mau dites
-MODEL_TYPE = "spectrogram"          # Tetap "spectrogram" (karena arsitekturnya ResNet38)
+MODEL_TYPE = "hybrid"          # Tetap "hybrid" (karena arsitekturnya Hybrid)
 
 # Label Kelas
 LABELS = ['Car Horn', 'Dog Bark', 'Gun Shot', 'Siren']
