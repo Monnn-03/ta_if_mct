@@ -3,7 +3,9 @@
 ## Desember
 
 ### 2025-12-17
-- Menyusun Paragraf 1 Bab I
+- Menyusun Bab I : Latar Belakang
+1. Paragraf 1
+2. Paragraf 2
 
 ### 2025-12-16
 - Catatan dari bimbingan Pak Martin :

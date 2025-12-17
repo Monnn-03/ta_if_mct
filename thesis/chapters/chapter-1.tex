@@ -2,13 +2,23 @@
 \chapter{PENDAHULUAN} \label{Bab I}
 
 \section{Latar Belakang} \label{I.Latar Belakang}
-Ceritakan tentang penyandang tunanetra yang mengandalkan pendengaran untuk melakukan navigasi. \par
+Dalam aktivitas mobilitas di daerah perkotaan, indra pendengaran merupakan mekanisme deteksi alami yang cukup penting untuk memantau kondisi lingkungan di sekitarnya. 
+Namun, fungsi indra tersebut tidak dimiliki oleh penyandang Tuna Rungu yang hanya bisa mengandalkan penglihatan mereka untuk memahami situasi di sekitar. 
+Ketergantungan penuh pada visual ini dapat menjadi kerentanan serius dikarenakan mereka memiliki keterbatasan sudut pandang dan tidak mengetahui apa situasi yang ada di luar penglihatan mereka. 
+Akibatnya, seringkali ancaman yang muncul dari titik buta, seperti gonggongan anjing yang mengejar atau klakson kendaraan yang melaju kencang dari arah belakang, berpotensi menimbulkan kecelakaan fatal bagi mereka. \par
 
-Kenalkan Environmental Sound Classification (ESC) menggunakan Deep Learning.\par
+Saat ini, penyandang Tuna Rungu dibantu oleh alat asistif yaitu Alat Bantu Dengar (ABD). 
+Meskipun efektif untuk komunikasi jarak dekat, alat ini memiliki keterbatasan dalam konteks keselamatan di luar ruangan. 
+Tuna Rungu memiliki keterbatasan dalam membedakan suara yang terdengar oleh ABD akibat penurunan selektivitas frekuensi (Cari kutipan mengenai keterbatasan Tuna Rungu membedakan suara-suara). 
+ABD hanya berfungsi untuk amplifikasi sinyal yang didengar, sehingga kebisingan latar belakang ikut teramplifiikasi. 
+Akibatnya, suara yang menjadi ancaman penting pun tertutup oleh suara-suara lainnya sehingga hilangnya kewaspadaan situasional. \par
 
-Disinilah Anda masuk. Sebutkan bahwa ada banyak metode: Input Suara Mentah (Waveform) dan Input Gambar (Spectrogram).
-Banyak penelitian mengejar model yang Kompleks (Hybrid) agar canggih.
-Masalahnya: Apakah model kompleks selalu cocok untuk dataset terbatas (seperti kasus spesifik ini)? Atau justru model yang lebih efisien (Spectrogram) lebih baik?\par
+Disinilah peran teknologi klasifikasi suara lingkungan (Environmental Sound Classification/ESC) berbasis deep learning yang dapat menjadi solusi bagi para penyandang Tuna Rungu dalam mengenali suara-suara bahaya di sekitar mereka. 
+Dengan memanfaatkan model deep learning yang telah dilatih untuk mengenali berbagai jenis suara lingkungan, sistem ESC dapat mendeteksi dan mengklasifikasikan suara-suara penting seperti sirene ambulans, klakson mobil, gonggongan anjing, atau suara tembakan. 
+Setelah suara terdeteksi dan diklasifikasikan, sistem dapat memberikan notifikasi dalam bentuk visual atau getaran kepada pengguna Tuna Rungu, sehingga mereka dapat segera menyadari dan merespon potensi bahaya di sekitar mereka. 
+Dengan demikian, teknologi ESC berbasis deep learning memiliki potensi besar untuk meningkatkan keselamatan dan kualitas hidup penyandang Tuna Rungu dalam mobilitas sehari-hari mereka di lingkungan perkotaan.\par
+
+Dalam merancang ESC yang efektif dan andal, banyak jenis metode deep learning yang digunakan untuk membedakan suara-suara tersebut. Hal ini menjadi sangat penting, dikarenakan metode ESC yang buruk juga dapat berakibat fatal bagi keselamatan para pengguna. Maka dari itu, penelitian ini bertujuan untuk membandingkan performa dari tiga pendekatan berbeda dalam klasifikasi suara lingkungan: Input Suara Mentah (Waveform), Input Gambar (Spectrogram), dan Pendekatan Hybrid. \par
 
 Inilah alasan kenapa Anda meneliti perbandingan 3 model ini. \par
 
