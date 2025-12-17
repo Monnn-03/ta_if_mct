@@ -2,11 +2,15 @@
 
 ## Desember
 
+### 2025-12-17
+- Menyusun Paragraf 1 Bab I
+
 ### 2025-12-16
 - Catatan dari bimbingan Pak Martin :
 1. Pelajari kenapa pada arsitektur ketiga jenis modelnya menggunakan angka 128000.
 2. Sudah boleh menyusun Bab I
 3. Pelajari asal usul untuk orang yang membuat arsitektur model tersebut (Kenapa menggunakan model ini? dll)
+- Mempelajari bahwasannya 128000 Hz adalah hasil daripada samplerate audio (32000 Hz) dikalikan dengan durasi audio (yaitu 4 detik).
 
 ### 2025-12-13
 - Melakukan train pada ketiga jenis model dan membandingkan ketiganya.
