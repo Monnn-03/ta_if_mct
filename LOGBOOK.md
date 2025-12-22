@@ -2,8 +2,11 @@
 
 ## Desember
 
-### 2025-12-21
+### 2025-12-22
+- Fiksasi Paragraf 3 latar belakang
 
+### 2025-12-21
+- Fiksasi Paragraf 1 dan 2 Latar Belakang
 
 ### 2025-12-17
 - Menyusun Bab I : Latar Belakang
