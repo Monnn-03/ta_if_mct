@@ -2,29 +2,29 @@
 \chapter{PENDAHULUAN} \label{Bab I}
 
 \section{Latar Belakang} \label{I.Latar Belakang}
-[PARAGRAF 1 : Masalah Nyata] Dalam konteks mobilitas di daerah perkotaan, indra pendengaran merupakan mekanisme deteksi alami yang cukup penting untuk mengetahui kondisi lingkungan di sekitarnya. 
+Dalam konteks mobilitas di daerah perkotaan, indra pendengaran merupakan mekanisme deteksi alami yang cukup penting untuk mengetahui kondisi lingkungan di sekitarnya. 
 Namun, fungsi indra tersebut tidak dimiliki oleh penyandang Tuna Rungu, yang hanya bisa mengandalkan penglihatan mereka untuk memahami situasi di sekitar. 
 Ketergantungan penuh pada aspek visual ini dapat menjadi kerentanan serius, mengingat mereka memiliki keterbatasan sudut pandang dan dan tidak dapat memantau kondisi di luar jangkauan penglihatan. 
 Akibatnya, ancaman yang muncul dari titik buta, seperti gonggongan anjing yang mengejar atau klakson kendaraan yang melaju kencang dari arah belakang, seringkali terlambat disadari, sehingga berpotensi menimbulkan kecelakaan fatal. \par
 
-[PARAGRAF 2 : Solusi Lama] Saat ini, penyandang Tuna Rungu umumnya mengandalkan Alat Bantu Dengar (ABD) sebagai instrumen utama untuk menunjang komunikasi verbal. 
+Saat ini, penyandang Tuna Rungu umumnya mengandalkan Alat Bantu Dengar (ABD) sebagai instrumen utama untuk menunjang komunikasi verbal. 
 Meskipun efektif untuk komunikasi verbal jarak dekat, alat ini memiliki keterbatasan signifikan dalam konteks keselamatan di luar ruangan.  
 Hal ini disebabkan oleh penurunan selektivitas frekuensi, yang membuat penyandang Tuna Rungu kesulitan memisahkan suara utama dari suara lain yang saling bertabrakan (Cari sitasi tentang ini).
 ABD hanya berfungsi untuk amplifikasi seluruh sinyal suara yang masuk, sehingga kebisingan latar belakang pun tak terelakkan ikut teramplifikasi. 
 Akibatnya, sinyal ancaman penting seringkali tertutup oleh suara-suara lainnya, yang berdampak pada hilangnya kewaspadaan situasional pengguna. \par
 
-[PARAGRAF 3 : Solusi Ditawarkan] Untuk mengatasi kendala tersebut, teknologi klasifikasi suara lingkungan (Environmental Sound Classification/ESC) berbasis deep learning hadir sebagai solusi bagi para penyandang Tuna Rungu dalam mengenali suara-suara bahaya di sekitar mereka. 
+Untuk mengatasi kendala tersebut, teknologi klasifikasi suara lingkungan (Environmental Sound Classification/ESC) berbasis deep learning hadir sebagai solusi bagi para penyandang Tuna Rungu dalam mengenali suara-suara bahaya di sekitar mereka. 
 Dengan memanfaatkan model deep learning yang telah dilatih untuk mengenali berbagai jenis suara lingkungan, sistem ESC dapat mendeteksi dan mengklasifikasikan suara-suara bahaya seperti sirene ambulans, klakson mobil, gonggongan anjing, atau suara tembakan. 
 Setelah suara terdeteksi dan diklasifikasikan, sistem dapat memberikan notifikasi dalam bentuk visual atau getaran kepada pengguna Tuna Rungu, sehingga mereka dapat segera menyadari ancaman dan mengambil tindakan antisipasi. 
 Dengan demikian, teknologi ESC berbasis deep learning memiliki potensi besar untuk meningkatkan keselamatan dan kualitas hidup penyandang Tuna Rungu dalam mobilitas sehari-hari di lingkungan perkotaan.\par
 
-[PARAGRAF 4 : PANNs sebagai Solusi] Untuk membangun model ESC, diperlukan latihan berulang dengan banyaknya dataset yang ada. 
-Maka dari itu, PANNs hadir sebagai solusi yang menyediakan model pre-trained yang dapat digunakan sebagai dasar pelatihan model ESC. 
-Dengan menggunakan PANNs, proses pelatihan dapat dilakukan secara lebih efisien dan efektif karena model ini telah melalui proses pelatihan yang intensif pada kumpulan dataset. \par
+Namun, pengembangan model ESC yang mampu mendeteksi bahaya secara akurat menghadapi tantangan teknis, terutama terkait kebutuhan dataset berskala besar. 
+Oleh karena itu, metode transfer learning menjadi solusi efektif untuk melatih model deteksi, dengan cara mengadaptasi arsitektur Pre-trained Audio Neural Networks (PANNs) yang telah memiliki pengetahuan dari dataset masif. 
+Meskipun begitu, performa model ini sangat bergantung pada pemilihan representasi masukan suara, terutama terkait perbedaan efektivitas antara representasi Raw Waveform (satu dimensi) dan Spectrogram (dua dimensi). Selain itu, terdapat pula pendekatan Hybrid yang menggabungkan kedua representasi tersebut untuk memaksimalkan akurasi deteksi. \par
 
-[PARAGRAF 5 : Inti Skripsi] Dalam merancang ESC yang efektif dan andal, banyak jenis metode deep learning yang digunakan untuk membedakan suara-suara tersebut. 
-Hal ini menjadi sangat penting, dikarenakan metode ESC yang buruk juga dapat berakibat fatal bagi keselamatan para pengguna. 
-Maka dari itu, penelitian ini bertujuan untuk membandingkan performa dari tiga pendekatan berbeda dalam klasifikasi suara lingkungan: Input Suara Mentah (Waveform), Input Gambar (Spectrogram), dan Pendekatan Hybrid. \par
+Guna memastikan tingkat akurasi deteksi yang maksimal bagi keselamatan pengguna, penelitian ini bertujuan untuk mengevaluasi dan membandingkan kinerja dari tiga pendekatan representasi input, yaitu: Raw Waveform, Spectrogram, dan Hybrid.
+Melalui perbandingan ini, diharapkan dapat ditemukan model terbaik yang tidak hanya memiliki akurasi tinggi, tetapi juga mampu meminimalisir kesalahan deteksi yang fatal. 
+Hasil akhir dari penelitian ini diharapkan dapat memberikan kontribusi nyata dalam pengembangan teknologi asistif berbasis AI yang andal, guna meningkatkan kewaspadaan dan jaminan keselamatan bagi komunitas Tuna Rungu.\par
 
 \section{Rumusan Masalah} \label{I.Rumusan Masalah}
 Berdasarkan latar belakang yang telah diuraikan, maka dirumuskan masalah dalam penelitian ini : \par
