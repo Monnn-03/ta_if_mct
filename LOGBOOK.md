@@ -2,14 +2,17 @@
 
 ## Desember
 
+### 2025-12-27
+- Buat seluruh Draft untuk Bab I
+
 ### 2025-12-26
-- Fiksasi Paragraf 4 dan 5 latar belakang
+- Selesaikan Draft Paragraf 4 dan 5 latar belakang
 
 ### 2025-12-22
-- Fiksasi Paragraf 3 latar belakang
+- Selesaikan Draft Paragraf 3 latar belakang
 
 ### 2025-12-21
-- Fiksasi Paragraf 1 dan 2 Latar Belakang
+- Selesaikan Draft Paragraf 1 dan 2 Latar Belakang
 
 ### 2025-12-17
 - Menyusun Bab I : Latar Belakang

@@ -4,7 +4,7 @@
 \section{Latar Belakang} \label{I.Latar Belakang}
 Dalam konteks mobilitas di daerah perkotaan, indra pendengaran merupakan mekanisme deteksi alami yang cukup penting untuk mengetahui kondisi lingkungan di sekitarnya. 
 Namun, fungsi indra tersebut tidak dimiliki oleh penyandang Tuna Rungu, yang hanya bisa mengandalkan penglihatan mereka untuk memahami situasi di sekitar. 
-Ketergantungan penuh pada aspek visual ini dapat menjadi kerentanan serius, mengingat mereka memiliki keterbatasan sudut pandang dan dan tidak dapat memantau kondisi di luar jangkauan penglihatan. 
+Ketergantungan penuh pada aspek visual ini dapat menjadi kerentanan serius, mengingat mereka memiliki keterbatasan sudut pandang dan tidak dapat memantau kondisi di luar jangkauan penglihatan. 
 Akibatnya, ancaman yang muncul dari titik buta, seperti gonggongan anjing yang mengejar atau klakson kendaraan yang melaju kencang dari arah belakang, seringkali terlambat disadari, sehingga berpotensi menimbulkan kecelakaan fatal. \par
 
 Saat ini, penyandang Tuna Rungu umumnya mengandalkan Alat Bantu Dengar (ABD) sebagai instrumen utama untuk menunjang komunikasi verbal. 
@@ -30,37 +30,36 @@ Hasil akhir dari penelitian ini diharapkan dapat memberikan kontribusi nyata dal
 Berdasarkan latar belakang yang telah diuraikan, maka dirumuskan masalah dalam penelitian ini : \par
 
 \begin{enumerate}[noitemsep]
-	\item Bagaimana merancang bangun sistem klasifikasi suara bahaya (Siren, Car Horn, Dog Bark, Gun Shot) menggunakan arsitektur Pre-trained Audio Neural Networks (PANNs)? 
-	\item Manakah arsitektur model yang memberikan performa terbaik (Akurasi, Presisi, Recall) di antara pendekatan Waveform (1D), Spectrogram (2D), dan Hybrid pada dataset UrbanSound8K?
-	\item Bagaimana pengaruh kompleksitas model terhadap efektivitas klasifikasi pada jumlah data yang terbatas?
+	\item Bagaimana perbandingan performa model \textit{Pre-trained Audio Neural Networks (PANNs)} dalam mengklasifikasikan suara bahaya ketika dilatih menggunakan representasi input \textit{Raw Waveform}, \textit{Spectrogram}, dan \textit{Hybrid}?
+	\item Manakah pendekatan representasi input yang memberikan performa terbaik (ditinjau dari \textit{Accuracy}, \textit{Precision}, \textit{Recall}) di antara ketiga pendekatan tersebut pada ketersediaan data yang terbatas?
 \end{enumerate}
 
 \section{Tujuan Penelitian} \label{I.Tujuan}
 Tujuan dari penelitian ini adalah : \par
 
 \begin{enumerate}[noitemsep]
-	\item Mengonversi audio musik instrumental Korean Ballad menjadi spectrogram.
-	\item Membangun dan melatih model CNN untuk klasifikasi instrumen melodis.
-	\item Menguji performa model CNN terhadap data uji yang representatif.
+	\item Membandingkan performa model \textit{Pre-trained Audio Neural Networks (PANNs)} dalam mengklasifikasikan suara bahaya ketika dilatih menggunakan representasi input \textit{Raw Waveform}, \textit{Spectrogram}, dan \textit{Hybrid}.
+	\item Menentukan pendekatan representasi input yang memberikan performa terbaik (ditinjau dari \textit{Accuracy}, \textit{Precision}, \textit{Recall}) di antara ketiga pendekatan tersebut pada ketersediaan data yang terbatas.
 \end{enumerate}
 
 \section{Batasan Masalah} \label{I.Batasan}
 Batasan masalah yang didefinisikan dalam penelitian ini adalah sebagai berikut : \par
 
 \begin{enumerate}[noitemsep]
-	\item Penelitian hanya terbatas pada instrumen melodis seperti piano, biola, dan flute.
-	\item Genre musik yang digunakan hanya dari Korean Ballad versi instrumental.
-	\item Dataset yang digunakan adalah dataset bebas lisensi atau dikumpulkan sendiri.
-	\item Tidak mempertimbangkan instrumen ritmis (drum, bass, dll).
+	\item Data yang digunakan bersumber dari dataset publik UrbanSound8K, dengan seleksi sampel yang diseimbangkan pada 4 kelas suara yang berpotensi membahayakan keselamatan, yaitu \textit{Siren} (Sirene), \textit{Car Horn} (Klakson Mobil), \textit{Dog Bark} (Gonggongan Anjing), dan \textit{Gun Shot} (Tembakan).
+	\item Metode klasifikasi menggunakan teknik \textit{Transfer Learning} dengan arsitektur \textit{Pre-trained Audio Neural Networks (PANNs)}. Penelitian ini tidak membangun arsitektur dari nol, melainkan melakukan teknik \textit{fine-tuning} pada bobot parameter model PANNs yang telah dilatih sebelumnya.
+	\item Penelitian ini berfokus pada analisis performa model dan komparasi representasi input (\textit{Raw Waveform}, \textit{Spectrogram}, \textit{Hybrid}). Implementasi antarmuka pengguna (\textit{User Interface}), aplikasi \textit{mobile}, atau sistem peringatan dini berbasis perangkat keras (\textit{hardware}) tidak termasuk dalam lingkup penelitian ini.
+	\item Performa model dievaluasi berdasarkan parameter \textit{Accuracy}, \textit{Precision}, \textit{Recall}, \textit{F1-Score}, dan analisis \textit{Confusion Matrix}.
+	\item Implementasi kode dan logika model dibangun menggunakan bahasa pemrograman \textit{Python} pada \textit{Visual Studio Code}. Proses pelatihan model (\textit{training}) dieksekusi menggunakan platform komputasi awan \textit{Kaggle} untuk memanfaatkan akselerasi GPU (\textit{Graphics Processing Unit}), dengan bantuan \textit{library} pengolahan audio dan \textit{Deep Learning} standar (\textit{PyTorch} dan \textit{Librosa}).
 \end{enumerate}
 
 \section{Manfaat Penelitian} \label{I.Manfaat}
 Manfaat dari penelitian ini adalah : \par
 
 \begin{enumerate}[noitemsep]
-	\item Memperluas pemahaman dalam bidang pemrosesan audio dan deep learning.
-	\item Menambah ragam penelitian pada pemrosesan sinyal digital dan CNN.
-	\item Menciptakan potensi implementasi pada aplikasi edukasi musik, pemrosesan audio otomatis, dan sistem klasifikasi musik cerdas.
+	\item Memberikan bukti empiris terkait efektivitas metode \textit{Transfer Learning} pada arsitektur PANNs serta perbandingan performa antara representasi input \textit{Raw Waveform}, \textit{Spectrogram}, dan \textit{Hybrid} dalam mengatasi keterbatasan dataset (\textit{limited dataset}).
+	\item Berkontribusi dalam pengembangan teknologi asistif berbasis AI yang dapat meningkatkan keselamatan dan kemandirian mobilitas penyandang Tuna Rungu melalui deteksi suara bahaya yang akurat.
+	\item Menjadi referensi bagi penelitian selanjutnya atau pengembang aplikasi dalam menentukan konfigurasi model yang paling optimal untuk diterapkan pada sistem peringatan dini.
 \end{enumerate}
 
 
