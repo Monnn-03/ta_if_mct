@@ -2,6 +2,12 @@
 
 ## Desember
 
+### 2025-12-30
+- Poles Seluruh Bab I (Rumusan Masalah - Manfaat Penelitian)
+
+### 2025-12-29
+- Poles seluruh Bab I (Latar Belakang)
+
 ### 2025-12-27
 - Buat seluruh Draft untuk Bab I
 
