@@ -1,6 +1,14 @@
 # Research Logbook
 
-## Desember
+## January
+
+### 2026-01-03
+- Input penelitian terdahulu ke LaTeX
+
+### 2026-01-02
+- Mencari penelitian terdahulu (State-of-the-art)
+
+## December
 
 ### 2025-12-30
 - Poles Seluruh Bab I (Rumusan Masalah - Manfaat Penelitian)
@@ -112,7 +120,7 @@
 ### 2025-11-04
 - Membuat simulasi kode di Colab untuk memproyeksikan Spectrogram dari suara sirene.
 
-## Oktober
+## October
 
 ### 2025-10-22
 1. Mencari aspek yang berbeda untuk kebaruan penelitian.
@@ -171,7 +179,7 @@
 ### 2025-09-15
 - Mempelajari mengenai Singleclass, Multiclass, Singlelabel dan Multilabel.
 
-## Agustus
+## August
 
 ### 2025-08-29
 - Meeting TA pertama dengan Pak Martin 
