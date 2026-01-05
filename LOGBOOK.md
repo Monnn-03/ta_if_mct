@@ -2,6 +2,9 @@
 
 ## January
 
+### 2026-01-05
+- Meninjau kembali Bab I
+
 ### 2026-01-03
 - Input penelitian terdahulu ke LaTeX
 
