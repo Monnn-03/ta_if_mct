@@ -2,6 +2,9 @@
 
 ## January
 
+### 2026-01-06
+- Fiksasi Bab I sebelum bimbingan
+
 ### 2026-01-05
 - Meninjau kembali Bab I
 

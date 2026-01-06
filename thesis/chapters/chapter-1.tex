@@ -24,20 +24,20 @@ Dengan demikian, teknologi ESC berbasis \textit{Deep Learning} memiliki potensi 
 
 % PARAGRAF 4: SOLUSI TEKNIS (PANNs & VARIABEL)
 Namun, pengembangan model ESC yang mampu mendeteksi bahaya secara akurat menghadapi tantangan teknis, terutama terkait kebutuhan dataset berskala besar. 
-Oleh karena itu, metode \textit{Transfer Learning} menjadi solusi efektif untuk melatih model deteksi, dengan memanfaatkan kerangka kerja \textit{Pre-trained Audio Neural Networks} (PANNs). 
+Oleh karena itu, metode \textit{Transfer Learning} menjadi solusi efektif untuk melatih model deteksi, dengan memanfaatkan kerangka kerja dan bobot model dari \textit{Pre-trained Audio Neural Networks} (PANNs). 
 PANNs dipilih karena tidak hanya menyediakan bobot model dari dataset masif \cite{kong2020panns}, tetapi juga menyediakan variasi arsitektur yang dirancang khusus untuk menangani berbagai representasi input audio. 
 Hal ini memunculkan urgensi untuk mengevaluasi arsitektur mana yang paling optimal, apakah arsitektur yang bekerja pada domain waktu dengan input \textit{Raw Waveform} (satu dimensi), atau arsitektur pada domain frekuensi dengan input \textit{Spectrogram} (dua dimensi). 
 Selain itu, PANNs juga menyediakan arsitektur dengan pendekatan \textit{Hybrid} yang menggabungkan kedua representasi tersebut, yang secara teoritis berpotensi memaksimalkan akurasi deteksi. \par
 
 % PARAGRAF 5: RESEARCH GAP (ARGUMEN ILMIAH UTAMA) -> INI YANG DIPECAH
-Meskipun Kong et al. \cite{kong2020panns} telah memaparkan tolok ukur kinerja model-model tersebut pada dataset masif AudioSet, performa tersebut belum tentu linier ketika diterapkan pada \textit{downstream task} dengan ketersediaan data yang terbatas (\textit{data scarcity}) seperti pada kasus klasifikasi suara lingkungan perkotaan. 
+Meskipun Kong et al. telah memaparkan tolak ukur kinerja model-model tersebut pada dataset masif AudioSet \cite{kong2020panns}, performa tersebut belum tentu linier ketika diterapkan pada kasus penerapan spesifik dengan ketersediaan data yang terbatas (\textit{data scarcity}) seperti pada kasus klasifikasi suara lingkungan perkotaan. 
 Kompleksitas arsitektur model \textit{Hybrid} dan \textit{Spectrogram}, misalnya, memiliki risiko \textit{overfitting} yang lebih tinggi dibandingkan model \textit{Raw Waveform} ketika dilatih pada dataset yang kecil. 
 Oleh karena itu, penelitian ini menjadi krusial untuk mengevaluasi ulang adaptabilitas dan generalisasi ketiga arsitektur tersebut secara spesifik pada dataset UrbanSound8K. \par
 
 % PARAGRAF 6: TUJUAN PENELITIAN
-Guna memastikan tingkat akurasi deteksi yang maksimal bagi keselamatan pengguna, penelitian ini bertujuan untuk mengevaluasi dan membandingkan kinerja dari tiga pendekatan representasi input, yaitu: \textit{Raw Waveform}, \textit{Spectrogram}, dan \textit{Hybrid}. 
-Melalui perbandingan ini, diharapkan dapat ditemukan model terbaik yang tidak hanya memiliki akurasi tinggi, tetapi juga mampu meminimalisir kesalahan deteksi yang fatal. 
-Hasil akhir dari penelitian ini diharapkan dapat memberikan kontribusi nyata dalam pengembangan teknologi asistif berbasis AI yang andal, guna meningkatkan kewaspadaan dan jaminan keselamatan bagi komunitas Tuna Rungu. \par
+Untuk menjawab tantangan adaptabilitas pada dataset terbatas tersebut, penelitian ini bertujuan utama secara teknis untuk menginvestigasi dan membandingkan kinerja tiga pendekatan representasi input, yaitu \textit{Raw Waveform}, \textit{Spectrogram}, dan \textit{Hybrid}. 
+Studi komparasi ini diposisikan sebagai langkah fundamental untuk menemukan konfigurasi model yang paling \textit{robust} (tahan uji) terhadap minimnya data, sekaligus meminimalisir kesalahan deteksi fatal. 
+Dengan demikian, hasil evaluasi ini diharapkan dapat menjadi landasan teknis yang valid bagi pengembangan teknologi asistif yang benar-benar andal untuk menjamin keselamatan komunitas Tuna Rungu.
 
 \section{Rumusan Masalah} \label{I.Rumusan Masalah}
 Berdasarkan latar belakang yang telah diuraikan, maka rumusan masalah dalam penelitian ini adalah: \par
@@ -60,17 +60,17 @@ Batasan masalah yang didefinisikan dalam penelitian ini adalah sebagai berikut :
 
 \begin{enumerate}[noitemsep]
   \item Penelitian ini menggunakan dataset publik \textit{UrbanSound8K} sebagai representasi suara lingkungan perkotaan. Penulis tidak melakukan pengambilan data primer (perekaman langsung di lapangan).
-  \item Fokus klasifikasi dibatasi pada kelas suara yang berpotensi menjadi ancaman atau peringatan bagi keselamatan fisik di jalan raya, yang diambil dari taksonomi dataset \textit{UrbanSound8K} (\textit{car\_horn}, \textit{siren}, \textit{dog\_bark}, \textit{gun\_shot}, dan \textit{drilling}).
-  \item Penelitian ini berfokus pada eksperimen pelatihan (\textit{training}) dan evaluasi performa model \textit{Deep Learning} secara \textit{offline}. Penelitian ini \textbf{tidak mencakup} pembuatan perangkat keras (\textit{hardware}), pengembangan aplikasi antarmuka pengguna (\textit{User Interface}) berbasis \textit{mobile/web}, maupun implementasi sistem secara \textit{real-time}.
-  \item Kerangka kerja yang digunakan adalah \textit{Pre-trained Audio Neural Networks} (PANNs) dengan arsitektur spesifik: \textit{Res1dNet31} (untuk \textit{Raw Waveform}), \textit{CNN14} (untuk \textit{Spectrogram}), dan \textit{Wavegram\_Logmel\_CNN14} (untuk \textit{Hybrid}).
-  \item Kinerja model diukur berdasarkan parameter kuantitatif meliputi \textit{Accuracy}, \textit{Precision}, \textit{Recall}, dan \textit{F1-Score}.
+  \item Fokus klasifikasi dibatasi pada kelas suara yang berpotensi menjadi ancaman atau peringatan bagi keselamatan fisik di jalan raya, yang diambil dari dataset \textit{UrbanSound8K} (\textit{car\_horn}, \textit{siren}, \textit{dog\_bark}, \textit{gun\_shot}, dan \textit{drilling}).
+  \item Penelitian ini berfokus pada eksperimen pelatihan (\textit{training}) dan evaluasi performa model \textit{Deep Learning}. Penelitian ini \textbf{tidak mencakup} pembuatan perangkat keras (\textit{hardware}), pengembangan aplikasi antarmuka pengguna (\textit{User Interface}) berbasis \textit{mobile/web}, maupun implementasi sistem secara \textit{real-time}.
+  \item Kerangka kerja yang digunakan adalah \textit{Pre-trained Audio Neural Networks} (PANNs) dengan arsitektur spesifik: \textit{Res1dNet31} (untuk \textit{Raw Waveform}), \textit{ResNet38} (untuk \textit{Spectrogram}), dan \textit{Wavegram\_Logmel\_CNN14} (untuk \textit{Hybrid}).
+  \item Analisis kinerja model dilakukan menggunakan \textit{Confusion Matrix}, dengan parameter pengukuran kuantitatif meliputi \textit{Accuracy}, \textit{Precision}, \textit{Recall}, dan \textit{F1-Score}.
 \end{enumerate}
 
 \section{Manfaat Penelitian} \label{I.Manfaat}
 Manfaat dari penelitian ini adalah : \par
 
 \begin{enumerate}[noitemsep]
-	\item Memberikan bukti empiris terkait efektivitas metode \textit{Transfer Learning} pada arsitektur PANNs serta perbandingan performa antara representasi input \textit{Raw Waveform}, \textit{Spectrogram}, dan \textit{Hybrid} dalam mengatasi keterbatasan dataset (\textit{limited dataset}).
+	\item Memberikan bukti nyata terkait efektivitas metode \textit{Transfer Learning} pada arsitektur PANNs serta perbandingan performa antara representasi input \textit{Raw Waveform}, \textit{Spectrogram}, dan \textit{Hybrid} dalam mengatasi keterbatasan dataset.
 	\item Berkontribusi dalam pengembangan teknologi asistif berbasis AI yang dapat meningkatkan keselamatan dan kemandirian mobilitas penyandang Tuna Rungu melalui deteksi suara bahaya yang akurat.
 	\item Menjadi referensi bagi penelitian selanjutnya atau pengembang aplikasi dalam menentukan konfigurasi model yang paling optimal untuk diterapkan pada sistem peringatan dini.
 \end{enumerate}
