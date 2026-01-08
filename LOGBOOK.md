@@ -2,6 +2,12 @@
 
 ## January
 
+### 2026-01-08
+- Revisi Latar Belakang Paragraf 1 dan 2
+
+### 2026-01-07
+- Bimbingan Pertama di Awal Tahun bersama Pak MCT (Detail ditulis pada TASYS)
+
 ### 2026-01-06
 - Fiksasi Bab I sebelum bimbingan
 
