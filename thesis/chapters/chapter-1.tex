@@ -4,10 +4,12 @@
 \section{Latar Belakang} \label{I.Latar Belakang}
 
 % PARAGRAF 1: URGENSI MASALAH (SOSIAL)
-Dalam konteks mobilitas fisik di daerah perkotaan, indra pendengaran merupakan mekanisme deteksi alami yang cukup penting untuk mengetahui kondisi lingkungan di sekitar. 
+Keselamatan berlalu lintas di lingkungan perkotaan merupakan tantangan krusial yang dihadapi masyarakat saat ini, terutama bagi kelompok rentan seperti penyandang disabilitas \cite{who2023road}. 
+Dalam aktivitas tersebut, indra pendengaran berperan sebagai mekanisme deteksi alami yang penting untuk mengetahui kondisi lingkungan di sekitar. 
 Namun, fungsi indra tersebut tidak dimiliki oleh penyandang Tuna Rungu, yang hanya bisa mengandalkan penglihatan mereka untuk memantau keadaan. 
 Ketergantungan penuh pada aspek visual ini dapat menjadi kerentanan serius, mengingat mereka memiliki keterbatasan sudut pandang dan tidak dapat memantau kondisi di luar jangkauan penglihatan. 
-Akibatnya, ancaman yang muncul dari titik buta (\textit{blind spot}), seperti gonggongan anjing yang mengejar atau klakson kendaraan yang melaju kencang dari arah belakang, seringkali terlambat disadari, sehingga berpotensi menimbulkan kecelakaan fatal. 
+Akibatnya, ancaman yang muncul dari titik buta (\textit{blind spot}), seperti gonggongan anjing yang mengejar atau klakson kendaraan yang melaju kencang dari arah belakang, seringkali terlambat disadari akibat tidak adanya peringatan suara.
+Keterlambatan respon inilah yang secara signifikan meningkatkan risiko terjadinya kecelakaan fatal \cite{thorslund2013effects}.
 Maka dari itu, diperlukan mekanisme bantu yang dapat menggantikan peran indra pendengaran dalam mendeteksi ancaman yang muncul dari luar jangkauan visual. \par
 
 % PARAGRAF 2: KELEMAHAN SOLUSI EKSISTING (ABD)
@@ -18,16 +20,18 @@ Kondisi ini diperburuk oleh keterbatasan teknis ABD, di mana sekadar amplifikasi
 Akibatnya, sinyal ancaman penting seringkali tertutup oleh suara-suara lainnya, yang berdampak pada hilangnya kewaspadaan situasional pengguna. 
 Keterbatasan perangkat keras dalam memilah sinyal suara ini memunculkan kebutuhan teknologi bagi penyandang Tuna Rungu agar dapat mengidentifikasi suara bahaya melalui pola sinyal suara, dan bukan sekadar amplifikasi sinyal.\par
 
-% PARAGRAF 3: SOLUSI TEKNOLOGI (ESC)
-Untuk mengatasi kendala tersebut, teknologi klasifikasi suara lingkungan (\textit{Environmental Sound Classification}/ESC) berbasis \textit{Deep Learning} hadir sebagai solusi bagi para penyandang Tuna Rungu dalam mengenali suara-suara bahaya di sekitar mereka. 
-Dengan memanfaatkan model \textit{Deep Learning} yang telah dilatih untuk mengenali berbagai jenis suara lingkungan, sistem ESC dapat mendeteksi dan mengklasifikasikan suara-suara bahaya seperti sirene, klakson mobil, gonggongan anjing, atau suara tembakan. 
-Setelah suara terdeteksi dan diklasifikasikan, sistem dapat memberikan notifikasi dalam bentuk visual atau getaran kepada pengguna Tuna Rungu, sehingga mereka dapat segera menyadari ancaman dan mengambil tindakan antisipasi. 
-Dengan demikian, teknologi ESC berbasis \textit{Deep Learning} memiliki potensi besar untuk meningkatkan keselamatan dan kualitas hidup penyandang Tuna Rungu dalam mobilitas sehari-hari di lingkungan perkotaan. \par
+% PARAGRAF 3: SOLUSI TEKNOLOGI (ESC) Konvensional -> Deep Learning
+Untuk menjawab kebutuhan tersebut, dibangunlah sistem identifikasi cerdas yang dikenal sebagai Klasifikasi Suara Lingkungan (\textit{Environmental Sound Classification}/ESC). 
+Pada tahap awal pengembangannya, sistem ESC umumnya dibangun menggunakan metode \textit{Machine Learning} konvensional seperti \textit{Support Vector Machine} (SVM) atau \textit{Random Forest} \cite{salamon2014dataset}.
+Namun, metode-metode klasik tersebut sangat bergantung pada proses ekstraksi fitur secara manual (\textit{hand-crafted features}) yang kaku, sehingga performanya cenderung menurun drastis ketika dihadapkan dengan variasi kebisingan lingkungan yang dinamis.
+Kelemahan metode tersebut memicu pergeseran tren penelitian menuju pendekatan \textit{Deep Learning}, khususnya \textit{Convolutional Neural Networks} (CNN) yang menawarkan kemampuan untuk mempelajari fitur suara secara otomatis dan hirarkis langsung dari data \cite{piczak2015environmental}. 
+Kemampuan adaptasi fitur inilah yang menjadikannya sebagai solusi yang jauh lebih andal dibandingkan metode konvensional. 
+Walaupun menjanjikan akurasi yang lebih tinggi, metode \textit{Deep Learning} membutuhkan dataset berskala masif untuk melatih fitur-fitur tersebut secara efektif.
+Ketergantungan ini menjadi kendala signifikan pada kasus dengan ketersediaan data yang terbatas, sehingga diperlukan strategi pembelajaran khusus agar model tetap memiliki performa yang \textit{robust}. \par
 
 % PARAGRAF 4: SOLUSI TEKNIS (PANNs & VARIABEL)
-Namun, pengembangan model ESC yang mampu mendeteksi bahaya secara akurat menghadapi tantangan teknis, terutama terkait kebutuhan dataset berskala besar. 
-Oleh karena itu, metode \textit{Transfer Learning} menjadi solusi efektif untuk melatih model deteksi, dengan memanfaatkan kerangka kerja dan bobot model dari \textit{Pre-trained Audio Neural Networks} (PANNs). 
-PANNs dipilih karena tidak hanya menyediakan bobot model dari dataset masif \cite{kong2020panns}, tetapi juga menyediakan variasi arsitektur yang dirancang khusus untuk menangani berbagai representasi input audio. 
+Sebagai implementasi strategi tersebut, metode \textit{Transfer Learning} menjadi solusi efektif untuk mengatasi kelangkaan data, dengan memanfaatkan kerangka kerja dan bobot model dari \textit{Pre-trained Audio Neural Networks} (PANNs). 
+PANNs dipilih karena tidak hanya menyediakan bobot model dari dataset masif AudioSet \cite{kong2020panns}, tetapi juga menyediakan variasi arsitektur yang dirancang khusus untuk menangani berbagai representasi input audio. 
 Hal ini memunculkan urgensi untuk mengevaluasi arsitektur mana yang paling optimal, apakah arsitektur yang bekerja pada domain waktu dengan input \textit{Raw Waveform} (satu dimensi), atau arsitektur pada domain frekuensi dengan input \textit{Spectrogram} (dua dimensi). 
 Selain itu, PANNs juga menyediakan arsitektur dengan pendekatan \textit{Hybrid} yang menggabungkan kedua representasi tersebut, yang secara teoritis berpotensi memaksimalkan akurasi deteksi. \par
 

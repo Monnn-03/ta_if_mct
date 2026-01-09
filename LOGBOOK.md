@@ -2,6 +2,9 @@
 
 ## January
 
+### 2026-01-09
+- Revisi Latar Belakang dari Revisi Detaiil Pak MCT
+
 ### 2026-01-08
 - Revisi Latar Belakang Paragraf 1 dan 2
 
