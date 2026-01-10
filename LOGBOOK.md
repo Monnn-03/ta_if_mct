@@ -2,6 +2,9 @@
 
 ## January
 
+### 2026-01-10
+- Bab I Selesai Revisi
+
 ### 2026-01-09
 - Revisi Latar Belakang dari Revisi Detaiil Pak MCT
 
