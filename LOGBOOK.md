@@ -2,8 +2,17 @@
 
 ## January
 
+### 2026-01-13
+- Masih mencari alur penelitian
+- Menjabarkan alur penelitian
+- Buat draft dulu untuk bagian Bab III lainnya
+
+### 2026-01-12
+- Mencari alur penelitian
+
 ### 2026-01-10
 - Bab I Selesai Revisi
+- Susun Bab III (Kalau masih kuat wkwkwk)
 
 ### 2026-01-09
 - Revisi Latar Belakang dari Revisi Detaiil Pak MCT

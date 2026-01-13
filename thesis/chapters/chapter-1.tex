@@ -34,19 +34,19 @@ Ketergantungan ini menjadi kendala signifikan pada kasus dengan ketersediaan dat
 Sebagai implementasi strategi tersebut, metode \textit{Transfer Learning} menjadi solusi efektif untuk mengatasi kelangkaan data. 
 Pendekatan ini memanfaatkan \textit{Pre-trained Audio Neural Networks} (PANNs), yaitu sebuah kerangka kerja model \textit{Deep Learning} skala besar yang telah dilatih sebelumnya (\textit{pre-trained}) pada dataset AudioSet untuk mengenali berbagai pola suara umum \cite{kong2020panns}. 
 Salah satu keunggulan PANNs terletak pada variasi arsitektur yang dirancang khusus untuk menangani dua jenis representasi input audio yang berbeda.
-Pertama adalah arsitektur berbasis satu dimensi yang mengolah Raw Waveform, yaitu sinyal gelombang suara mentah dalam domain waktu.
-Kedua adalah arsitektur berbasis dua dimensi yang memanfaatkan Log-mel Spectrogram, yaitu representasi visual yang memetakan intensitas energi frekuensi suara layaknya sebuah citra gambar.
+Pertama adalah arsitektur berbasis satu dimensi yang mengolah \textit{Raw Waveform}, yaitu sinyal gelombang suara mentah dalam domain waktu.
+Kedua adalah arsitektur berbasis dua dimensi yang memanfaatkan \textit{Log-mel Spectrogram}, yaitu representasi visual yang memetakan intensitas energi frekuensi suara layaknya sebuah citra gambar.
 Selain itu, PANNs juga menyediakan arsitektur dengan pendekatan \textit{Hybrid} yang menggabungkan kedua representasi tersebut, yang secara teoritis berpotensi memaksimalkan akurasi deteksi.
 Ketersediaan variasi ini memunculkan urgensi untuk mengevaluasi arsitektur mana yang paling optimal untuk diterapkan pada kasus ini, apakah berbasis domain waktu, domain frekuensi, atau penggabungan keduanya (\textit{Hybrid}). \par
 
 % PARAGRAF 5: RESEARCH GAP (ARGUMEN ILMIAH UTAMA) -> INI YANG DIPECAH
 Meskipun Kong et al. telah memaparkan tolak ukur kinerja model-model tersebut pada dataset masif AudioSet \cite{kong2020panns}, performa tersebut belum tentu sebanding ketika diterapkan pada kasus penerapan spesifik dengan ketersediaan data yang terbatas (\textit{data scarcity}) seperti pada kasus klasifikasi suara lingkungan perkotaan. 
-Perbedaan karakteristik data ini memunculkan dugaan bahwa kompleksitas arsitektur model \textit{Hybrid} dan \textit{Spectrogram} justru memiliki risiko \textit{overfitting} yang lebih tinggi dibandingkan model \textit{Raw Waveform} ketika dilatih pada dataset yang kecil. 
+Perbedaan karakteristik data ini memunculkan dugaan bahwa kompleksitas arsitektur model \textit{Hybrid} dan \textit{Log-mel Spectrogram} justru memiliki risiko \textit{overfitting} yang lebih tinggi dibandingkan model \textit{Raw Waveform} ketika dilatih pada dataset yang kecil. 
 Ketidakpastian inilah yang menjadi celah penelitian (\textit{research gap}) yang belum terjamah.
 Oleh karena itu, penelitian ini menjadi krusial untuk mengevaluasi ulang adaptabilitas dan melakukan analisis komparasi ketiga arsitektur tersebut secara spesifik pada dataset UrbanSound8K. \par
 
 % PARAGRAF 6: TUJUAN PENELITIAN
-Guna menjawab tantangan adaptabilitas pada dataset terbatas tersebut, penelitian ini bertujuan utama secara teknis untuk menginvestigasi dan membandingkan kinerja tiga pendekatan representasi input, yaitu \textit{Raw Waveform}, \textit{Spectrogram}, dan \textit{Hybrid}. 
+Guna menjawab tantangan adaptabilitas pada dataset terbatas tersebut, penelitian ini bertujuan utama secara teknis untuk menginvestigasi dan membandingkan kinerja tiga pendekatan representasi input, yaitu \textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid}. 
 Studi komparasi ini diposisikan sebagai langkah fundamental untuk menemukan konfigurasi model yang paling \textit{robust} (tahan uji) terhadap minimnya data, sekaligus meminimalisir kesalahan deteksi fatal. 
 Dengan demikian, hasil evaluasi ini diharapkan dapat menjadi landasan teknis yang valid bagi pengembangan teknologi asistif yang benar-benar andal untuk menjamin keselamatan komunitas Tuna Rungu.
 
@@ -54,7 +54,7 @@ Dengan demikian, hasil evaluasi ini diharapkan dapat menjadi landasan teknis yan
 Berdasarkan latar belakang yang telah diuraikan, maka rumusan masalah dalam penelitian ini adalah: \par
 
 \begin{enumerate}[noitemsep]
-  \item Bagaimana pengaruh perbedaan representasi input (\textit{Raw Waveform}, \textit{Spectrogram}, dan \textit{Hybrid}) terhadap performa model \textit{Pre-trained Audio Neural Networks} (PANNs) dalam mengklasifikasikan suara bahaya pada kondisi ketersediaan data yang terbatas?
+  \item Bagaimana pengaruh perbedaan representasi input (\textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid}) terhadap performa model \textit{Pre-trained Audio Neural Networks} (PANNs) dalam mengklasifikasikan suara bahaya pada kondisi ketersediaan data yang terbatas?
   \item Representasi input manakah yang menghasilkan model paling optimal (berdasarkan metrik \textit{Accuracy}, \textit{Precision}, \textit{Recall}, dan \textit{F1-Score}) untuk meminimalisir kesalahan deteksi pada sistem keselamatan penyandang Tuna Rungu?
 \end{enumerate}
 
@@ -62,7 +62,7 @@ Berdasarkan latar belakang yang telah diuraikan, maka rumusan masalah dalam pene
 Tujuan dari penelitian ini adalah : \par
 
 \begin{enumerate}[noitemsep]
-  \item Menganalisis pengaruh perbedaan representasi input (\textit{Raw Waveform}, \textit{Spectrogram}, dan \textit{Hybrid}) terhadap performa model \textit{Pre-trained Audio Neural Networks} (PANNs) dalam mengklasifikasikan suara bahaya pada kondisi ketersediaan data yang terbatas.
+  \item Menganalisis pengaruh perbedaan representasi input (\textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid}) terhadap performa model \textit{Pre-trained Audio Neural Networks} (PANNs) dalam mengklasifikasikan suara bahaya pada kondisi ketersediaan data yang terbatas.
   \item Mengevaluasi pendekatan representasi input yang menghasilkan model paling optimal (berdasarkan metrik \textit{Accuracy}, \textit{Precision}, \textit{Recall}, dan \textit{F1-Score}) untuk meminimalisir kesalahan deteksi pada sistem keselamatan penyandang Tuna Rungu.
 \end{enumerate}
 
@@ -79,7 +79,7 @@ Batasan masalah yang didefinisikan dalam penelitian ini adalah sebagai berikut :
 Manfaat dari penelitian ini adalah : \par
 
 \begin{enumerate}[noitemsep]
-	\item Memberikan bukti nyata terkait efektivitas metode \textit{Transfer Learning} pada arsitektur PANNs serta perbandingan performa antara representasi input \textit{Raw Waveform}, \textit{Spectrogram}, dan \textit{Hybrid} dalam mengatasi keterbatasan dataset.
+	\item Memberikan bukti nyata terkait efektivitas metode \textit{Transfer Learning} pada arsitektur PANNs serta perbandingan performa antara representasi input \textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid} dalam mengatasi keterbatasan dataset.
 	\item Berkontribusi dalam pengembangan teknologi asistif berbasis AI yang dapat meningkatkan keselamatan dan kemandirian mobilitas penyandang Tuna Rungu melalui deteksi suara bahaya yang akurat.
 	\item Menjadi referensi bagi penelitian selanjutnya atau pengembang aplikasi dalam menentukan konfigurasi model yang paling optimal untuk diterapkan pada sistem peringatan dini.
 \end{enumerate}
