@@ -2,6 +2,10 @@
 
 ## January
 
+### 2026-01-19
+- Review Bab III
+- Revisi Alur Penelitian
+
 ### 2026-01-13
 - Masih mencari alur penelitian
 - Menjabarkan alur penelitian

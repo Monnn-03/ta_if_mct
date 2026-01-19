@@ -17,16 +17,17 @@ Secara rinci, kerangka kerja dan alur penelitian digambarkan pada diagram alur (
 Berdasarkan diagram alur penelitian yang ditunjukkan pada gambar 3.1, penjelasan rinci terkait langkah-langkah penelitian yang dilakukan akan dijabarkan di bawah ini. \par
 
 \subsection{Identifikasi Permasalahan} \label{III.Langkah 1}
-Tahap awal penelitian dimulai dengan mengidentifikasi urgensi pengembangan sistem alat bantu bagi penyandang tunarungu yang berorientasi pada standar keselamatan tinggi (\textit{safety-critical}). Alat bantu ini diharapkan tidak hanya mengamplifikasi sinyal, tetapi juga mampu mengenali suara bahaya di lingkungan sekitar secara otomatis.
-Tantangan teknis utama yang dihadapi adalah keterbatasan jumlah sampel pada dataset target (\textit{limited dataset}) yang spesifik untuk suara bahaya di lingkungan. Melatih model \textit{Deep Learning} dari awal (\textit{from scratch}) dengan data terbatas berisiko tinggi menyebabkan \textit{overfitting} dan performa yang buruk. Oleh karena itu, penggunaan arsitektur \textit{Pre-trained Audio Neural Networks} (PANNs) yang telah dilatih pada dataset raksasa AudioSet menjadi solusi strategis (\textit{Transfer Learning}) untuk mengatasi kelangkaan data tersebut.
+Tahap awal penelitian dimulai dengan mengidentifikasi urgensi pengembangan sistem alat bantu bagi penyandang tunarungu yang berorientasi pada standar keselamatan tinggi. Alat bantu ini diharapkan tidak hanya mengamplifikasi sinyal, tetapi juga mampu mengenali suara bahaya di lingkungan sekitar secara otomatis.
+Tantangan teknis utama yang dihadapi adalah keterbatasan jumlah sampel pada dataset yang spesifik untuk suara bahaya di lingkungan. Melatih model \textit{Deep Learning} dari awal (\textit{from scratch}) dengan data terbatas berisiko tinggi menyebabkan \textit{overfitting} dan performa yang buruk. Oleh karena itu, penggunaan arsitektur \textit{Pre-trained Audio Neural Networks} (PANNs) yang telah dilatih pada dataset raksasa AudioSet menjadi solusi strategis (\textit{Transfer Learning}) untuk mengatasi kelangkaan data tersebut.
 Akan tetapi, penerapan strategi ini memunculkan permasalahan baru, yaitu belum diketahuinya representasi input audio manakah antara \textit{Raw Waveform} 1D, \textit{Spectrogram} 2D, atau \textit{Hybrid} yang paling optimal untuk mengadaptasi model PANNs tersebut. Ketidaktepatan pemilihan representasi input pada proses transfer pengetahuan ini berisiko menghambat performa model dalam mengenali bahaya secara akurat. \par
 
 \subsection{Studi Literatur} \label{III.Langkah 2}
-Tahap ini dilakukan untuk membangun landasan teoretis yang kokoh sebelum perancangan sistem dimulai. Studi literatur difokuskan pada analisis mendalam terhadap arsitektur \textit{Pre-trained Audio Neural Networks} (PANNs), khususnya varian CNN14, serta mekanisme \textit{Transfer Learning} untuk adaptasi domain. 
-Selain itu, kajian juga dipusatkan pada karakteristik teknis dataset \textit{UrbanSound8K}, terutama terkait struktur metadata dan potensi kebocoran data (\textit{data leakage}). Pemahaman terhadap aspek-aspek tersebut menjadi acuan krusial dalam merancang strategi pembagian data (\textit{splitting strategy}) yang valid dan skenario komparasi representasi input yang objektif. \par
+Tahap ini dilakukan untuk membangun landasan teoretis yang kokoh sebelum pra-pemrosesan data dan adaptasi model dimulai. Studi literatur difokuskan pada analisis mendalam terhadap arsitektur \textit{Pre-trained Audio Neural Networks} (PANNs), dengan perwakilan tiga model yang masing-masing memiliki representasi input yang berbeda, serta mekanisme \textit{Transfer Learning} untuk adaptasi domain. 
+Selain itu, kajian juga dipusatkan pada karakteristik teknis dataset \textit{UrbanSound8K}, terutama terkait struktur metadata dan potensi kebocoran data (\textit{data leakage}). Pemahaman terhadap aspek-aspek tersebut menjadi acuan krusial dalam merancang strategi pembagian data (\textit{splitting strategy}) yang valid dan skenario komparasi representasi input yang objektif. 
+Evaluasi perlu dilakukan dengan metode yang sesuai, sehingga diperlukan penjelasan secara rinci tentang metode evaluasi yang digunakan. \par
 
 \subsection{Pengumpulan dan Pra-pemrosesan Data} \label{III.Langkah 3}
-Data penelitian bersumber dari dataset publik \textit{UrbanSound8K} yang memuat 8732 potongan audio (\textit{slices}) berdurasi kurang dari 4 detik. Tahap pra-pemrosesan dilakukan melalui tiga langkah strategis untuk menjamin integritas data:
+Data penelitian bersumber dari dataset publik \textit{UrbanSound8K}. Tahap pra-pemrosesan dilakukan melalui tiga langkah strategis untuk menjamin integritas data:
 
 \begin{enumerate}
     \item \textbf{Penyaringan Kelas (\textit{Class Filtering}):} 
@@ -39,37 +40,20 @@ Data penelitian bersumber dari dataset publik \textit{UrbanSound8K} yang memuat 
     Mengingat distribusi data mentah yang tidak seimbang (\textit{imbalanced}), diterapkan teknik \textit{Random Under-sampling} pada setiap \textit{fold} baru. Jumlah sampel pada kelas mayoritas dipangkas secara acak hingga setara dengan jumlah sampel pada kelas minoritas. Langkah ini krusial untuk mencegah model mengalami bias prediksi ke arah kelas yang dominan.
 \end{enumerate}
 
-Hasil akhir dari proses ini disimpan dalam format konfigurasi statis (\texttt{split.json}) yang menjadi acuan baku bagi seluruh skenario pengujian model. \par
+Hasil akhir dari proses ini disimpan dalam format konfigurasi statis berupa \texttt{split.json} yang menjadi acuan baku bagi seluruh skenario pengujian model. \par
 
-\subsection{Perancangan dan Adaptasi Model} \label{III.Langkah 4}
-Penelitian ini menggunakan arsitektur dasar \textit{Cnn14} dari pustaka PANNs yang telah dilatih sebelumnya (\textit{pre-trained}) pada dataset AudioSet. Untuk mengadaptasi model tersebut ke dalam domain permasalahan yang baru, dilakukan serangkaian modifikasi struktural sebagai berikut:
+\subsection{Adaptasi Model} \label{III.Langkah 4}
+Penelitian ini menggunakan tiga arsitektur dasar terbaik dari setiap representasi input nya, yaitu \textit{Res1dNet14}, \textit{ResNet38}, dan \textit{Wavegram-Logmel-CNN} dari pustaka PANNs yang telah dilatih sebelumnya (\textit{pre-trained}) pada dataset AudioSet. Untuk mengadaptasi model tersebut ke dalam domain permasalahan yang baru, dilakukan serangkaian langkah modifikasi pada arsitektur yang akan digunakan. Untuk langkah adaptasi yang lebih rinci, hal tersebut dijelaskan pada bagian 3.2.4.\par
 
-\begin{enumerate}
-    \item \textbf{Modifikasi Lapisan Luaran (\textit{Output Layer}):} 
-    Lapisan klasifikasi asli yang memiliki 527 \textit{node} (sesuai kelas AudioSet) digantikan dengan lapisan \textit{Fully Connected} baru yang hanya memiliki 4 \textit{node}. Lapisan ini merepresentasikan probabilitas kelas target: klakson, sirine, tembakan, dan gonggongan. Bobot pada lapisan awal dipertahankan dari model \textit{pre-trained} (\textit{Transfer Learning}), sedangkan lapisan baru diinisialisasi ulang untuk dipelajari selama proses pelatihan.
-
-    \item \textbf{Perancangan Skenario Input:} 
-    Untuk menjawab rumusan masalah mengenai representasi fitur terbaik, dirancang tiga skenario variasi input yang akan diaplikasikan secara terpisah pada arsitektur model:
-    \begin{itemize}
-        \item \textbf{Skenario 1 (1D):} Menggunakan input \textit{Raw Waveform} (gelombang amplitudo terhadap waktu) untuk mengekstraksi fitur langsung dari domain waktu.
-        \item \textbf{Skenario 2 (2D):} Menggunakan input \textit{Log-mel Spectrogram} yang diekstraksi secara \textit{on-the-fly} untuk menangkap pola representasi frekuensi-waktu.
-        \item \textbf{Skenario 3 (Hybrid):} Menggunakan arsitektur \textit{Wavegram-Logmel} yang menggabungkan fitur domain waktu dan frekuensi secara simultan.
-    \end{itemize}
-\end{enumerate}
-
-Ketiga variasi model ini akan dilatih menggunakan konfigurasi dan data yang identik untuk memastikan validitas hasil komparasi. \par
-
-\subsection{Eksperimen dan Evaluasi Model} \label{III.Langkah 5}
-Tahap akhir melibatkan pelaksanaan pelatihan dan pengujian model secara sistematis menggunakan skema validasi silang 5 lipatan (\textit{5-Fold Cross-Validation}). Setiap skenario input (1D, 2D, dan Hybrid) akan dilatih sebanyak 5 putaran, di mana pada setiap putaran model menggunakan kombinasi \textit{fold} latih dan \textit{fold} uji yang berbeda sesuai konfigurasi yang telah ditetapkan pada tahap pra-pemrosesan.
-
+\subsection{Evaluasi Model} \label{III.Langkah 5}
+Setelah model diadaptasi, maka dilakukan evaluasi performa model menggunakan pendekatan \textit{Multi-metric Evaluation}.
 Evaluasi kinerja model tidak hanya didasarkan pada metrik Akurasi (\textit{Accuracy}) semata, tetapi juga dianalisis secara mendalam menggunakan \textit{Confusion Matrix}. Penggunaan \textit{Confusion Matrix} sangat krusial dalam konteks sistem keselamatan untuk memetakan distribusi kesalahan prediksi—misalnya, seberapa sering suara sirine salah diklasifikasikan sebagai suara latar belakang atau kelas lainnya.
-
 Hasil evaluasi dari kelima \textit{fold} kemudian dirata-rata untuk mendapatkan skor performa final. Berdasarkan data tersebut, dilakukan analisis komparatif untuk menyimpulkan representasi input manakah yang paling andal dan konsisten untuk diimplementasikan pada sistem alat bantu tunarungu. \par
 
-\subsection{Analisis Hasil dan Penarikan Kesimpulan} \label{III.Langkah 6}
+\subsection{Hasil dan Kesimpulan} \label{III.Langkah 6}
 Tahap penutup penelitian difokuskan pada interpretasi mendalam terhadap data kuantitatif yang diperoleh dari tahap evaluasi. Analisis dilakukan secara komparatif untuk menelaah kekuatan dan kelemahan dari masing-masing representasi input (\textit{Raw Waveform} vs \textit{Spectrogram} vs \textit{Hybrid}) dalam mendeteksi pola suara bahaya.
 
-Berdasarkan analisis tersebut, ditarik kesimpulan akhir mengenai model mana yang memiliki performa paling optimal. Kesimpulan ini tidak hanya menjawab rumusan masalah secara statistik, tetapi juga memberikan rekomendasi teknis mengenai kelayakan implementasi model terpilih pada sistem alat bantu keselamatan bagi penyandang tunarungu. \par
+Berdasarkan analisis tersebut, ditarik kesimpulan akhir mengenai model mana yang memiliki performa paling optimal. Kesimpulan ini tidak hanya menjawab rumusan masalah secara statistik, tetapi juga memberikan rekomendasi teknis mengenai kelayakan implementasi model terpilih pada sistem alat bantu keselamatan bagi penyandang Tuna Rungu. \par
 
 \section{Alat dan Bahan Tugas Akhir} \label{III.Alat dan Bahan}
 Penelitian ini membutuhkan dukungan perangkat keras dan perangkat lunak untuk proses pengembangan, pelatihan model, hingga evaluasi. Selain itu, ketersediaan bahan berupa data dan model dasar juga menjadi komponen krusial.
