@@ -2,9 +2,11 @@
 
 ## January
 
-### 2026-01-19
+### 2026-01-20
 - Review Bab III
 - Revisi Alur Penelitian
+- Revisi Alat dan Bahan
+- Buat ulang Draft Metode Pengembangan-Rancangan Pengujian
 
 ### 2026-01-13
 - Masih mencari alur penelitian
