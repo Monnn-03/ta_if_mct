@@ -82,41 +82,26 @@ Bagian ini menjelaskan pendekatan teknis yang digunakan untuk membangun sistem k
 Penelitian ini mengadopsi model pengembangan \textit{Machine Learning Pipeline}. Model ini dipilih karena penelitian bersifat eksperimental dan berorientasi pada data (\textit{data-driven}). Alur pengembangan tidak bersifat linier kaku, melainkan bersifat iteratif terutama pada tahap pelatihan dan evaluasi model untuk mencapai performa terbaik.
 
 \subsection{Prosedur Pengembangan}
-Secara spesifik, prosedur pengembangan model dalam penelitian ini terdiri dari empat tahapan utama:
+Secara spesifik, prosedur pengembangan model dalam penelitian ini menggunakan metode \textit{Transfer Learning}, yang terdiri dari empat tahapan utama:
 
-\begin{enumerate}
-    \item \textbf{Pra-pemrosesan Data (\textit{Data Preprocessing}):}
+\subsubsection{Pra-pemrosesan Data (\textit{Data Preprocessing})}
     Tahap ini mengubah data mentah menjadi format yang siap dilatih. Termasuk di dalamnya adalah konversi audio ke representasi visual (\textit{Spectrogram}) untuk input model 2D dan \textit{Hybrid}, serta pembagian data menggunakan skema \textit{5-Fold Cross Validation}.
-
-    \item \textbf{Adaptasi Arsitektur (\textit{Model Adaptation}):}
+\subsubsection{Adaptasi Arsitektur (\textit{Model Adaptation})}
     Tahap memodifikasi arsitektur PANNs agar sesuai dengan 4 kelas target. Lapisan klasifikasi asli (527 \textit{nodes}) diganti dengan lapisan \textit{Fully Connected} baru (4 \textit{nodes}).
-    
-    \item \textbf{Pelatihan Model (\textit{Model Training}):}
+\subsubsection{Pelatihan Model (\textit{Model Training})}
     Tahap pembelajaran mesin menggunakan strategi \textit{Transfer Learning}. Bobot model dilatih ulang (\textit{fine-tuning}) menggunakan optimasi \textit{AdamW} dan fungsi kerugian \textit{Cross-Entropy Loss}.
-
-    \item \textbf{Evaluasi (\textit{Model Evaluation}):}
+\subsubsection{Evaluasi (\textit{Model Evaluation})}
     Tahap pengujian kinerja model menggunakan data validasi yang belum pernah dilihat model sebelumnya untuk mengukur kemampuan generalisasi.
-\end{enumerate}
 
 \subsection{Cara Pengumpulan Data}
 Sesuai dengan karakteristik penelitian \textit{Deep Learning} yang membutuhkan data dalam jumlah besar, metode pengumpulan data yang digunakan adalah Studi Dokumentasi Dataset Sekunder.
-
-\begin{enumerate}
-    \item \textbf{Sumber Data:} Data tidak dikumpulkan melalui perekaman langsung (primer), melainkan diunduh dari repositori publik \textit{UrbanSound8K}.
-    \item \textbf{Teknik Sampling:} Pengambilan sampel dilakukan dengan teknik \textit{Purposive Sampling}, yaitu hanya mengambil data yang memenuhi kriteria inklusi: (a) Termasuk dalam 4 kelas bahaya (Klakson, Sirine, Tembakan, Gonggongan), dan (b) Memiliki durasi audio yang valid (< 4 detik).
-\end{enumerate}
-
-\subsection{Strategi \textit{Transfer Learning}}
-Untuk mengatasi keterbatasan jumlah data pada dataset target, pengembangan model menerapkan teknik \textit{Partial Freezing}:
-\begin{itemize}
-    \item \textbf{Frozen Layers:} Lapisan awal (\textit{feature extractor}) dibekukan bobotnya agar fitur dasar suara yang sudah dipelajari dari AudioSet tidak hilang.
-    \item \textbf{Trainable Layers:} Hanya lapisan akhir (\textit{classifier}) dan beberapa blok konvolusi terakhir yang diizinkan untuk memperbarui bobotnya selama proses pelatihan.
-\end{itemize}
+Data tidak dikumpulkan melalui perekaman langsung (primer), melainkan diunduh dari repositori publik \textit{UrbanSound8K}.
+Pengambilan sampel dilakukan dengan teknik \textit{Purposive Sampling}, yaitu hanya mengambil data yang memenuhi kriteria inklusi: (a) Termasuk dalam 4 kelas bahaya (Klakson, Sirine, Tembakan, Gonggongan), dan (b) Memiliki durasi audio yang valid (< 4 detik).
 
 \section{Ilustrasi Perhitungan Metode} \label{III.Ilustrasi}
 Pada bagian ini disajikan ilustrasi perhitungan metrik evaluasi berbasis \textit{Confusion Matrix} untuk kasus klasifikasi multikelas (4 kelas). Data yang digunakan bersifat hipotetik dengan jumlah sampel $N=20$, bertujuan untuk mengilustrasikan mekanisme perhitungan \textit{Accuracy}, \textit{Precision}, dan \textit{Recall}.
 
-\subsection{Matriks Kebingungan (Confusion Matrix)}
+\subsection{Matriks Kebingungan (\textit{Confusion Matrix})}
 Contoh hasil prediksi model terhadap 20 data uji yang terdiri dari kelas A (Klakson), B (Sirine), C (Tembakan), dan D (Gonggongan) disajikan pada Tabel 3.2.
 
 \begin{table}[h!]
@@ -141,9 +126,12 @@ Berdasarkan Tabel 3.2, total prediksi benar adalah jumlah diagonal utama: $4 + 4
 
 \textbf{1. Akurasi Global (\textit{Overall Accuracy})} \\
 Mengukur rasio prediksi benar terhadap total sampel.
-\begin{equation}
+\begin{equationcaptioned}[eq:3.overall]{
     \text{Accuracy} = \frac{\sum \text{Diagonal}}{N} = \frac{17}{20} = 0,85 = 85\%
-\end{equation}
+}{
+    Overall Accuracy
+}
+\end{equationcaptioned}
 
 \textbf{2. Perhitungan Per-Kelas (Contoh: Kelas B / Sirine)} \\
 Dalam klasifikasi multikelas, \textit{Precision} dan \textit{Recall} dihitung secara terpisah untuk setiap kelas (\textit{One-vs-Rest}). Berikut contoh perhitungan untuk \textbf{Kelas B (Sirine)}:
