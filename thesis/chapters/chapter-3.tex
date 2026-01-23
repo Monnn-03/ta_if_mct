@@ -14,12 +14,12 @@ Secara rinci, kerangka kerja dan alur penelitian digambarkan pada diagram alur (
 \end{figure}
 
 \section{Penjabaran Langkah Penelitian} \label{III.Jabar Alur}
-Berdasarkan diagram alur penelitian yang ditunjukkan pada gambar 3.1, penjelasan rinci terkait langkah-langkah penelitian yang dilakukan akan dijabarkan di bawah ini. \par
+Berdasarkan diagram alur penelitian yang ditunjukkan pada \textbf{Gambar \ref{fig:3.alur}}, penjelasan rinci terkait langkah-langkah penelitian yang dilakukan akan dijabarkan di bawah ini. \par
 
 \subsection{Identifikasi Permasalahan} \label{III.Langkah 1}
 Tahap awal penelitian dimulai dengan mengidentifikasi urgensi pengembangan sistem alat bantu bagi penyandang tunarungu yang berorientasi pada standar keselamatan tinggi. Alat bantu ini diharapkan tidak hanya mengamplifikasi sinyal, tetapi juga mampu mengenali suara bahaya di lingkungan sekitar secara otomatis.
 Tantangan teknis utama yang dihadapi adalah keterbatasan jumlah sampel pada dataset yang spesifik untuk suara bahaya di lingkungan. Melatih model \textit{Deep Learning} dari awal (\textit{from scratch}) dengan data terbatas berisiko tinggi menyebabkan \textit{overfitting} dan performa yang buruk. Oleh karena itu, penggunaan arsitektur \textit{Pre-trained Audio Neural Networks} (PANNs) yang telah dilatih pada dataset raksasa AudioSet menjadi solusi strategis (\textit{Transfer Learning}) untuk mengatasi kelangkaan data tersebut.
-Akan tetapi, penerapan strategi ini memunculkan permasalahan baru, yaitu belum diketahuinya representasi input audio manakah antara \textit{Raw Waveform} 1D, \textit{Spectrogram} 2D, atau \textit{Hybrid} yang paling optimal untuk mengadaptasi model PANNs tersebut. Ketidaktepatan pemilihan representasi input pada proses transfer pengetahuan ini berisiko menghambat performa model dalam mengenali bahaya secara akurat. \par
+Akan tetapi, penerapan strategi ini memunculkan permasalahan baru, yaitu belum diketahuinya representasi input audio manakah antara \textit{Raw Waveform} (1D), \textit{Spectrogram} (2D), atau \textit{Hybrid} yang paling optimal untuk mengadaptasi model PANNs tersebut. Ketidaktepatan pemilihan representasi input pada proses transfer pengetahuan ini berisiko menghambat performa model dalam mengenali bahaya secara akurat. \par
 
 \subsection{Studi Literatur} \label{III.Langkah 2}
 Tahap ini dilakukan untuk membangun landasan teoretis yang kokoh sebelum pra-pemrosesan data dan adaptasi model dimulai. Studi literatur difokuskan pada analisis mendalam terhadap arsitektur \textit{Pre-trained Audio Neural Networks} (PANNs), dengan perwakilan tiga model yang masing-masing memiliki representasi input yang berbeda, serta mekanisme \textit{Transfer Learning} untuk adaptasi domain. 
@@ -27,23 +27,24 @@ Selain itu, kajian juga dipusatkan pada karakteristik teknis dataset \textit{Urb
 Kajian literatur juga mencakup pemilihan metode evaluasi yang relevan untuk kasus klasifikasi multikelas pada dataset tidak seimbang, guna memastikan hasil eksperimen dapat diukur validitasnya secara objektif. \par
 
 \subsection{Pengumpulan dan Pra-pemrosesan Data} \label{III.Langkah 3}
-Data penelitian bersumber dari dataset publik \textit{UrbanSound8K}. Tahap pra-pemrosesan dilakukan melalui tiga langkah strategis untuk menjamin integritas data:
+Data penelitian bersumber dari dataset publik \textit{UrbanSound8K}. Tahap pra-pemrosesan dilakukan melalui tiga langkah strategis untuk menjamin integritas data.
 
-\begin{enumerate}
-    \item \textbf{Penyaringan Kelas (\textit{Class Filtering}):} 
+\subsubsection{Penyaringan Kelas (\textit{Class Filtering})} 
     Dari 10 kelas yang tersedia, dilakukan seleksi data untuk mengambil 4 kelas prioritas yang relevan dengan konteks keselamatan tunarungu, yaitu: \textit{car\_horn} (klakson), \textit{siren} (sirine), \textit{gun\_shot} (tembakan), dan \textit{dog\_bark} (gonggongan).
 
-    \item \textbf{Strategi Partisi Anti-Bocor (\textit{Leakage-Free Splitting}):} 
+\subsubsection{Strategi Partisi Anti-Bocor (\textit{Leakage-Free Splitting}):} 
     Dataset asli disusun berdasarkan metadata \texttt{fsID} (sumber rekaman) ke dalam 10 \textit{fold}. Untuk mencegah kebocoran data—dimana potongan audio dari sumber rekaman yang sama masuk ke data latih dan data uji sekaligus—penelitian ini menerapkan strategi pemetaan \textit{fold} (\textit{Fold Mapping}). Ke-10 \textit{fold} asli digabungkan dan dipetakan ulang menjadi 5 \textit{fold} eksperimen (Fold 1-2 menjadi Fold Baru 1, dst.) guna menjaga independensi data uji.
 
-    \item \textbf{Penyeimbangan Kelas (\textit{Class Balancing}):} 
+\subsubsection{Penyeimbangan Kelas (\textit{Class Balancing}):} 
     Mengingat distribusi data mentah yang tidak seimbang (\textit{imbalanced}), diterapkan teknik \textit{Random Under-sampling} pada setiap \textit{fold} baru. Jumlah sampel pada kelas mayoritas dipangkas secara acak hingga setara dengan jumlah sampel pada kelas minoritas. Langkah ini krusial untuk mencegah model mengalami bias prediksi ke arah kelas yang dominan.
-\end{enumerate}
+
 
 Hasil akhir dari proses ini disimpan dalam format konfigurasi statis berupa \texttt{split.json} yang menjadi acuan baku bagi seluruh skenario pengujian model. \par
 
 \subsection{Adaptasi Model} \label{III.Langkah 4}
-Penelitian ini menggunakan tiga arsitektur dasar terbaik dari setiap representasi input nya, yaitu \textit{Res1dNet31}, \textit{ResNet38}, dan \textit{Wavegram-Logmel-CNN} dari pustaka PANNs yang telah dilatih sebelumnya (\textit{pre-trained}) pada dataset AudioSet. Untuk mengadaptasi model tersebut ke dalam domain permasalahan yang baru, dilakukan serangkaian langkah modifikasi pada arsitektur yang akan digunakan. Untuk langkah adaptasi yang lebih rinci, hal tersebut dijelaskan pada bagian 3.4.\par
+Penelitian ini menggunakan tiga arsitektur dasar terbaik dari setiap representasi input nya, yaitu \textit{Res1dNet31}, \textit{ResNet38}, dan \textit{Wavegram-Logmel-CNN} dari pustaka PANNs yang telah dilatih sebelumnya (\textit{pre-trained}) pada dataset AudioSet. 
+Untuk mengadaptasi model tersebut ke dalam domain permasalahan yang baru, dilakukan serangkaian langkah modifikasi pada arsitektur yang akan digunakan. 
+Untuk langkah adaptasi yang lebih rinci, hal tersebut dijelaskan pada subbab \ref{III.Metode Pengembangan}. \par
 
 \subsection{Evaluasi Model} \label{III.Langkah 5}
 Setelah model diadaptasi, maka dilakukan evaluasi performa model menggunakan pendekatan \textit{Multi-metric Evaluation}.
@@ -98,91 +99,85 @@ Sesuai dengan karakteristik penelitian \textit{Deep Learning} yang membutuhkan d
 Data tidak dikumpulkan melalui perekaman langsung (primer), melainkan diunduh dari repositori publik \textit{UrbanSound8K}.
 Pengambilan sampel dilakukan dengan teknik \textit{Purposive Sampling}, yaitu hanya mengambil data yang memenuhi kriteria inklusi: (a) Termasuk dalam 4 kelas bahaya (Klakson, Sirine, Tembakan, Gonggongan), dan (b) Memiliki durasi audio yang valid (< 4 detik).
 
+% --- Mulai Copy dari sini ---
 \section{Ilustrasi Perhitungan Metode} \label{III.Ilustrasi}
-Pada bagian ini disajikan ilustrasi perhitungan metrik evaluasi berbasis \textit{Confusion Matrix} untuk kasus klasifikasi multikelas (4 kelas). Data yang digunakan bersifat hipotetik dengan jumlah sampel $N=20$, bertujuan untuk mengilustrasikan mekanisme perhitungan \textit{Accuracy}, \textit{Precision}, dan \textit{Recall}.
+Pada bagian ini disajikan ilustrasi perhitungan metrik evaluasi berbasis \textit{Confusion Matrix} untuk kasus klasifikasi multikelas. Data yang digunakan bersifat hipotetik dengan jumlah sampel $N=20$.
 
-\subsection{Matriks Kebingungan (\textit{Confusion Matrix})}
-Contoh hasil prediksi model terhadap 20 data uji yang terdiri dari kelas A (Klakson), B (Sirine), C (Tembakan), dan D (Gonggongan) disajikan pada Tabel 3.2.
+\subsection{Matriks Kebingungan}
+Contoh hasil prediksi model disajikan pada Tabel \ref{tab:contoh_matrix}.
 
-\begin{table}[h!]
+\begin{table}[H]
 \centering
 \caption{Contoh Matriks Kebingungan Multikelas (Data Hipotetik)}
+\label{tab:contoh_matrix}
+% Pastikan package multirow sudah ada di config.sty, kalau error hapus \multirow
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
 \multicolumn{2}{|c|}{\multirow{2}{*}{}} & \multicolumn{4}{c|}{\textbf{Prediksi Model}} \\ \cline{3-6} 
 \multicolumn{2}{|c|}{} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} \\ \hline
 \multirow{4}{*}{\rotatebox{90}{\textbf{Aktual}}} 
-& \textbf{A (Klakson)} & \textbf{4} & 1 & 0 & 0 \\ \cline{2-6} 
-& \textbf{B (Sirine)} & 1 & \textbf{4} & 0 & 0 \\ \cline{2-6} 
-& \textbf{C (Tembakan)} & 0 & 0 & \textbf{5} & 0 \\ \cline{2-6} 
-& \textbf{D (Gonggongan)} & 0 & 1 & 0 & \textbf{4} \\ \hline
+& \textbf{A} & \textbf{4} & 1 & 0 & 0 \\ \cline{2-6} 
+& \textbf{B} & 1 & \textbf{4} & 0 & 0 \\ \cline{2-6} 
+& \textbf{C} & 0 & 0 & \textbf{5} & 0 \\ \cline{2-6} 
+& \textbf{D} & 0 & 1 & 0 & \textbf{4} \\ \hline
 \end{tabular}
 \end{table}
 
-Keterangan diagonal utama (cetak tebal) menunjukkan prediksi yang benar (\textit{True Positive} untuk masing-masing kelas).
-
 \subsection{Perhitungan Metrik}
-Berdasarkan Tabel 3.2, total prediksi benar adalah jumlah diagonal utama: $4 + 4 + 5 + 4 = 17$.
+Berikut adalah contoh perhitungan akurasi global:
 
-\textbf{1. Akurasi Global (\textit{Overall Accuracy})} \\
-Mengukur rasio prediksi benar terhadap total sampel.
-\begin{equationcaptioned}[eq:3.overall]{
-    \text{Accuracy} = \frac{\sum \text{Diagonal}}{N} = \frac{17}{20} = 0,85 = 85\%
-}{
-    Overall Accuracy
-}
-\end{equationcaptioned}
+% Ganti equation jadi align
+\begin{align} \label{eq:akurasi_global}
+    \text{Accuracy} &= \frac{17}{20} = 0,85 = 85\%
+\end{align}
 
-\textbf{2. Perhitungan Per-Kelas (Contoh: Kelas B / Sirine)} \\
-Dalam klasifikasi multikelas, \textit{Precision} dan \textit{Recall} dihitung secara terpisah untuk setiap kelas (\textit{One-vs-Rest}). Berikut contoh perhitungan untuk \textbf{Kelas B (Sirine)}:
+Perhitungan \textit{Precision} untuk Kelas B (Sirine):
 
-\begin{itemize}
-    \item \textbf{True Positive (TP):} Aktual Sirine diprediksi Sirine = 4.
-    \item \textbf{False Positive (FP):} Aktual BUKAN Sirine, tapi diprediksi Sirine (Lihat Kolom B selain diagonal: 1 dari A + 1 dari D) = 2.
-    \item \textbf{False Negative (FN):} Aktual Sirine, tapi diprediksi BUKAN Sirine (Lihat Baris B selain diagonal: 1 ke A) = 1.
-\end{itemize}
-
-Maka metrik untuk Kelas Sirine adalah:
-
-\begin{equation}
-    \text{Precision}_B = \frac{TP}{TP + FP} = \frac{4}{4 + 2} = \frac{4}{6} \approx 66,67\%
-\end{equation}
-
-\begin{equation}
-    \text{Recall}_B = \frac{TP}{TP + FN} = \frac{4}{4 + 1} = \frac{4}{5} = 80\%
-\end{equation}
-
-Nilai akhir sistem (\textit{Macro Average}) diperoleh dengan merata-ratakan nilai metrik dari keempat kelas tersebut.
+\begin{align}
+    \text{Precision}_B &= \frac{4}{4 + 2} = 66,67\%
+\end{align}
+% --- Selesai Copy ---
 
 \section{Rancangan Pengujian} \label{III.Rancang_Uji}
-Rancangan pengujian disusun untuk memverifikasi apakah sistem yang dikembangkan memenuhi spesifikasi kebutuhan, baik dari segi kemampuan deteksi (fungsional) maupun efisiensi komputasi (non-fungsional). Pengujian dilakukan secara komparatif terhadap ketiga variasi model yang diajukan.
+Rancangan pengujian disusun untuk memverifikasi performa sistem, baik dari segi kemampuan deteksi (fungsional) maupun efisiensi komputasi (non-fungsional). Pengujian dilakukan secara komparatif terhadap tiga variasi representasi input (\textit{Waveform}, \textit{Spectrogram}, dan \textit{Hybrid}).
 
-\subsection{Lingkungan Pengujian}
-Seluruh skenario pengujian dijalankan pada lingkungan yang seragam untuk menjamin validitas perbandingan (\textit{Apple-to-Apple Comparison}). Spesifikasi lingkungan pengujian adalah sebagai berikut:
-\begin{enumerate}
-    \item \textbf{Perangkat Keras:} Pengujian inferensi dilakukan menggunakan \textit{GPU Runtime} NVIDIA T4 pada platform Kaggle.
-    \item \textbf{Perangkat Lunak:} Kerangka kerja \textit{PyTorch} dengan versi pustaka yang dikunci (\textit{fixed version}) untuk menghindari perbedaan optimasi pustaka.
-\end{enumerate}
+\subsection{Konfigurasi Eksperimen} % Ganti judul "Lingkungan" jadi ini
+Agar komparasi antar model bersifat adil (\textit{fair}), seluruh model dilatih menggunakan skenario parameter yang seragam. Rincian \textit{hyperparameter} pelatihan disajikan pada Tabel \ref{tab:hyperparams}.
+
+\begin{table}[H]
+\centering
+\caption{Konfigurasi Hyperparameter Pelatihan}
+\label{tab:hyperparams}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Parameter} & \textbf{Nilai / Konfigurasi} \\ \hline
+Optimizer & AdamW \\ \hline
+Learning Rate & $1 \times 10^{-3}$ \\ \hline
+Batch Size & 32 \\ \hline
+Epoch & 50 (dengan \textit{Early Stopping}) \\ \hline
+Loss Function & Cross-Entropy Loss \\ \hline
+\end{tabular}
+\end{table}
 
 \subsection{Pengujian Fungsional (Kinerja Klasifikasi)}
-Pengujian fungsional bertujuan untuk mengukur kehandalan model dalam menjalankan fungsi utamanya, yaitu mengklasifikasikan audio input ke dalam 4 kelas target secara akurat.
+Pengujian ini bertujuan mengukur akurasi model dalam mendeteksi suara bahaya.
 \begin{enumerate}
-    \item \textbf{Metode:} Menggunakan \textit{Stratified 5-Fold Cross-Validation} untuk mendapatkan nilai performa yang objektif dan tidak bias oleh pembagian data tertentu.
-    \item \textbf{Parameter Ukur:}
+    \item \textbf{Metode Validasi:} Menggunakan \textit{Stratified 5-Fold Cross-Validation}.
+    \item \textbf{Metrik Evaluasi:}
     \begin{itemize}
-        \item \textbf{Macro F1-Score:} Sebagai metrik utama untuk melihat kinerja rata-rata yang adil pada dataset yang tidak seimbang.
-        \item \textbf{Recall (Sensitivitas):} Khusus dipantau untuk kelas bahaya (Sirine dan Tembakan) guna memastikan aspek keselamatan pengguna.
-        \item \textbf{Confusion Matrix:} Untuk memvalidasi apakah model mampu membedakan antar kelas yang mirip dengan benar.
+        \item \textbf{Macro F1-Score:} Sebagai acuan utama rata-rata performa.
+        \item \textbf{Recall:} Prioritas untuk kelas bahaya (Sirine/Klakson) untuk meminimalkan \textit{False Negative}.
+        \item \textbf{Confusion Matrix:} Untuk analisis detail kesalahan prediksi.
     \end{itemize}
-    \item \textbf{Kriteria Keberhasilan:} Model dinyatakan lolos uji fungsional jika mampu menghasilkan nilai \textit{F1-Score} di atas garis dasar (\textit{baseline}) model klasifikasi sederhana atau penelitian terdahulu yang relevan.
 \end{enumerate}
 
 \subsection{Pengujian Non-Fungsional (Efisiensi Sistem)}
-Mengingat tujuan akhir sistem adalah sebagai alat bantu dengar yang bekerja secara \textit{real-time}, aspek performa non-fungsional menjadi krusial.
+Aspek efisiensi diuji untuk memastikan kelayakan implementasi pada sistem \textit{real-time}.
 \begin{enumerate}
     \item \textbf{Waktu Inferensi (\textit{Inference Time}):}
-    Mengukur rata-rata waktu yang dibutuhkan model untuk memproses satu sampel audio berdurasi 4 detik, mulai dari data masuk hingga keluar prediksi kelas. Pengukuran dilakukan dalam satuan milidetik (ms). Semakin kecil waktu inferensi, semakin layak model diterapkan pada sistem \textit{real-time}.
+    Mengukur rata-rata waktu proses satu sampel audio. 
+    \textit{Catatan: Pengukuran dilakukan menggunakan perangkat GPU yang sama seperti dijelaskan pada Sub-bab \ref{III.Alat} untuk menjaga validitas perbandingan.}
     
     \item \textbf{Ukuran Model (\textit{Model Size}):}
-    Mengukur besaran file bobot model (\texttt{.pth}) yang dihasilkan setelah pelatihan. Parameter ini menguji efisiensi penyimpanan (\textit{storage}) jika nantinya model akan ditanamkan (\textit{embedded}) pada perangkat keras dengan memori terbatas.
+    Mengukur besaran file bobot model (\texttt{.pth}) untuk menguji efisiensi penyimpanan.
 \end{enumerate}

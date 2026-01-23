@@ -2,6 +2,13 @@
 
 ## January
 
+### 2026-01-24
+- Revisi Rancangan Pengujian sebelum bimbingan
+
+### 2026-01-23
+- Bab III tinggal Rancangan Pengujian
+
+
 ### 2026-01-22
 - Revisi Metode Pengembangan
 
