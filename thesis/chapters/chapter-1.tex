@@ -8,7 +8,7 @@ Keselamatan berlalu lintas di lingkungan perkotaan merupakan tantangan krusial y
 Dalam aktivitas tersebut, indra pendengaran berperan sebagai mekanisme deteksi alami yang penting untuk mengetahui kondisi lingkungan di sekitar. 
 Namun, fungsi indra tersebut tidak dimiliki oleh penyandang Tuna Rungu, yang hanya bisa mengandalkan penglihatan mereka untuk memantau keadaan. 
 Ketergantungan penuh pada aspek visual ini dapat menjadi kerentanan serius, mengingat mereka memiliki keterbatasan sudut pandang dan tidak dapat memantau kondisi di luar jangkauan penglihatan. 
-Akibatnya, ancaman yang muncul dari titik buta (\textit{blind spot}), seperti gonggongan anjing yang mengejar atau klakson kendaraan yang melaju kencang dari arah belakang, seringkali terlambat disadari akibat tidak adanya peringatan suara.
+Akibatnya, ancaman yang muncul dari titik buta (\textit{blind spot}), seperti gonggongan dari anjing yang mengejar atau klakson kendaraan yang melaju kencang dari arah belakang, seringkali terlambat disadari akibat tidak adanya peringatan suara.
 Keterlambatan respon inilah yang secara signifikan meningkatkan risiko terjadinya kecelakaan fatal \cite{thorslund2013effects}.
 Maka dari itu, diperlukan mekanisme bantu yang dapat menggantikan peran indra pendengaran dalam mendeteksi ancaman yang muncul dari luar jangkauan visual. \par
 
@@ -40,7 +40,7 @@ Selain itu, PANNs juga menyediakan arsitektur dengan pendekatan \textit{Hybrid} 
 Ketersediaan variasi ini memunculkan urgensi untuk mengevaluasi arsitektur mana yang paling optimal untuk diterapkan pada kasus ini, apakah berbasis domain waktu, domain frekuensi, atau penggabungan keduanya (\textit{Hybrid}). \par
 
 % PARAGRAF 5: RESEARCH GAP (ARGUMEN ILMIAH UTAMA) -> INI YANG DIPECAH
-Meskipun Kong et al. telah memaparkan tolak ukur kinerja model-model tersebut pada dataset masif AudioSet \cite{kong2020panns}, performa tersebut belum tentu sebanding ketika diterapkan pada kasus penerapan spesifik dengan ketersediaan data yang terbatas (\textit{data scarcity}) seperti pada kasus klasifikasi suara lingkungan perkotaan. 
+Meskipun Kong et al. \cite{kong2020panns} telah memaparkan tolak ukur kinerja model-model tersebut pada dataset masif AudioSet, performa tersebut belum tentu sebanding ketika diterapkan pada kasus penerapan spesifik dengan ketersediaan data yang terbatas (\textit{data scarcity}) seperti pada kasus klasifikasi suara lingkungan perkotaan. 
 Perbedaan karakteristik data ini memunculkan dugaan bahwa kompleksitas arsitektur model \textit{Hybrid} dan \textit{Log-mel Spectrogram} justru memiliki risiko \textit{overfitting} yang lebih tinggi dibandingkan model \textit{Raw Waveform} ketika dilatih pada dataset yang kecil. 
 Ketidakpastian inilah yang menjadi celah penelitian (\textit{research gap}) yang belum terjamah.
 Oleh karena itu, penelitian ini menjadi krusial untuk mengevaluasi ulang adaptabilitas dan melakukan analisis komparasi ketiga arsitektur tersebut secara spesifik pada dataset UrbanSound8K. \par

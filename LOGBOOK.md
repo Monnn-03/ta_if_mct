@@ -2,6 +2,9 @@
 
 ## January
 
+### 2026-01-25
+- Revisi Bab I Final
+
 ### 2026-01-24
 - Revisi Rancangan Pengujian sebelum bimbingan
 
