@@ -2,6 +2,10 @@
 
 ## January
 
+### 2026-01-26
+- Bimbingan dengan Pak MCT (Detail lihat di TAsys)
+- Buat ulang draft Bab III dengan Markdown
+
 ### 2026-01-25
 - Revisi Bab I Final
 
