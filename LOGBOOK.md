@@ -2,8 +2,20 @@
 
 ## January
 
+### 2026-01-29
+- Mengkonfigurasi ulang `datareader.py`
+- Mengkonfigurasi ulang `model.py`
+
+### 2026-01-28
+- Menggabungkan 10 fold menjadi 5 fold saja
+- Membuat ulang `create_5fold_split.py`
+
+### 2026-01-27
+- Membuat Outline Bab III
+- Menentukan inti poin isi dari setiap bagiannya
+
 ### 2026-01-26
-- Bimbingan dengan Pak MCT (Detail lihat di TAsys)
+- Bimbingan dengan Pak MCT (Detail lihat di TAsys) [Dl 2 Minggu Max]
 - Buat ulang draft Bab III dengan Markdown
 
 ### 2026-01-25
