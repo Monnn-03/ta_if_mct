@@ -5,10 +5,13 @@
 ### 2026-01-29
 - Mengkonfigurasi ulang `datareader.py`
 - Mengkonfigurasi ulang `model.py`
+- Mengkonfigurasi ulang `train.py`
+- Menuliskan Alur Penelitian
 
 ### 2026-01-28
 - Menggabungkan 10 fold menjadi 5 fold saja
 - Membuat ulang `create_5fold_split.py`
+- Menuliskan Langkah Preprocessing Data
 
 ### 2026-01-27
 - Membuat Outline Bab III

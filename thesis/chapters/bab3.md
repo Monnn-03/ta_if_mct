@@ -1,9 +1,20 @@
 # BAB III : Metode Penelitian
 
-## Langkah Penelitian
+## Alur Penelitian
+1. Identifikasi Domain Penelitian
+2. Mencari Dataset
+3. Mencari Pre-trained Model
+4. Membaca Dokumentasi Dataset dan Pre-trained Model
+5. Melakukan Preprocessing Dataset
+6. Mengkonfigurasi Model
+7. Melakukan Transfer Learning pada Pre-trained Model
+8. Mendapatkan Hasil & Evaluasi Fine-tuning Model
+9. Mengidentifikasi Urgensi Permasalahan
+10. Melakukan Studi Literatur
+11. Analisis Hasil dan Kesimpulan
 
-## Dataset
-- Dataset yang digunakan adalah dataset publik UrbanSound8k. Dataset didownload secara manual dari Kaggle berbentuk .zip. Dataset tersebut kemudian diekstrak dan berisikan 10 folder yang masing-masing mewakili 1 fold beserta file .csv yang menampilkan tabel nama file audio beserta metadatanya.
+## Import Dataset
+- Dataset yang digunakan adalah dataset publik UrbanSound8K. Dataset didownload secara manual dari Kaggle berbentuk .zip. Dataset tersebut kemudian diekstrak dan berisikan 10 folder yang masing-masing mewakili 1 fold beserta file .csv yang menampilkan tabel nama file audio beserta metadatanya.
 
 ## Pre-processing Data
 - Dikarenakan Dataset UrbanSound8K telah menyusun 10 fold dalam 10 folder masing-masing,Maka akan digabungkan 10 fold menjadi 5 fold. Langkah ini akan menghemat waktu train serta membagi porsi data yang lebih adil untuk train dan test.
