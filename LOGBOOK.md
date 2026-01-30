@@ -2,6 +2,9 @@
 
 ## January
 
+### 2026-01-30
+- Train Spectrogram
+
 ### 2026-01-29
 - Mengkonfigurasi ulang `datareader.py`
 - Mengkonfigurasi ulang `model.py`
