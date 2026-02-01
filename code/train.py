@@ -44,7 +44,7 @@ CONFIG = {
     "learning_rate": 0.001,  
     "epochs": 15,            
     "folds": 5,              
-    "num_workers": 2,        
+    "num_workers": 0,        
     "device": "cuda" if torch.cuda.is_available() else "cpu",
     "save_dir": "models_saved",
     "report_dir": "reports",

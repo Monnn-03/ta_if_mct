@@ -1,9 +1,17 @@
 # Research Logbook
 
+## February
+
+### 2026-02-01
+- Mendapatkan hasil train ResNet38 pertama
+
 ## January
 
+### 2026-01-31
+- Train ulang ResNet38, mengganti `num_workers` menjadi 0
+
 ### 2026-01-30
-- Train Spectrogram
+- Train ResNet38
 
 ### 2026-01-29
 - Mengkonfigurasi ulang `datareader.py`
