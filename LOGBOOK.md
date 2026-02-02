@@ -2,6 +2,11 @@
 
 ## February
 
+### 2026-02-02
+- Menambahkan output berupa Confusion Matrix dan Total Time
+- Melakukan train ulang pada konfigurasi hasil evaluasi
+- Membuat Markdown dan Konversi ke Tex untuk Bab III
+
 ### 2026-02-01
 - Mendapatkan hasil train ResNet38 pertama
 

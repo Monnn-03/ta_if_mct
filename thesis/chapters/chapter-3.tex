@@ -1,4 +1,120 @@
 \newpage
 \chapter{METODE PENELITIAN} \label{Bab III}
 
+\section{Alur Penelitian} \label{III.Alur}
+Penelitian ini dilaksanakan melalui serangkaian tahapan sistematis guna memastikan model klasifikasi suara yang dikembangkan dapat bekerja optimal pada domain keselamatan penyandang Tuna Rungu. Diagram alur penelitian ditunjukkan pada Gambar \ref{fig:alur_penelitian}.
 
+\begin{figure}[H]
+    \centering
+    % Ganti 'gambar/alur_penelitian.png' dengan nama file gambar kamu
+    \includegraphics[width=1.0\textwidth]{figure/Flowchart_TA.pdf} 
+    \caption{Diagram Alur Penelitian}
+    \label{fig:alur_penelitian}
+\end{figure}
+
+Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
+
+\begin{enumerate}
+    \item \textbf{Identifikasi Domain Penelitian} \\
+    Tahap awal dilakukan dengan mencari referensi domain penelitian untuk klasifikasi suara. Berdasarkan pertimbangan ketersediaan dataset dan urgensi model klasifikasi, domain yang dipilih adalah domain keselamatan publik yang difokuskan untuk alat bantu penyandang Tuna Rungu.
+
+    \item \textbf{Studi Literatur} \\
+    Dilakukan kajian literatur mendalam untuk menemukan urgensi penelitian, khususnya mengenai kebutuhan teknologi asistif yang mampu mengurangi risiko kecelakaan bagi penyandang Tuna Rungu melalui pengenalan sinyal bahaya.
+
+    \item \textbf{Identifikasi dan Akuisisi Dataset} \\
+    Ketersediaan data menjadi kunci utama pelatihan model. Dataset sekunder \textit{UrbanSound8K} dipilih karena memuat data lingkungan perkotaan yang relevan. Dari dataset ini, dilakukan seleksi kelas suara yang merepresentasikan sinyal ancaman bahaya. Kendala keterbatasan jumlah sampel pada kelas tertentu menjadi tantangan yang diantisipasi sejak awal.
+
+    \item \textbf{Pemilihan Model \textit{Pre-trained}} \\
+    Mengingat keterbatasan data berisiko menyebabkan kegagalan pelatihan \textit{from scratch}, digunakan pendekatan \textit{Transfer Learning} memanfaatkan model \textit{Pre-trained}. Arsitektur PANNs (\textit{Pre-trained Audio Neural Networks}) dipilih karena telah dilatih pada dataset masif dan memiliki performa yang teruji.
+
+    \item \textbf{Studi Dokumentasi Teknis} \\
+    Tahap ini mempelajari karakteristik dataset dan model:
+    \begin{itemize}
+        \item \textbf{Dataset:} \textit{UrbanSound8K} memiliki struktur 10 \textit{fold} bawaan. Dokumentasi memperingatkan agar tidak mencampur data antar \textit{fold} secara sembarangan untuk mencegah kebocoran data (\textit{data leakage}) yang dapat menyebabkan \textit{overfitting} (model hanya menghafal data latih namun memiliki generalisasi buruk pada data baru).
+        \item \textbf{Model:} PANNs menyediakan berbagai variasi arsitektur. Dipilih tiga model representatif: \textit{Res1dNet31} (Raw Waveform), \textit{ResNet38} (Log-mel Spectrogram), dan \textit{Hybrid} (gabungan keduanya) untuk dikomparasi kinerjanya.
+    \end{itemize}
+
+    \item \textbf{Pra-pemrosesan Dataset (\textit{Pre-processing})} \\
+    Serangkaian proses dilakukan untuk mengubah data mentah menjadi format yang siap latih, meliputi penanganan struktur \textit{fold}, seleksi kelas, dan penyesuaian format audio.
+
+    \item \textbf{Penyesuaian Konfigurasi Model} \\
+    Dilakukan modifikasi pada arsitektur model agar sesuai dengan tujuan klasifikasi 4 kelas bahaya, serta penerapan strategi untuk menangani ketidakseimbangan data.
+
+    \item \textbf{Uji Coba \textit{Transfer Learning}} \\
+    Tahapan inti di mana model dilatih untuk mengenali karakteristik suara spesifik. Proses ini melibatkan eksperimen \textit{Trial and Error} untuk menemukan konfigurasi parameter pelatihan yang paling optimal.
+
+    \item \textbf{Evaluasi dan Analisis Hasil} \\
+    Performa model hasil \textit{Fine-tuning} dievaluasi menggunakan metrik \textit{Confusion Matrix}, \textit{F1-Score}, serta analisis grafik \textit{Loss-Accuracy} dan waktu komputasi. Output model diuji validitasnya untuk memastikan kelayakan implementasi.
+
+    \item \textbf{Kesimpulan} \\
+    Berdasarkan hasil evaluasi, dilakukan perbandingan komparatif untuk menyimpulkan model mana yang memiliki performa paling unggul dan stabil.
+\end{enumerate}
+
+\section{Akuisisi Data} \label{III.Akuisisi}
+Sumber data utama dalam penelitian ini adalah dataset publik \textbf{UrbanSound8K}. Dataset diunduh secara manual dari repositori Kaggle dalam format terkompresi (\texttt{.zip}). Setelah diekstraksi, struktur dataset terdiri dari 10 folder (masing-masing mewakili satu \textit{fold}) beserta satu file metadata (\texttt{.csv}) yang memuat informasi nama file audio, \textit{class ID}, dan \textit{fold} asal.
+
+\section{Pra-pemrosesan Data} \label{III.Preprocessing}
+Tahap pra-pemrosesan dilakukan untuk menjamin integritas data dan mencegah kebocoran informasi (\textit{data leakage}) selama proses pelatihan.
+
+\subsection{Strategi Pembagian Data (\textit{Fold Mapping})}
+Dataset UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}. Untuk efisiensi eksperimen tanpa melanggar aturan independensi data, penelitian ini menggabungkan 10 \textit{fold} tersebut menjadi 5 \textit{fold} eksperimen baru. Penggabungan dilakukan secara berurutan (misalnya Fold 1 dan 2 menjadi Fold Baru 1) tanpa pengacakan data antar \textit{fold}.
+
+Setelah penggabungan, dilakukan pembagian set data menjadi Data Latih (\textit{Train}) dan Data Uji (\textit{Test}). Pemisahan ini krusial untuk memastikan model diuji menggunakan data yang belum pernah dilihat sebelumnya, sehingga hasil evaluasi mencerminkan kemampuan model mempelajari karakteristik suara, bukan sekadar menghafal data.
+
+\subsection{Seleksi Kelas (\textit{Class Filtering})}
+Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan Tuna Rungu. Oleh karena itu, dilakukan penyaringan untuk hanya mengambil 4 kelas prioritas yang merepresentasikan sinyal bahaya, yaitu:
+\begin{itemize}
+    \item \textit{gun\_shot} (tembakan)
+    \item \textit{siren} (sirine)
+    \item \textit{dog\_bark} (gonggongan)
+    \item \textit{car\_horn} (klakson)
+\end{itemize}
+
+\section{Konfigurasi Model} \label{sec:konfigurasi_model}
+
+\subsection{Adaptasi Arsitektur (\textit{Transfer Learning})}
+Penyesuaian arsitektur dilakukan pada lapisan keluaran (\textit{output layer}) dan mekanisme pembekuan bobot (\textit{Freeze Base}). Jumlah \textit{neuron} pada lapisan akhir disesuaikan menjadi 4 \textit{node} (sesuai jumlah kelas target). Sementara itu, lapisan ekstraktor fitur (\textit{base model}) dibekukan agar model tidak menghapus "ingatan" fitur dasar yang telah dipelajari dari dataset besar sebelumnya (AudioSet). Strategi ini memastikan model memiliki inisialisasi bobot yang baik dan hanya perlu mempelajari pola baru yang spesifik pada dataset target.
+
+\subsection{Penanganan Ketidakseimbangan Data (\textit{Weight Penalty})}
+Untuk mengatasi distribusi data yang tidak seimbang antar kelas, diterapkan mekanisme \textit{Weight Penalty} pada fungsi kerugian (\textit{Loss Function}). Metode ini bekerja dengan memberikan bobot penalti yang lebih besar ketika model salah memprediksi kelas minoritas (jumlah sampel sedikit). Hal ini memaksa model untuk memberikan perhatian yang setara pada semua kelas, mencegah bias prediksi ke arah kelas mayoritas.
+
+\section{Konfigurasi Parameter Eksperimen} \label{sec:konfigurasi_eksperimen}
+
+Penelitian ini menggunakan model \textit{Pre-trained Audio Neural Networks} (PANNs) sebagai kerangka dasar (\textit{backbone}). Model ini telah dilatih sebelumnya (\textit{pre-trained}) menggunakan dataset AudioSet yang berskala besar. Untuk mengadaptasi model tersebut ke dalam kasus klasifikasi 4 kelas pada dataset UrbanSound8K, dilakukan metode \textit{Transfer Learning} dengan membekukan (\textit{freeze}) lapisan ekstraksi fitur awal dan hanya melakukan \textit{fine-tuning} pada lapisan \textit{Fully Connected} (FC) terakhir.
+
+Agar hasil evaluasi antar model (\textit{ResNet38}, \textit{Res1dNet31}, dan \textit{Wavegram-Logmel-CNN}) dapat diperbandingkan secara adil (\textit{apple-to-apple}), seluruh proses pelatihan menggunakan konfigurasi \textit{hyperparameter} yang seragam. Rincian parameter konfigurasi yang dikendalikan dalam eksperimen ini disajikan pada Tabel \ref{tab:parameter_latih}.
+
+\begin{table}[H]
+\centering
+\caption{Parameter Konfigurasi Pelatihan}
+\label{tab:parameter_latih}
+\renewcommand{\arraystretch}{1.3} % Sedikit lebih renggang biar rapi
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Kategori} & \textbf{Konfigurasi / Nilai} \\ \hline
+\multicolumn{2}{|c|}{\textbf{Preprocessing Data}} \\ \hline
+Input Sampling Rate & 32.000 Hz \\ \hline
+Input Duration & 5 Detik (160.000 samples) \\ \hline
+Teknik Augmentasi & \textit{Random Cropping} \& \textit{Zero-padding} \\ \hline
+Skema Validasi & 5-Fold Cross Validation (Group Split) \\ \hline
+\multicolumn{2}{|c|}{\textbf{Hyperparameter Training}} \\ \hline
+Batch Size & 8 \\ \hline
+Epoch & 15 \\ \hline
+Optimizer & Adam \\ \hline
+Learning Rate & 0.001 ($1e^{-3}$) \\ \hline
+Loss Function & Cross Entropy dengan \textit{Class Weights} \\ \hline
+\multicolumn{2}{|c|}{\textbf{Reproducibilitas}} \\ \hline
+Random Seed & 42 \\ \hline
+Perangkat Keras & GPU NVIDIA GeForce GTX 1050 \\ \hline
+\end{tabular}
+\end{table}
+
+\section{Analisis dan Evaluasi} \label{sec:evaluasi}
+Setelah proses pelatihan selesai, kinerja model diukur menggunakan empat indikator utama:
+
+\begin{enumerate}
+    \item \textbf{Confusion Matrix:} Digunakan untuk melihat detail distribusi prediksi benar dan salah pada setiap kelas spesifik.
+    \item \textbf{F1-Score:} Digunakan sebagai metrik utama untuk mengukur presisi dan sensitivitas model secara harmonis, memastikan semua kelas bahaya terdeteksi dengan baik.
+    \item \textbf{Grafik Loss \& Accuracy:} Digunakan untuk memantau proses konvergensi model selama pelatihan dan mendeteksi indikasi \textit{overfitting} atau \textit{underfitting}.
+    \item \textbf{Waktu Training:} Digunakan sebagai acuan efisiensi komputasi model.
+\end{enumerate}
