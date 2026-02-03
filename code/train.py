@@ -27,7 +27,7 @@ def seed_everything(seed=42):
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
-    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.deterministic = False # Untuk operasi train GPU, biar lebih cepat tetapi hasilnya relatif sama
     torch.backends.cudnn.benchmark = False
 
 def save_config_log(config, path):
@@ -48,11 +48,11 @@ CONFIG = {
     # GANTI INI SESUAI GILIRAN (spectrogram / waveform / hybrid)
     "model_type": "spectrogram",  
     "num_classes": 4,
-    "batch_size": 8,       # Sesuai revisi memori
+    "batch_size": 8,       # Ukuran batch untuk satu kali epoch training
     "learning_rate": 0.001,  
     "epochs": 15,            
     "folds": 5,              
-    "num_workers": 0,      # Sesuai revisi memori
+    "num_workers": 2,      # CPU workers untuk Preprocessing data
     "device": "cuda" if torch.cuda.is_available() else "cpu",
     "save_dir": "models_saved",
     "report_dir": "reports",

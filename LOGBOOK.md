@@ -2,6 +2,11 @@
 
 ## February
 
+### 2026-02-03
+- Bimbingan bersama Pak MCT (Detail lihat di TAsys)
+- Mencari tahu tentang deterministic, mematikan nya saja
+- Mempelajari dasar config training.
+
 ### 2026-02-02
 - Menambahkan output berupa Confusion Matrix dan Total Time
 - Melakukan train ulang pada konfigurasi hasil evaluasi
