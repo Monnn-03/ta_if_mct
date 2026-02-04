@@ -2,6 +2,10 @@
 
 ## February
 
+### 2026-02-04
+- Belajar tentang Learning Rate, CPU dan GPU.
+- Belajar Baca Grafik Loss-Accuracy.
+
 ### 2026-02-03
 - Bimbingan bersama Pak MCT (Detail lihat di TAsys)
 - Mencari tahu tentang deterministic, mematikan nya saja
