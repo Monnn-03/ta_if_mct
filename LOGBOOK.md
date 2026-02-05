@@ -2,6 +2,9 @@
 
 ## February
 
+### 2026-02-06
+- Train ketiga Spectrogram Fold 5
+
 ### 2026-02-05
 - Memperbaiki augmentasi temporal di `datareader.py` menjadi 1 detik.
 - Tidak memakai Sigmoid pada PANNs models.
