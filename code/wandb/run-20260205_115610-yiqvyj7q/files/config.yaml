@@ -1,0 +1,81 @@
+_wandb:
+    value:
+        cli_version: 0.24.1
+        e:
+            54bamyephze8ls4dye7wzn7l5q3g3470:
+                cpu_count: 4
+                cpu_count_logical: 8
+                cudaVersion: "13.0"
+                disk:
+                    /:
+                        total: "500100493312"
+                        used: "315194339328"
+                email: ramonriping8@gmail.com
+                executable: E:\Ramon\KULIAH\TA\ta_if_mct\.venv\Scripts\python.exe
+                git:
+                    commit: e5ab58c30f7d2f83efd7d8bc7c24b71bb585df4e
+                    remote: https://github.com/Monnn-03/ta_if_mct.git
+                gpu: NVIDIA GeForce GTX 1050
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Pascal
+                      cudaCores: 640
+                      memoryTotal: "4294967296"
+                      name: NVIDIA GeForce GTX 1050
+                      uuid: GPU-05dabae1-e578-bf49-8b7c-5e8ed0562aee
+                host: DESKTOP-5KLO7UA
+                memory:
+                    total: "8468348928"
+                os: Windows-10-10.0.19045-SP0
+                program: <python with no main file>
+                python: CPython 3.10.16
+                root: E:\Ramon\KULIAH\TA\ta_if_mct\code
+                startedAt: "2026-02-05T04:56:10.637321Z"
+                writerId: 54bamyephze8ls4dye7wzn7l5q3g3470
+        m: []
+        python_version: 3.10.16
+        t:
+            "1":
+                - 1
+                - 5
+                - 53
+            "2":
+                - 1
+                - 5
+                - 53
+            "3":
+                - 16
+            "4": 3.10.16
+            "5": 0.24.1
+            "8":
+                - 3
+            "12": 0.24.1
+            "13": windows-amd64
+batch_size:
+    value: 8
+device:
+    value: cuda
+epochs:
+    value: 15
+fixed_length:
+    value: 32000
+folds:
+    value: 5
+learning_rate:
+    value: 0.001
+model_type:
+    value: spectrogram
+num_classes:
+    value: 4
+num_workers:
+    value: 2
+project_name:
+    value: TA_SoundClassification
+report_dir:
+    value: reports
+save_dir:
+    value: models_saved
+seed:
+    value: 42
+target_sr:
+    value: 32000

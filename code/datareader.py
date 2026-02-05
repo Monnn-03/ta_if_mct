@@ -23,6 +23,7 @@ class AudioDataset(Dataset):
         """
         self.target_sr = target_sr
         self.fixed_length = fixed_length
+        self.split_type = split_type
         
         # --- 1. LOAD JSON ---
         if not os.path.exists(split_json):
@@ -78,9 +79,10 @@ class AudioDataset(Dataset):
             if current_len > self.fixed_length:
                 # KEPANJANGAN: Potong
                 if self.fixed_length < current_len:
-                    # Random crop saat training supaya variatif
-                    # Center crop saat testing supaya konsisten (opsional, di sini kita random aja dulu simple)
-                    start = random.randint(0, current_len - self.fixed_length)
+                    if self.split_type == "train":
+                        start = random.randint(0, current_len - self.fixed_length)
+                    else:
+                        start = (current_len - self.fixed_length) // 2
                     waveform = waveform[:, start:start+self.fixed_length]
                     
             elif current_len < self.fixed_length:
@@ -95,7 +97,10 @@ class AudioDataset(Dataset):
             return waveform, torch.tensor(label_id).long()
 
         except Exception as e:
-            print(f"[WARNING] Gagal memuat file: {file_path}. Error: {e}")
+            print(f"❌ GAGAL LOAD: {file_path}")
+            print(f"   Errornya: {e}")
+            # ---------------------
+            print(f"[WARNING] Gagal memuat file...")
             # Return dummy nol biar training tidak berhenti total
             return torch.zeros(1, self.fixed_length), torch.tensor(0).long()
 

@@ -1,6 +1,6 @@
 # --- AUDIO SETTINGS ---
 SAMPLE_RATE = 32000    # Standar PANNs (32kHz)
-DURATION = 5           # Detik (PANNs biasanya 10s, tapi US8K rata-rata <4s. Kita set 5s biar aman)
+DURATION = 1           # Detik (PANNs biasanya 10s, tapi US8K rata-rata <4s. Kita set 5s biar aman)
 NUM_SAMPLES = SAMPLE_RATE * DURATION # 160.000 samples
 
 # --- PATHS ---

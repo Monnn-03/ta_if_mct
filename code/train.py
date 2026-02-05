@@ -11,6 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns # Library untuk gambar Confusion Matrix cantik
 from sklearn.metrics import f1_score, confusion_matrix
+import wandb
 
 # --- IMPORT KODE SENDIRI ---
 from datareader import AudioDataset
@@ -56,7 +57,9 @@ CONFIG = {
     "device": "cuda" if torch.cuda.is_available() else "cpu",
     "save_dir": "models_saved",
     "report_dir": "reports",
-    "seed": 42
+    "seed": 42,
+    "target_sr": 32000,    # Standar PANNs
+    "fixed_length": 32000 # 1 detik pada 32kHz, untuk Augmentasi Temporal
 }
 
 # Mapping label untuk Confusion Matrix
@@ -166,6 +169,10 @@ def validate(model, loader, criterion, device):
 # ==============================================================================
 def run_training():
     seed_everything(CONFIG["seed"])
+    wandb.init(
+        project="TA_SoundClassification", # Nama Proyek di Dashboard
+        config=CONFIG                     # Kamus settingan (LR, Batch Size, dll)
+    )
     
     print(f"🚀 Mulai Training: {CONFIG['model_type'].upper()}")
     
@@ -182,15 +189,15 @@ def run_training():
     final_scores = []
     
     # Loop Fold
-    for fold_idx in range(1, CONFIG["folds"] + 1):
+    for fold_idx in [5]:
         fold_name = f"fold{fold_idx}"
         print(f"\n📦 --- {fold_name.upper()} ---")
         
         # Mulai Stopwatch per Fold
         fold_start_time = time.time()
 
-        train_ds = AudioDataset(split_json="split_data.json", fold=fold_name, split_type="train")
-        val_ds = AudioDataset(split_json="split_data.json", fold=fold_name, split_type="test")
+        train_ds = AudioDataset(split_json="split_data.json", fold=fold_name, split_type="train", target_sr=CONFIG["target_sr"], fixed_length=CONFIG["fixed_length"])
+        val_ds = AudioDataset(split_json="split_data.json", fold=fold_name, split_type="test", target_sr=CONFIG["target_sr"], fixed_length=CONFIG["fixed_length"])
         
         train_loader = DataLoader(train_ds, batch_size=CONFIG["batch_size"], shuffle=True, num_workers=CONFIG["num_workers"])
         val_loader = DataLoader(val_ds, batch_size=CONFIG["batch_size"], shuffle=False, num_workers=CONFIG["num_workers"])
@@ -221,6 +228,15 @@ def run_training():
             history['train_f1'].append(train_f1)
             history['val_loss'].append(val_loss)
             history['val_f1'].append(val_f1)
+
+            #  KIRIM LAPORAN KE WANDB (TARUH DISINI)
+            wandb.log({
+                "epoch": epoch + 1,
+                "train_loss": train_loss,
+                "train_f1": train_f1,
+                "val_loss": val_loss,
+                "val_f1": val_f1
+            })
             
             if val_f1 > best_f1:
                 best_f1 = val_f1
