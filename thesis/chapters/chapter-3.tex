@@ -22,20 +22,17 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
     Dilakukan kajian literatur mendalam untuk menemukan urgensi penelitian, khususnya mengenai kebutuhan teknologi asistif yang mampu mengurangi risiko kecelakaan bagi penyandang Tuna Rungu melalui pengenalan sinyal bahaya.
 
     \item \textbf{Identifikasi dan Akuisisi Dataset} \\
-    Ketersediaan data menjadi kunci utama pelatihan model. Dataset sekunder \textit{UrbanSound8K} dipilih karena memuat data lingkungan perkotaan yang relevan. Dari dataset ini, dilakukan seleksi kelas suara yang merepresentasikan sinyal ancaman bahaya. Kendala keterbatasan jumlah sampel pada kelas tertentu menjadi tantangan yang diantisipasi sejak awal.
+    Akuisisi dataset dilakukan dengan mengambil dataset sekunder yang sudah terstandarisasi, yaitu UrbanSound8K. Akuisisi dataset primer tidak dilakukan demi menghindari \textit{device bias} akibat perekaman dataset dengan perangkat non-standar (seperti smartphone) serta kendala regulasi keamanan pada perekaman kelas \textit{gun\_shot}. Maka dari itu, dataset sekunder terstandarisasi menjadi solusi yang valid dalam penelitian ini. Dari dataset tersebut, dilakukan seleksi kelas sinyal bahaya dengan strategi antisipasi terhadap kendala ketidakseimbangan data (\textit{imbalanced data}) yang telah disiapkan sejak awal.    
 
     \item \textbf{Pemilihan Model \textit{Pre-trained}} \\
     Mengingat keterbatasan data berisiko menyebabkan kegagalan pelatihan \textit{from scratch}, digunakan pendekatan \textit{Transfer Learning} memanfaatkan model \textit{Pre-trained}. Arsitektur PANNs (\textit{Pre-trained Audio Neural Networks}) dipilih karena telah dilatih pada dataset masif dan memiliki performa yang teruji.
 
     \item \textbf{Studi Dokumentasi Teknis} \\
-    Tahap ini mempelajari karakteristik dataset dan model:
-    \begin{itemize}
-        \item \textbf{Dataset:} \textit{UrbanSound8K} memiliki struktur 10 \textit{fold} bawaan. Dokumentasi memperingatkan agar tidak mencampur data antar \textit{fold} secara sembarangan untuk mencegah kebocoran data (\textit{data leakage}) yang dapat menyebabkan \textit{overfitting} (model hanya menghafal data latih namun memiliki generalisasi buruk pada data baru).
-        \item \textbf{Model:} PANNs menyediakan berbagai variasi arsitektur. Dipilih tiga model representatif: \textit{Res1dNet31} (Raw Waveform), \textit{ResNet38} (Log-mel Spectrogram), dan \textit{Hybrid} (gabungan keduanya) untuk dikomparasi kinerjanya.
-    \end{itemize}
+    Tahap ini mempelajari karakteristik dataset dan model yang digunakan.
+    Fokus utama dalam tahap ini adalah memahami mekanisme pembagian data (fold) pada dataset guna mencegah kebocoran data (\textit{data leakage}) dan mempelajari variasi representasi input pada arsitektur PANNs untuk menentukan skenario komparasi yang tepat.
 
     \item \textbf{Pra-pemrosesan Dataset (\textit{Pre-processing})} \\
-    Serangkaian proses dilakukan untuk mengubah data mentah menjadi format yang siap latih, meliputi penanganan struktur \textit{fold}, seleksi kelas, dan penyesuaian format audio.
+    Serangkaian proses dilakukan untuk mengubah data mentah menjadi format yang siap latih, meliputi penanganan struktur \textit{fold}, seleksi kelas, dan penyesuaian format audio, serta penerapan augmentasi temporal untuk menstandarisasi durasi input.
 
     \item \textbf{Penyesuaian Konfigurasi Model} \\
     Dilakukan modifikasi pada arsitektur model agar sesuai dengan tujuan klasifikasi 4 kelas bahaya, serta penerapan strategi untuk menangani ketidakseimbangan data.
