@@ -2,6 +2,9 @@
 
 ## February
 
+### 2026-02-07
+- Menggabungkan 3.2. Akuisisi Data dengan 3.3. Pra-pemrosesan data menjadi 3.2. Pengumpulan dan Pra-pemrosesan Data
+
 ### 2026-02-06
 - Train ketiga Spectrogram Fold 5
 - Revisi Bab III : 3.1. Alur Penelitian

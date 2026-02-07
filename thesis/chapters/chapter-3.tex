@@ -32,7 +32,7 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
     Fokus utama dalam tahap ini adalah memahami mekanisme pembagian data (fold) pada dataset guna mencegah kebocoran data (\textit{data leakage}) dan mempelajari variasi representasi input pada arsitektur PANNs untuk menentukan skenario komparasi yang tepat.
 
     \item \textbf{Pra-pemrosesan Dataset (\textit{Pre-processing})} \\
-    Serangkaian proses dilakukan untuk mengubah data mentah menjadi format yang siap latih, meliputi penanganan struktur \textit{fold}, seleksi kelas, dan penyesuaian format audio, serta penerapan augmentasi temporal untuk menstandarisasi durasi input.
+    Serangkaian proses dilakukan untuk mengubah data mentah menjadi format yang siap latih, meliputi penanganan struktur \textit{fold}, seleksi kelas, dan penyesuaian format audio, serta penerapan teknik augmentasi temporal berupa \textit{random cropping} untuk menstandarisasi durasi input.
 
     \item \textbf{Penyesuaian Konfigurasi Model} \\
     Dilakukan modifikasi pada arsitektur model agar sesuai dengan tujuan klasifikasi 4 kelas bahaya, serta penerapan strategi untuk menangani ketidakseimbangan data.
@@ -47,11 +47,14 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
     Berdasarkan hasil evaluasi, dilakukan perbandingan komparatif untuk menyimpulkan model mana yang memiliki performa paling unggul dan stabil.
 \end{enumerate}
 
-\section{Akuisisi Data} \label{III.Akuisisi}
-Sumber data utama dalam penelitian ini adalah dataset publik \textbf{UrbanSound8K}. Dataset diunduh secara manual dari repositori Kaggle dalam format terkompresi (\texttt{.zip}). Setelah diekstraksi, struktur dataset terdiri dari 10 folder (masing-masing mewakili satu \textit{fold}) beserta satu file metadata (\texttt{.csv}) yang memuat informasi nama file audio, \textit{class ID}, dan \textit{fold} asal.
+\section{Pengumpulan dan Pra-pemrosesan Data} \label{III.Preprocessing}
+Sumber data utama dalam penelitian ini adalah dataset publik \textbf{UrbanSound8K}. 
+Dataset diunduh secara manual dari repositori Kaggle dalam format terkompresi (\texttt{.zip}).
+Setelah diekstraksi, struktur dataset terdiri dari 10 folder (masing-masing mewakili satu \textit{fold}) beserta satu file metadata (\texttt{.csv}) yang memuat informasi nama file audio, \textit{class ID}, dan \textit{fold} asal. \par
 
-\section{Pra-pemrosesan Data} \label{III.Preprocessing}
-Tahap pra-pemrosesan dilakukan untuk menjamin integritas data dan mencegah kebocoran informasi (\textit{data leakage}) selama proses pelatihan.
+Namun, dataset mentah ini memerlukan serangkaian penyesuaian agar relevan dengan konteks keselamatan penyandang Tuna Rungu. 
+Mengingat dataset ini awalnya berisi 10 kelas suara umum di perkotaan yang tersebar dalam 10 \textit{fold}, penelitian ini memfokuskan pada seleksi kelas bahaya spesifik serta membagi data menjadi 5 fold eksperimen.
+Oleh karena itu, tahap pra-pemrosesan data menjamin integritas data dan mencegah kebocoran informasi (\textit{data leakage}) selama proses pelatihan, sebagaimana dijabarkan pada tahapan berikut.\par
 
 \subsection{Strategi Pembagian Data (\textit{Fold Mapping})}
 Dataset UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}. Untuk efisiensi eksperimen tanpa melanggar aturan independensi data, penelitian ini menggabungkan 10 \textit{fold} tersebut menjadi 5 \textit{fold} eksperimen baru. Penggabungan dilakukan secara berurutan (misalnya Fold 1 dan 2 menjadi Fold Baru 1) tanpa pengacakan data antar \textit{fold}.
