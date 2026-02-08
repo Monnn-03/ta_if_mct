@@ -54,6 +54,7 @@ Setelah diekstraksi, struktur dataset terdiri dari 10 folder (masing-masing mewa
 
 Namun, dataset mentah ini memerlukan serangkaian penyesuaian agar relevan dengan konteks keselamatan penyandang tunarungu. 
 Mengingat dataset ini awalnya berisi 10 kelas suara umum di perkotaan yang tersebar dalam 10 \textit{fold}, penelitian ini memfokuskan pada seleksi kelas bahaya spesifik serta menyusun ulang data menjadi 5 fold eksperimen.
+Sebagai langkah antisipasi terhadap keterbatasan data setelah seleksi kelas, strategi augmentasi temporal diterapkan untuk memperkaya variasi data latih.
 Oleh karena itu, tahap pra-pemrosesan data menjamin integritas data dan mencegah kebocoran informasi (\textit{data leakage}) selama proses pelatihan, sebagaimana dijabarkan pada tahapan berikut.\par
 
 \subsection{Strategi Penyusunan Ulang Data (\textit{Fold Mapping})}
@@ -69,7 +70,8 @@ Dataset UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}. Untuk efis
 
 Adapun penyusunan ini didasari oleh dua pertimbangan, yaitu rasio pembagian data yang ideal dan efisiensi sumber daya komputasi. Skema 5-\textit{fold} menghasilkan proporsi 80\% data latih dan 20\% data uji. Proporsi ini memberikan model evaluasi yang lebih representatif terhadap variasi data daripada skema 10-\textit{fold} bawaan yang menyisakan 10\% data uji. Selain memberikan porsi data yang ideal, skema tersebut berdampak mengurangi waktu komputasi pelatihan model tanpa mengurangi validitas pengujian.
 
-Dikarenakan skema baru tersebut, maka mekanisme validasi yang digunakan selanjutnya pada model adalah \textit{5-fold cross validation}. Pada iterasi setiap pengujiannya, satu \textit{fold} dialokasikan sebagai data uji secara bergantian dan empat \textit{fold} sisanya akan digunakan sebagai data latih model. Mekanisme rotasi ini diterapkan agar model selalu diuji dengan data yang berbeda dari yang sudah pernah dipelajari saat proses latih, sehingga hasil evaluasi mencerminkan kemampuan generalisasi yang sebenarnya. 
+Dikarenakan skema baru tersebut, maka mekanisme validasi yang digunakan selanjutnya pada model adalah \textit{5-fold cross validation}. Pada iterasi setiap pengujiannya, satu \textit{fold} dialokasikan sebagai data uji secara bergantian dan empat \textit{fold} sisanya akan digunakan sebagai data latih model. Mekanisme rotasi ini diterapkan agar model selalu diuji dengan data yang berbeda dari yang sudah pernah dipelajari saat proses latih, sehingga hasil evaluasi mencerminkan kemampuan generalisasi yang sebenarnya.
+
 \subsection{Seleksi Kelas (\textit{Class Filtering})}
 Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan tunarungu. Oleh karena itu, dilakukan penyaringan untuk hanya mengambil 4 kelas prioritas yang merepresentasikan sinyal bahaya, yaitu:
 \begin{enumerate}
@@ -86,7 +88,27 @@ Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan
     Suara klakson mobil menjadi sinyal penting pada lalu lintas, yang salah satu fungsinya adalah sebagai peringatan dari pengemudi kendaraan tersebut kepada pejalan kaki yang berada di jalur lintasnya. Dengan deteksi ini, pengguna dapat lebih waspada terhadap situasi lalu lintas di sekitarnya.
 \end{enumerate}
 
-% Augmentasi Temporal (Random Cropping)
+\subsection{Augmentasi Temporal (\textit{Random Cropping})}
+Seleksi kelas bahaya yang telah dilakukan menghasilkan jumlah data yang relatif sedikit pada kelas yang terpilih, yang berpotensi membuat model kekurangan data untuk latih dan uji. 
+Oleh karena itu, teknik augmentasi hadir sebagai solusi untuk memperkaya variasi data tanpa perlu menambah jumlah sampel dengan dataset lain.
+Teknik ini juga mempersingkat waktu dan sumber daya komputasi dikarenakan model hanya mempelajari sebagian fitur penting dari seluruh bagian fitur pada data aslinya.\par
+
+Sebelum melakukan proses augmentasi, durasi audio akan diperiksa terlebih dahulu apakah sesuai dengan standar yang telah ditetapkan, yaitu 5 detik. 
+Durasi 5 detik ini dipilih karena dataset UrbanSound8K memiliki data audio yang berdurasi rata-rata 4 detik, sehingga 5 detik merupakan durasi yang cukup aman untuk dijadikan standar dalam penelitian ini.
+Jika audio asli berdurasi kurang dari 5 detik, maka audio akan ditambahkan \textit{padding} hingga durasinya mencapai 5 detik.
+Jika audio asli berdurasi lebih dari 5 detik, maka audio akan dipotong hingga berdurasi 5 detik.
+Setelah standarisasi durasi selesai, maka data siap untuk diproses menggunakan teknik augmentasi. \par
+
+Teknik augmentasi yang diterapkan adalah \textit{Random Cropping}, yaitu pemotongan acak pada segmen audio sepanjang durasi tertentu.
+Pada setiap \textit{epoch} pelatihan, segmen 1 detik akan diambil secara acak dari durasi 5 detik tersebut. Ini memberikan variasi temporal pada model untuk belajar mengenali karakteristik suara yang berbeda dari berbagai posisi dalam rekaman asli pada setiap \textit{epoch}.
+Teknik \textit{Random Cropping} ini tidak diterapkan pada data uji dikarenakan berpotensi mengubah distribusi data uji, sehingga model tidak dapat mencapai nilai evaluasi secara maksimal. \par
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figure/Random_Crop.pdf} 
+    \caption{Ilustrasi Teknik \textit{Random Cropping} Pada Setiap \textit{Epoch}}
+    \label{fig:random_cropping}
+\end{figure}
 
 \section{Konfigurasi Model} \label{sec:konfigurasi_model}
 
@@ -117,7 +139,7 @@ Teknik Augmentasi & \textit{Random Cropping} \& \textit{Zero-padding} \\ \hline
 Skema Validasi & 5-Fold Cross Validation (Group Split) \\ \hline
 \multicolumn{2}{|c|}{\textbf{Hyperparameter Training}} \\ \hline
 Batch Size & 8 \\ \hline
-Epoch & 15 \\ \hline
+\textit{Epoch} & 15 \\ \hline
 Optimizer & Adam \\ \hline
 Learning Rate & 0.001 ($1e^{-3}$) \\ \hline
 Loss Function & Cross Entropy dengan \textit{Class Weights} \\ \hline

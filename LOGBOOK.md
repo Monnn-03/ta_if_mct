@@ -7,6 +7,7 @@
 - Memberikan ilustrasi pada fold mapping
 - Memberikan urgensi dilakukan fold mapping dan teknik validasinya.
 - Menambahkan penjelasan seleksi kelas suara
+- Menambah sub subbab tentang Augmentasi Temporal
 
 ### 2026-02-07
 - Menggabungkan 3.2. Akuisisi Data dengan 3.3. Pra-pemrosesan data menjadi 3.2. Pengumpulan dan Pra-pemrosesan Data
