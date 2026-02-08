@@ -5,6 +5,7 @@
 ### 2026-02-08
 - Merevisi kata Tuna Rungu menjadi tunarungu pada Bab III
 - Memberikan ilustrasi pada fold mapping
+- Memberikan urgensi dilakukan fold mapping dan teknik validasinya.
 - Menambahkan penjelasan seleksi kelas suara
 
 ### 2026-02-07

@@ -57,7 +57,7 @@ Mengingat dataset ini awalnya berisi 10 kelas suara umum di perkotaan yang terse
 Oleh karena itu, tahap pra-pemrosesan data menjamin integritas data dan mencegah kebocoran informasi (\textit{data leakage}) selama proses pelatihan, sebagaimana dijabarkan pada tahapan berikut.\par
 
 \subsection{Strategi Penyusunan Ulang Data (\textit{Fold Mapping})}
-Dataset UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}. Untuk efisiensi eksperimen tanpa melanggar aturan independensi data, penelitian ini menggabungkan 10 \textit{fold} tersebut menjadi 5 \textit{fold} eksperimen baru. Penggabungan dilakukan secara berurutan (misalnya Fold 1 dan 2 menjadi Fold Baru 1) tanpa pengacakan data antar \textit{fold}.
+Dataset UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}. Untuk efisiensi eksperimen tanpa melanggar aturan independensi data, penelitian ini menyusun ulang 10 \textit{fold} tersebut menjadi 5 \textit{fold} eksperimen baru. Penyusunan ini dilakukan secara berurutan (misalnya Fold 1 dan 2 menjadi Fold Baru 1) tanpa pengacakan data antar \textit{fold}.
 % Gambar
 \begin{figure}[H]
     \centering
@@ -67,8 +67,9 @@ Dataset UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}. Untuk efis
     \label{fig:strategi_fold_mapping}
 \end{figure}
 
-Setelah penggabungan, dilakukan pembagian set data menjadi Data Latih (\textit{Train}) dan Data Uji (\textit{Test}). Pemisahan ini krusial untuk memastikan model diuji menggunakan data yang belum pernah dilihat sebelumnya, sehingga hasil evaluasi mencerminkan kemampuan model mempelajari karakteristik suara, bukan sekadar menghafal data.
+Adapun penyusunan ini didasari oleh dua pertimbangan, yaitu rasio pembagian data yang ideal dan efisiensi sumber daya komputasi. Skema 5-\textit{fold} menghasilkan proporsi 80\% data latih dan 20\% data uji. Proporsi ini memberikan model evaluasi yang lebih representatif terhadap variasi data daripada skema 10-\textit{fold} bawaan yang menyisakan 10\% data uji. Selain memberikan porsi data yang ideal, skema tersebut berdampak mengurangi waktu komputasi pelatihan model tanpa mengurangi validitas pengujian.
 
+Dikarenakan skema baru tersebut, maka mekanisme validasi yang digunakan selanjutnya pada model adalah \textit{5-fold cross validation}. Pada iterasi setiap pengujiannya, satu \textit{fold} dialokasikan sebagai data uji secara bergantian dan empat \textit{fold} sisanya akan digunakan sebagai data latih model. Mekanisme rotasi ini diterapkan agar model selalu diuji dengan data yang berbeda dari yang sudah pernah dipelajari saat proses latih, sehingga hasil evaluasi mencerminkan kemampuan generalisasi yang sebenarnya. 
 \subsection{Seleksi Kelas (\textit{Class Filtering})}
 Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan tunarungu. Oleh karena itu, dilakukan penyaringan untuk hanya mengambil 4 kelas prioritas yang merepresentasikan sinyal bahaya, yaitu:
 \begin{enumerate}
@@ -84,6 +85,8 @@ Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan
     \item \textbf{\textit{car\_horn} (Klakson Mobil)} \newline
     Suara klakson mobil menjadi sinyal penting pada lalu lintas, yang salah satu fungsinya adalah sebagai peringatan dari pengemudi kendaraan tersebut kepada pejalan kaki yang berada di jalur lintasnya. Dengan deteksi ini, pengguna dapat lebih waspada terhadap situasi lalu lintas di sekitarnya.
 \end{enumerate}
+
+% Augmentasi Temporal (Random Cropping)
 
 \section{Konfigurasi Model} \label{sec:konfigurasi_model}
 
