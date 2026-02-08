@@ -71,12 +71,19 @@ Setelah penggabungan, dilakukan pembagian set data menjadi Data Latih (\textit{T
 
 \subsection{Seleksi Kelas (\textit{Class Filtering})}
 Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan tunarungu. Oleh karena itu, dilakukan penyaringan untuk hanya mengambil 4 kelas prioritas yang merepresentasikan sinyal bahaya, yaitu:
-\begin{itemize}
-    \item \textit{gun\_shot} (tembakan)
-    \item \textit{siren} (sirine)
-    \item \textit{dog\_bark} (gonggongan)
-    \item \textit{car\_horn} (klakson)
-\end{itemize}
+\begin{enumerate}
+    \item \textbf{\textit{gun\_shot} (Tembakan)} \newline
+    Suara tembakan senjata api merupakan sinyal bahaya dengan tingkat fatalitas yang sangat tinggi. Walaupun kejadiannya jarang terjadi, khususnya di Indonesia, deteksi suara ini menjadi langkah mitigasi risiko yang baik dalam melindungi penyandang tunarungu.
+    
+    \item \textbf{\textit{siren} (Sirine)} \newline
+    Suara sirine menandakan keberadaan kendaraan prioritas (ambulans, pemadam kebakaran, atau patroli polisi) yang sering kali melaju dengan kecepatan tinggi dan memiliki hak prioritas jalan. Dengan deteksi suara tersebut, pengguna dapat mengambil langkah untuk segera menepi dan menghindari jalur lintasan kendaraan tersebut.
+    
+    \item \textbf{\textit{dog\_bark} (Gonggongan Anjing)} \newline
+    Suara anjing yang menggonggong berpotensi menjadi sinyal bahaya, terutama jika anjing tersebut berupa anjing liar yang dapat menyerang secara tiba-tiba. Dengan mendeteksi suara ini, pengguna dapat langsung mengetahui di mana posisi anjing tersebut dan mengambil langkah untuk antisipasi ancaman.
+    
+    \item \textbf{\textit{car\_horn} (Klakson Mobil)} \newline
+    Suara klakson mobil menjadi sinyal penting pada lalu lintas, yang salah satu fungsinya adalah sebagai peringatan dari pengemudi kendaraan tersebut kepada pejalan kaki yang berada di jalur lintasnya. Dengan deteksi ini, pengguna dapat lebih waspada terhadap situasi lalu lintas di sekitarnya.
+\end{enumerate}
 
 \section{Konfigurasi Model} \label{sec:konfigurasi_model}
 
