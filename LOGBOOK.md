@@ -6,7 +6,7 @@
 - Membuat paragraf pembuka subbab 3.3. Konfigurasi Model
 - Menambahkan penjelasan Sigmoid menjadi linear pada bagian 3.3.1.
 - Menambahkan ilustrasi transfer learning pada 3.3.1.
-
+- Menambahkan penjelasan detail dan rumus pada bagian 3.3.2.
 
 ### 2026-02-08
 - Merevisi kata Tuna Rungu menjadi tunarungu pada Bab III

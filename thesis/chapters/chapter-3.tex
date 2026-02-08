@@ -135,7 +135,32 @@ Strategi ini memastikan model memiliki inisialisasi bobot yang baik dan hanya pe
 
 
 \subsection{Penanganan Ketidakseimbangan Data (\textit{Weight Penalty})}
-Untuk mengatasi distribusi data yang tidak seimbang antar kelas, diterapkan mekanisme \textit{Weight Penalty} pada fungsi kerugian (\textit{Loss Function}). Metode ini bekerja dengan memberikan bobot penalti yang lebih besar ketika model salah memprediksi kelas minoritas (jumlah sampel sedikit). Hal ini memaksa model untuk memberikan perhatian yang setara pada semua kelas, mencegah bias prediksi ke arah kelas mayoritas.
+Meskipun dataset UrbanSound8K memiliki distribusi data yang relatif terstruktur, proses seleksi kelas dan penyusunan ulang \textit{fold} berpotensi menghasilkan ketidakseimbangan jumlah sampel antar kelas.
+Ketidakseimbangan ini dapat memicu bias pada model, di mana model akan cenderung memprediksi kelas mayoritas (jumlah sampel banyak) dan mengabaikan kelas minoritas karena kontribusinya terhadap nilai \textit{loss} yang kecil. \par
+
+Untuk memitigasi risiko tersebut, diterapkan strategi \textit{Weight Penalty} atau pemberian bobot penalti pada fungsi kerugian (\textit{Loss Function}).
+Strategi ini bekerja dengan memberikan bobot \textit{loss} yang besar pada kelas dengan jumlah sampel sedikit, dan sebaliknya. 
+Hal ini memaksa model untuk memberikan perhatian yang setara pada semua kelas selama proses pembaruan gradien tanpa memperhitungkan jumlah sampelnya.
+
+Bobot penalti ($W_j$) untuk setiap kelas ke-$j$ dihitung secara otomatis sebelum pelatihan dimulai menggunakan formulasi berikut:
+
+\begin{equation}
+    W_j = \frac{N}{C \times N_j}
+    \label{eq:class_weight}
+\end{equation}
+
+\noindent Keterangan:
+\begin{itemize}
+    \item $W_j$ : Bobot skalar yang dihasilkan untuk kelas $j$.
+    \item $N$ : Total jumlah sampel dalam seluruh dataset latih.
+    \item $C$ : Jumlah kelas total (4 kelas).
+    \item $N_j$ : Jumlah sampel spesifik pada kelas $j$.
+\end{itemize}
+\medskip
+
+Sebagai ilustrasi, jika kelas \textit{gun\_shot} memiliki jumlah sampel yang jauh lebih sedikit dibandingkan \textit{car\_horn}, maka nilai $N_j$ yang kecil pada penyebut akan menghasilkan nilai $W_j$ yang besar.
+Nilai bobot ini kemudian diaplikasikan sebagai argumen parameter pada fungsi \textit{Cross Entropy Loss}.
+Secara matematis, jika model melakukan kesalahan prediksi pada kelas \textit{gun\_shot}, nilai \textit{loss} akan dikalikan dengan faktor $W_j$ yang besar tersebut. Dengan begitu, model akan dihukum lebih berat dan dipaksa untuk belajar mengenali fitur kelas minoritas tersebut.
 
 \section{Konfigurasi Parameter Eksperimen} \label{sec:konfigurasi_eksperimen}
 
