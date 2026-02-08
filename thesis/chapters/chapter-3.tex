@@ -2,7 +2,7 @@
 \chapter{METODE PENELITIAN} \label{Bab III}
 
 \section{Alur Penelitian} \label{III.Alur}
-Penelitian ini dilaksanakan melalui serangkaian tahapan sistematis guna memastikan model klasifikasi suara yang dikembangkan dapat bekerja optimal pada domain keselamatan penyandang Tuna Rungu. Diagram alur penelitian ditunjukkan pada Gambar \ref{fig:alur_penelitian}.
+Penelitian ini dilaksanakan melalui serangkaian tahapan sistematis guna memastikan model klasifikasi suara yang dikembangkan dapat bekerja optimal pada domain keselamatan penyandang tunarungu. Diagram alur penelitian ditunjukkan pada Gambar \ref{fig:alur_penelitian}.
 
 \begin{figure}[H]
     \centering
@@ -16,10 +16,10 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
 
 \begin{enumerate}
     \item \textbf{Identifikasi Domain Penelitian} \\
-    Tahap awal dilakukan dengan mencari referensi domain penelitian untuk klasifikasi suara. Berdasarkan pertimbangan ketersediaan dataset dan urgensi model klasifikasi, domain yang dipilih adalah domain keselamatan publik yang difokuskan untuk alat bantu penyandang Tuna Rungu.
+    Tahap awal dilakukan dengan mencari referensi domain penelitian untuk klasifikasi suara. Berdasarkan pertimbangan ketersediaan dataset dan urgensi model klasifikasi, domain yang dipilih adalah domain keselamatan publik yang difokuskan untuk alat bantu penyandang tunarungu.
 
     \item \textbf{Studi Literatur} \\
-    Dilakukan kajian literatur mendalam untuk menemukan urgensi penelitian, khususnya mengenai kebutuhan teknologi asistif yang mampu mengurangi risiko kecelakaan bagi penyandang Tuna Rungu melalui pengenalan sinyal bahaya.
+    Dilakukan kajian literatur mendalam untuk menemukan urgensi penelitian, khususnya mengenai kebutuhan teknologi asistif yang mampu mengurangi risiko kecelakaan bagi penyandang tunarungu melalui pengenalan sinyal bahaya.
 
     \item \textbf{Identifikasi dan Akuisisi Dataset} \\
     Akuisisi dataset dilakukan dengan mengambil dataset sekunder yang sudah terstandarisasi, yaitu UrbanSound8K. Akuisisi dataset primer tidak dilakukan demi menghindari \textit{device bias} akibat perekaman dataset dengan perangkat non-standar (seperti smartphone) serta kendala regulasi keamanan pada perekaman kelas \textit{gun\_shot}. Maka dari itu, dataset sekunder terstandarisasi menjadi solusi yang valid dalam penelitian ini. Dari dataset tersebut, dilakukan seleksi kelas sinyal bahaya dengan strategi antisipasi terhadap kendala ketidakseimbangan data (\textit{imbalanced data}) yang telah disiapkan sejak awal.    
@@ -48,21 +48,29 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
 \end{enumerate}
 
 \section{Pengumpulan dan Pra-pemrosesan Data} \label{III.Preprocessing}
-Sumber data utama dalam penelitian ini adalah dataset publik \textbf{UrbanSound8K}. 
+Sumber data utama dalam penelitian ini adalah dataset publik \textbf{UrbanSound8K}.
 Dataset diunduh secara manual dari repositori Kaggle dalam format terkompresi (\texttt{.zip}).
 Setelah diekstraksi, struktur dataset terdiri dari 10 folder (masing-masing mewakili satu \textit{fold}) beserta satu file metadata (\texttt{.csv}) yang memuat informasi nama file audio, \textit{class ID}, dan \textit{fold} asal. \par
 
-Namun, dataset mentah ini memerlukan serangkaian penyesuaian agar relevan dengan konteks keselamatan penyandang Tuna Rungu. 
-Mengingat dataset ini awalnya berisi 10 kelas suara umum di perkotaan yang tersebar dalam 10 \textit{fold}, penelitian ini memfokuskan pada seleksi kelas bahaya spesifik serta membagi data menjadi 5 fold eksperimen.
+Namun, dataset mentah ini memerlukan serangkaian penyesuaian agar relevan dengan konteks keselamatan penyandang tunarungu. 
+Mengingat dataset ini awalnya berisi 10 kelas suara umum di perkotaan yang tersebar dalam 10 \textit{fold}, penelitian ini memfokuskan pada seleksi kelas bahaya spesifik serta menyusun ulang data menjadi 5 fold eksperimen.
 Oleh karena itu, tahap pra-pemrosesan data menjamin integritas data dan mencegah kebocoran informasi (\textit{data leakage}) selama proses pelatihan, sebagaimana dijabarkan pada tahapan berikut.\par
 
-\subsection{Strategi Pembagian Data (\textit{Fold Mapping})}
+\subsection{Strategi Penyusunan Ulang Data (\textit{Fold Mapping})}
 Dataset UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}. Untuk efisiensi eksperimen tanpa melanggar aturan independensi data, penelitian ini menggabungkan 10 \textit{fold} tersebut menjadi 5 \textit{fold} eksperimen baru. Penggabungan dilakukan secara berurutan (misalnya Fold 1 dan 2 menjadi Fold Baru 1) tanpa pengacakan data antar \textit{fold}.
+% Gambar
+\begin{figure}[H]
+    \centering
+    % Ganti 'gambar/alur_penelitian.png' dengan nama file gambar kamu
+    \includegraphics[width=1.0\textwidth]{figure/Fold_Map.pdf} 
+    \caption{Ilustrasi Strategi Penyusunan Ulang Fold pada Dataset UrbanSound8K}
+    \label{fig:strategi_fold_mapping}
+\end{figure}
 
 Setelah penggabungan, dilakukan pembagian set data menjadi Data Latih (\textit{Train}) dan Data Uji (\textit{Test}). Pemisahan ini krusial untuk memastikan model diuji menggunakan data yang belum pernah dilihat sebelumnya, sehingga hasil evaluasi mencerminkan kemampuan model mempelajari karakteristik suara, bukan sekadar menghafal data.
 
 \subsection{Seleksi Kelas (\textit{Class Filtering})}
-Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan Tuna Rungu. Oleh karena itu, dilakukan penyaringan untuk hanya mengambil 4 kelas prioritas yang merepresentasikan sinyal bahaya, yaitu:
+Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan tunarungu. Oleh karena itu, dilakukan penyaringan untuk hanya mengambil 4 kelas prioritas yang merepresentasikan sinyal bahaya, yaitu:
 \begin{itemize}
     \item \textit{gun\_shot} (tembakan)
     \item \textit{siren} (sirine)

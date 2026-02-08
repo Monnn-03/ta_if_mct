@@ -2,6 +2,10 @@
 
 ## February
 
+### 2026-02-08
+- Merevisi kata Tuna Rungu menjadi tunarungu pada Bab III
+- Memberikan ilustrasi pada fold mapping
+
 ### 2026-02-07
 - Menggabungkan 3.2. Akuisisi Data dengan 3.3. Pra-pemrosesan data menjadi 3.2. Pengumpulan dan Pra-pemrosesan Data
 
