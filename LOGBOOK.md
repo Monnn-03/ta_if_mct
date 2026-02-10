@@ -7,6 +7,7 @@
 - Ubah nama log di WandB secara jelas
 - Ubah LR default menjadi 5e-4
 - Ubah epoch menjadi 50
+- Set LRScheduler dengan `patience=4`, `factor=0.5` dan `target_metrix=train_loss`.
 
 
 ### 2026-02-09

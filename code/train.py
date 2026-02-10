@@ -218,7 +218,7 @@ def run_training():
         model = model.to(CONFIG["device"])
         optimizer = optim.Adam(model.parameters(), lr=CONFIG["learning_rate"])
 
-        scheduler = optim.lr_scheduler.StepLR(optimizer, patience=4, target_metrix="train_loss", epoch=50)
+        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', patience=4, factor=0.5, verbose=True)
         
         history = {'train_loss': [], 'train_f1': [], 'val_loss': [], 'val_f1': []}
         best_f1 = 0.0
@@ -257,6 +257,9 @@ def run_training():
                 print(f"   Epoch {epoch+1}: F1 {val_f1:.3f} (New Best!)")
             else:
                 print(f"   Epoch {epoch+1}: F1 {val_f1:.3f}")
+            
+            # Step Scheduler
+            scheduler.step(train_loss)
 
         # Stop Stopwatch per Fold
         fold_duration = time.time() - fold_start_time
