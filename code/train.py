@@ -252,7 +252,7 @@ def run_training():
                 best_labels_true = labels_true
                 best_labels_pred = labels_pred
                 
-                # Simpan Model
+                # Simpan Model (Checkpoint)
                 torch.save(model.state_dict(), f"{CONFIG['save_dir']}/{CONFIG['model_type']}_{fold_name}_best.pth")
                 print(f"   Epoch {epoch+1}: F1 {val_f1:.3f} (New Best!)")
             else:
