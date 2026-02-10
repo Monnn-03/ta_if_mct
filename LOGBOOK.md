@@ -5,6 +5,7 @@
 ### 2026-02-10
 - Membuktikan DataLoader tetap bekerja diluar loop epoch, augmentasi juga tetap berjalan walaupun `shuffle=false`
 - Ubah nama log di WandB secara jelas
+- Ubah LR default menjadi 5e-4
 
 
 ### 2026-02-09

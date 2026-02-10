@@ -51,7 +51,7 @@ CONFIG = {
     "model_type": "spectrogram",  
     "num_classes": 4,
     "batch_size": 8,       # Ukuran batch untuk satu kali epoch training
-    "learning_rate": 0.001,  
+    "learning_rate": 0.0005,  
     "epochs": 15,            
     "folds": 5,              
     "num_workers": 2,      # CPU workers untuk Preprocessing data
