@@ -227,6 +227,10 @@ def run_training():
         best_labels_true = []
         best_labels_pred = []
 
+        # Early Stopping Variables
+        patience_counter = 5
+        early_stop_counter = 0
+
         # Loop Epoch
         for epoch in range(CONFIG["epochs"]):
             train_loss, train_f1 = train_one_epoch(model, train_loader, criterion, optimizer, CONFIG["device"])
@@ -255,8 +259,15 @@ def run_training():
                 # Simpan Model (Checkpoint)
                 torch.save(model.state_dict(), f"{CONFIG['save_dir']}/{CONFIG['model_type']}_{fold_name}_best.pth")
                 print(f"   Epoch {epoch+1}: F1 {val_f1:.3f} (New Best!)")
+
+                early_stop_counter = 0 # Reset counter jika ada rekor baru
             else:
                 print(f"   Epoch {epoch+1}: F1 {val_f1:.3f}")
+
+                early_stop_counter += 1
+                if early_stop_counter >= patience_counter:
+                    print(f"Early stopping di epoch {epoch+1} setelah {patience_counter} epoch tanpa adanya rekor baru.")
+                    break
             
             # Step Scheduler
             scheduler.step(train_loss)
