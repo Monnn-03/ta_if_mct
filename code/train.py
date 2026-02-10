@@ -52,7 +52,7 @@ CONFIG = {
     "num_classes": 4,
     "batch_size": 8,       # Ukuran batch untuk satu kali epoch training
     "learning_rate": 0.0005,  
-    "epochs": 15,            
+    "epochs": 50,            
     "folds": 5,              
     "num_workers": 2,      # CPU workers untuk Preprocessing data
     "device": "cuda" if torch.cuda.is_available() else "cpu",
@@ -217,6 +217,8 @@ def run_training():
         model = AudioClassifier(model_type=CONFIG["model_type"], num_classes=CONFIG["num_classes"])
         model = model.to(CONFIG["device"])
         optimizer = optim.Adam(model.parameters(), lr=CONFIG["learning_rate"])
+
+        scheduler = optim.lr_scheduler.StepLR(optimizer, patience=4, target_metrix="train_loss", epoch=50)
         
         history = {'train_loss': [], 'train_f1': [], 'val_loss': [], 'val_f1': []}
         best_f1 = 0.0
