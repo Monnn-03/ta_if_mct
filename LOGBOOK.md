@@ -2,6 +2,11 @@
 
 ## February
 
+### 2026-02-10
+- Membuktikan DataLoader tetap bekerja diluar loop epoch, augmentasi juga tetap berjalan walaupun `shuffle=false`
+- 
+
+
 ### 2026-02-09
 - Membuat paragraf pembuka subbab 3.3. Konfigurasi Model
 - Menambahkan penjelasan Sigmoid menjadi linear pada bagian 3.3.1.
