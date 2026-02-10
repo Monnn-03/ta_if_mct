@@ -1,3 +1,4 @@
+from datetime import datetime
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -169,9 +170,14 @@ def validate(model, loader, criterion, device):
 # ==============================================================================
 def run_training():
     seed_everything(CONFIG["seed"])
+
+    activity = input("Masukkan aktivitas Anda saat ini: ")
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H%M")
+    run_name = f"{current_time}_{activity}"
     wandb.init(
         project="TA_SoundClassification", # Nama Proyek di Dashboard
-        config=CONFIG                     # Kamus settingan (LR, Batch Size, dll)
+        config=CONFIG,                     # Kamus settingan (LR, Batch Size, dll)
+        name=run_name                    # Nama Run di Dashboard
     )
     
     print(f"🚀 Mulai Training: {CONFIG['model_type'].upper()}")
