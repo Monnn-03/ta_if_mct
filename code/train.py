@@ -195,7 +195,7 @@ def run_training():
     final_scores = []
     
     # Loop Fold
-    for fold_idx in [5]:
+    for fold_idx in [1]:
         fold_name = f"fold{fold_idx}"
         print(f"\n📦 --- {fold_name.upper()} ---")
         

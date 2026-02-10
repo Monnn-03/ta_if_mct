@@ -10,6 +10,7 @@
 - Set LRScheduler dengan `patience=4`, `factor=0.5` dan `target_metrix=train_loss`.
 - Checkpoint sudah diterapkan didalam loop epoch
 - Set Early Stopping dengan `patience=5`
+- Ubah train fold menjadi fold 1 saja
 
 
 ### 2026-02-09
