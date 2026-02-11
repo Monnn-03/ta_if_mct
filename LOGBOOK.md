@@ -8,6 +8,7 @@
 - Ubah `Target_Metric=val_loss` dan `patience=3` pada scheduler LR.
 - Memperjelas filename checkpoint dan dir.
 - Optimizer ditaruh dalam CONFIG.
+- Train FINAL untuk BAB III.
 
 ### 2026-02-10
 - Membuktikan DataLoader tetap bekerja diluar loop epoch, augmentasi juga tetap berjalan walaupun `shuffle=false`

@@ -187,7 +187,9 @@ def run_training():
 
     activity = input("Masukkan aktivitas Anda saat ini: ")
     current_time = datetime.now().strftime("%Y-%m-%d %H%M")
+
     run_name = f"{current_time}_{activity}"
+
     wandb.init(
         project="TA_SoundClassification", # Nama Proyek di Dashboard
         config=CONFIG,                     # Kamus settingan (LR, Batch Size, dll)
@@ -274,7 +276,12 @@ def run_training():
             history['val_f1'].append(val_f1)
 
             # Step Scheduler
-            scheduler.step(CONFIG["scheduler"]["target_metric"])
+            if CONFIG["scheduler"]["target_metric"] == "val_loss":
+                scheduler.step(val_loss)
+            elif CONFIG["scheduler"]["target_metric"] == "train_loss":
+                scheduler.step(train_loss)
+            else:
+                scheduler.step(val_loss)
 
             current_lr = optimizer.param_groups[0]['lr']
 
