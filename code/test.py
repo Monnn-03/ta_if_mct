@@ -19,6 +19,7 @@ class SimpleDataset(Dataset):
         noise = random.randint(100, 999) 
         
         augmented_val = original_val + noise
+        print(f"Noise: {noise}")
         return original_val, noise, augmented_val
 
 # --- 2. Setup DataLoader (DI LUAR LOOP - Cara Benar) ---

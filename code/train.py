@@ -51,7 +51,6 @@ CONFIG = {
     "model_type": "spectrogram",  
     "num_classes": 4,
     "batch_size": 8,       # Ukuran batch untuk satu kali epoch training
-    "learning_rate": 0.0005,  
     "epochs": 50,            
     "folds": 5,              
     "num_workers": 2,      # CPU workers untuk Preprocessing data
@@ -60,7 +59,22 @@ CONFIG = {
     "report_dir": "reports",
     "seed": 42,
     "target_sr": 32000,    # Standar PANNs
-    "fixed_length": 32000 # 1 detik pada 32kHz, untuk Augmentasi Temporal
+    "fixed_length": 32000, # 1 detik pada 32kHz, untuk Augmentasi Temporal
+    "learning_rate": 5e-4,
+
+    # OPTIMIZER LOCK
+    "optimizer": {
+        "type": "Adam",
+        "weight_decay": 1e-5,
+    },
+
+    # SCHEDULER LOCK
+    "scheduler": {
+        "type": "ReduceLROnPlateau",
+        "patience": 3,
+        "factor": 0.5,
+        "target_metric": "val_loss", # Bisa 'train_loss' atau 'val_loss' tergantung kebutuhan
+    },
 }
 
 # Mapping label untuk Confusion Matrix
@@ -216,9 +230,9 @@ def run_training():
         
         model = AudioClassifier(model_type=CONFIG["model_type"], num_classes=CONFIG["num_classes"])
         model = model.to(CONFIG["device"])
-        optimizer = optim.Adam(model.parameters(), lr=CONFIG["learning_rate"])
+        optimizer = optim.Adam(model.parameters(), lr=CONFIG["learning_rate"], weight_decay=CONFIG["optimizer"]["weight_decay"])
 
-        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', patience=4, factor=0.5)
+        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', patience=CONFIG["scheduler"]["patience"], factor=CONFIG["scheduler"]["factor"])
         
         history = {'train_loss': [], 'train_f1': [], 'val_loss': [], 'val_f1': []}
         best_f1 = 0.0
@@ -243,7 +257,7 @@ def run_training():
             history['val_f1'].append(val_f1)
 
             # Step Scheduler
-            scheduler.step(train_loss)
+            scheduler.step(CONFIG["scheduler"]["target_metric"])
 
             current_lr = optimizer.param_groups[0]['lr']
 

@@ -5,6 +5,7 @@
 ### 2026-02-11
 - Train ulang dengan penyesuaian logika file checkpoint agar tidak tumpuk.
 - Train ulang dengan penambahan learning rate graph pada log WandB.
+- Ubah `Target_Metric=val_loss` dan `patience=3` pada scheduler LR.
 
 ### 2026-02-10
 - Membuktikan DataLoader tetap bekerja diluar loop epoch, augmentasi juga tetap berjalan walaupun `shuffle=false`
