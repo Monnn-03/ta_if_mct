@@ -55,7 +55,7 @@ CONFIG = {
     "folds": 5,              
     "num_workers": 2,      # CPU workers untuk Preprocessing data
     "device": "cuda" if torch.cuda.is_available() else "cpu",
-    "save_dir": "models_saved",
+    "save_dir": "checkpoints",
     "report_dir": "reports",
     "seed": 42,
     "target_sr": 32000,    # Standar PANNs
@@ -277,7 +277,12 @@ def run_training():
                 best_labels_true = labels_true
                 best_labels_pred = labels_pred
 
-                new_checkpoint_path = f"{CONFIG['save_dir']}/{CONFIG['model_type']}_{fold_name}_{best_f1:.3f}_best.pth"
+                root_checkpoint_dir = f"{CONFIG['save_dir']}/{CONFIG['model_type']}"
+                os.makedirs(root_checkpoint_dir, exist_ok=True)
+
+                checkpoint_filename = f"fold{fold_idx}_epoch{epoch+1}_{best_f1:.3f}_best.pth"
+
+                new_checkpoint_path = f"{root_checkpoint_dir}/{checkpoint_filename}"
                 
                 if last_checkpoint_path is not None and os.path.exists(last_checkpoint_path):
                     try:
