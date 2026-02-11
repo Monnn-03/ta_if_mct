@@ -64,8 +64,8 @@ CONFIG = {
 
     # OPTIMIZER LOCK
     "optimizer": {
-        "type": "Adam",
-        "weight_decay": 1e-5,
+        "name": "AdamW",
+        "weight_decay": 1e-4,
     },
 
     # SCHEDULER LOCK
@@ -230,7 +230,24 @@ def run_training():
         
         model = AudioClassifier(model_type=CONFIG["model_type"], num_classes=CONFIG["num_classes"])
         model = model.to(CONFIG["device"])
-        optimizer = optim.Adam(model.parameters(), lr=CONFIG["learning_rate"], weight_decay=CONFIG["optimizer"]["weight_decay"])
+
+        # LOGIKA PEMILIHAN OPTIMIZER BERDASARKAN CONFIG
+        opt_name = CONFIG["optimizer"]["name"]
+        lr = CONFIG["learning_rate"]
+        wd = CONFIG["optimizer"]["weight_decay"]
+
+        print(f"Menggunakan Optimizer: {opt_name}") # Log biar jelas
+
+        if opt_name == "Adam":
+            optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=wd)
+        elif opt_name == "AdamW":
+            optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=wd)
+        elif opt_name == "SGD":
+            optimizer = optim.SGD(model.parameters(), lr=lr, weight_decay=wd, momentum=0.9)
+        elif opt_name == "RMSprop":
+            optimizer = optim.RMSprop(model.parameters(), lr=lr, weight_decay=wd)
+        else:
+            raise ValueError(f"Optimizer belum didaftarkan: {opt_name}")
 
         scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', patience=CONFIG["scheduler"]["patience"], factor=CONFIG["scheduler"]["factor"])
         
@@ -270,7 +287,7 @@ def run_training():
                 "val_f1": val_f1,
                 "learning_rate": current_lr,
             })
-            
+
             if val_f1 > best_f1:
                 best_f1 = val_f1
                 # Simpan prediksi saat momen terbaik ini untuk Confusion Matrix
