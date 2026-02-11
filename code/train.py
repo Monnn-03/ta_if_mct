@@ -242,13 +242,19 @@ def run_training():
             history['val_loss'].append(val_loss)
             history['val_f1'].append(val_f1)
 
+            # Step Scheduler
+            scheduler.step(train_loss)
+
+            current_lr = optimizer.param_groups[0]['lr']
+
             #  KIRIM LAPORAN KE WANDB (TARUH DISINI)
             wandb.log({
                 "epoch": epoch + 1,
                 "train_loss": train_loss,
                 "train_f1": train_f1,
                 "val_loss": val_loss,
-                "val_f1": val_f1
+                "val_f1": val_f1,
+                "learning_rate": current_lr,
             })
             
             if val_f1 > best_f1:
@@ -279,9 +285,6 @@ def run_training():
                 if early_stop_counter >= patience_counter:
                     print(f"Early stopping di epoch {epoch+1} setelah {patience_counter} epoch tanpa adanya rekor baru.")
                     break
-            
-            # Step Scheduler
-            scheduler.step(train_loss)
 
         # Stop Stopwatch per Fold
         fold_duration = time.time() - fold_start_time
