@@ -2,6 +2,9 @@
 
 ## February
 
+### 2026-02-11
+- Train ulang dengan penyesuaian logika file checkpoint agar tidak tumpuk.
+
 ### 2026-02-10
 - Membuktikan DataLoader tetap bekerja diluar loop epoch, augmentasi juga tetap berjalan walaupun `shuffle=false`
 - Ubah nama log di WandB secara jelas

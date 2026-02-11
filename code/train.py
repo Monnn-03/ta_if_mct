@@ -172,7 +172,7 @@ def run_training():
     seed_everything(CONFIG["seed"])
 
     activity = input("Masukkan aktivitas Anda saat ini: ")
-    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H%M")
+    current_time = datetime.now().strftime("%Y-%m-%d %H%M")
     run_name = f"{current_time}_{activity}"
     wandb.init(
         project="TA_SoundClassification", # Nama Proyek di Dashboard
@@ -218,10 +218,11 @@ def run_training():
         model = model.to(CONFIG["device"])
         optimizer = optim.Adam(model.parameters(), lr=CONFIG["learning_rate"])
 
-        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', patience=4, factor=0.5, verbose=True)
+        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', patience=4, factor=0.5)
         
         history = {'train_loss': [], 'train_f1': [], 'val_loss': [], 'val_f1': []}
         best_f1 = 0.0
+        last_checkpoint_path = None
         
         # Variabel untuk menyimpan prediksi terbaik (untuk Confusion Matrix)
         best_labels_true = []
@@ -255,10 +256,20 @@ def run_training():
                 # Simpan prediksi saat momen terbaik ini untuk Confusion Matrix
                 best_labels_true = labels_true
                 best_labels_pred = labels_pred
+
+                new_checkpoint_path = f"{CONFIG['save_dir']}/{CONFIG['model_type']}_{fold_name}_{best_f1:.3f}_best.pth"
                 
+                if last_checkpoint_path is not None and os.path.exists(last_checkpoint_path):
+                    try:
+                        os.remove(last_checkpoint_path)
+                        print(f"   🗑️ Menghapus checkpoint lama: {os.path.basename(last_checkpoint_path)}")
+                    except Exception as e:
+                        print(f"⚠️  Gagal menghapus checkpoint lama: {e}")
+
                 # Simpan Model (Checkpoint)
-                torch.save(model.state_dict(), f"{CONFIG['save_dir']}/{CONFIG['model_type']}_{fold_name}_best.pth")
-                print(f"   Epoch {epoch+1}: F1 {val_f1:.3f} (New Best!)")
+                torch.save(model.state_dict(), new_checkpoint_path)
+                last_checkpoint_path = new_checkpoint_path
+                print(f"   Epoch {epoch+1}: F1 {val_f1:.3f} (New Best!) [Checkpoint disimpan!]")
 
                 early_stop_counter = 0 # Reset counter jika ada rekor baru
             else:
