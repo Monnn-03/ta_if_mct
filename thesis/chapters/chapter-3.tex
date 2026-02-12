@@ -19,29 +19,30 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
     Tahap awal dilakukan dengan mencari referensi domain penelitian untuk klasifikasi suara. Berdasarkan pertimbangan ketersediaan dataset dan urgensi model klasifikasi, domain yang dipilih adalah domain keselamatan publik yang difokuskan untuk alat bantu penyandang tunarungu.
 
     \item \textbf{Studi Literatur} \\
-    Dilakukan kajian literatur mendalam untuk menemukan urgensi penelitian, khususnya mengenai kebutuhan teknologi asistif yang mampu mengurangi risiko kecelakaan bagi penyandang tunarungu melalui pengenalan sinyal bahaya.
+    Dilakukan kajian literatur mendalam untuk menemukan urgensi penelitian, khususnya mengenai kebutuhan teknologi asistif yang mampu mengurangi risiko kecelakaan bagi penyandang tunarungu melalui pengenalan sinyal bahaya. Ini menjadi landasan teoritis bagaimana teknologi klasifikasi suara dapat menjadi solusi yang efektif dalam mengatasi permasalahan tersebut.
 
-    \item \textbf{Identifikasi dan Akuisisi Dataset} \\
-    Akuisisi dataset dilakukan dengan mengambil dataset sekunder yang sudah terstandarisasi, yaitu UrbanSound8K. Akuisisi dataset primer tidak dilakukan demi menghindari \textit{device bias} akibat perekaman dataset dengan perangkat non-standar (seperti smartphone) serta kendala regulasi keamanan pada perekaman kelas \textit{gun\_shot}. Maka dari itu, dataset sekunder terstandarisasi menjadi solusi yang valid dalam penelitian ini. Dari dataset tersebut, dilakukan seleksi kelas sinyal bahaya dengan strategi antisipasi terhadap kendala ketidakseimbangan data (\textit{imbalanced data}) yang telah disiapkan sejak awal.    
+    \item \textbf{Identifikasi dan Akuisisi Data} \\
+    Akuisisi data dilakukan dengan mengambil dataset sekunder yang sudah terstandarisasi, yaitu UrbanSound8K. Akuisisi data primer tidak dilakukan demi menghindari \textit{device bias} akibat perekaman dataset dengan perangkat non-standar (seperti smartphone) serta kendala regulasi keamanan pada perekaman kelas \textit{gun\_shot}. Dari dataset tersebut, dilakukan seleksi kelas sinyal bahaya dengan strategi antisipasi terhadap kendala ketidakseimbangan data (\textit{imbalanced data}) yang telah disiapkan sejak awal.    
 
     \item \textbf{Pemilihan Model \textit{Pre-trained}} \\
     Mengingat keterbatasan data berisiko menyebabkan kegagalan pelatihan \textit{from scratch}, digunakan pendekatan \textit{Transfer Learning} memanfaatkan model \textit{Pre-trained}. Arsitektur PANNs (\textit{Pre-trained Audio Neural Networks}) dipilih karena telah dilatih pada dataset masif dan memiliki performa yang teruji.
 
     \item \textbf{Studi Dokumentasi Teknis} \\
-    Tahap ini mempelajari karakteristik dataset dan model yang digunakan.
+    Tahap ini mempelajari karakteristik data dan model yang digunakan.
     Fokus utama dalam tahap ini adalah memahami mekanisme pembagian data (fold) pada dataset guna mencegah kebocoran data (\textit{data leakage}) dan mempelajari variasi representasi input pada arsitektur PANNs untuk menentukan skenario komparasi yang tepat.
 
-    \item \textbf{Pra-pemrosesan Dataset (\textit{Pre-processing})} \\
+    \item \textbf{\textit{Pre-processing} Data} \\
     Serangkaian proses dilakukan untuk mengubah data mentah menjadi format yang siap latih, meliputi penanganan struktur \textit{fold}, seleksi kelas, dan penyesuaian format audio, serta penerapan teknik augmentasi temporal berupa \textit{random cropping} untuk menstandarisasi durasi input.
 
     \item \textbf{Penyesuaian Konfigurasi Model} \\
     Dilakukan modifikasi pada arsitektur model agar sesuai dengan tujuan klasifikasi 4 kelas bahaya, serta penerapan strategi untuk menangani ketidakseimbangan data.
 
-    \item \textbf{Uji Coba \textit{Transfer Learning}} \\
-    Tahapan inti di mana model dilatih untuk mengenali karakteristik suara spesifik. Proses ini melibatkan eksperimen \textit{Trial and Error} untuk menemukan konfigurasi parameter pelatihan yang paling optimal.
+    \item \textbf{Eksperimen \textit{Transfer Learning}} \\
+    Tahapan ini menjadi tahapan inti di mana model dilatih ulang (\textit{fine-tuning}) untuk mengenali karakteristik suara spesifik. Proses ini mencakup eksperimen \textit{hyperparameter} dan pelatihan ketiga variasi model untuk menemukan konfigurasi parameter pelatihan yang paling optimal.
+    Proses ini bersifat iteratif. Apabila performa model belum mencapai target yang diharapkan, maka akan dilakukan penyesuaian ulang pada tahap \textit{pre-processing} data untuk melakukan penyesuaian data dan melakukan pelatihan kembali hingga diperoleh model yang optimal.
 
     \item \textbf{Evaluasi dan Analisis Hasil} \\
-    Performa model hasil \textit{Fine-tuning} dievaluasi menggunakan metrik \textit{Confusion Matrix}, \textit{F1-Score}, serta analisis grafik \textit{Loss-Accuracy} dan waktu komputasi. Output model diuji validitasnya untuk memastikan kelayakan implementasi.
+    Performa model hasil \textit{Fine-tuning} dievaluasi menggunakan metrik \textit{F1-Score}, \textit{Loss} dan \textit{Confusion Matrix}, serta analisis efisiensi waktu komputasi untuk memastikan kelayakan implementasi secara \textit{real-time}.
 
     \item \textbf{Kesimpulan} \\
     Berdasarkan hasil evaluasi, dilakukan perbandingan komparatif untuk menyimpulkan model mana yang memiliki performa paling unggul dan stabil.
@@ -163,11 +164,10 @@ Sebagai ilustrasi, jika kelas \textit{gun\_shot} memiliki jumlah sampel yang jau
 Nilai bobot ini kemudian diaplikasikan sebagai argumen parameter pada fungsi \textit{Cross Entropy Loss}.
 Secara matematis, jika model melakukan kesalahan prediksi pada kelas \textit{gun\_shot}, nilai \textit{loss} akan dikalikan dengan faktor $W_j$ yang besar tersebut. Dengan begitu, model akan dihukum lebih berat dan dipaksa untuk belajar mengenali fitur kelas minoritas tersebut.
 
-\section{Konfigurasi Parameter Eksperimen} \label{sec:konfigurasi_eksperimen}
-
-Penelitian ini menggunakan model \textit{Pre-trained Audio Neural Networks} (PANNs) sebagai kerangka dasar (\textit{backbone}). Model ini telah dilatih sebelumnya (\textit{pre-trained}) menggunakan dataset AudioSet yang berskala besar. Untuk mengadaptasi model tersebut ke dalam kasus klasifikasi 4 kelas pada dataset UrbanSound8K, dilakukan metode \textit{Transfer Learning} dengan membekukan (\textit{freeze}) lapisan ekstraksi fitur awal dan hanya melakukan \textit{fine-tuning} pada lapisan \textit{Fully Connected} (FC) terakhir.
-
-Agar hasil evaluasi antar model (\textit{ResNet38}, \textit{Res1dNet31}, dan \textit{Wavegram-Logmel-CNN}) dapat diperbandingkan secara adil (\textit{apple-to-apple}), seluruh proses pelatihan menggunakan konfigurasi \textit{hyperparameter} yang seragam. Rincian parameter konfigurasi yang dikendalikan dalam eksperimen ini disajikan pada Tabel \ref{tab:parameter_latih}.
+\section{Konfigurasi Parameter Pelatihan} \label{sec:konfigurasi_eksperimen}
+Sebelum melakukan uji ketiga model, terdapat beberapa konfigurasi parameter yang perlu diterapkan pada training model.
+Hal ini bertujuan untuk menemukan konfigurasi pelatihan model yang paling optimal.
+Rincian parameter konfigurasi yang dikendalikan dalam eksperimen ini disajikan pada Tabel \ref{tab:parameter_latih}. \par
 
 \begin{table}[H]
 \centering
@@ -179,15 +179,21 @@ Agar hasil evaluasi antar model (\textit{ResNet38}, \textit{Res1dNet31}, dan \te
 \textbf{Kategori} & \textbf{Konfigurasi / Nilai} \\ \hline
 \multicolumn{2}{|c|}{\textbf{Preprocessing Data}} \\ \hline
 Input Sampling Rate & 32.000 Hz \\ \hline
-Input Duration & 5 Detik (160.000 samples) \\ \hline
-Teknik Augmentasi & \textit{Random Cropping} \& \textit{Zero-padding} \\ \hline
-Skema Validasi & 5-Fold Cross Validation (Group Split) \\ \hline
 \multicolumn{2}{|c|}{\textbf{Hyperparameter Training}} \\ \hline
 Batch Size & 8 \\ \hline
-\textit{Epoch} & 15 \\ \hline
-Optimizer & Adam \\ \hline
-Learning Rate & 0.001 ($1e^{-3}$) \\ \hline
-Loss Function & Cross Entropy dengan \textit{Class Weights} \\ \hline
+\textit{Epoch} & 50 \\ \hline
+Num Workers & 2 \\ \hline
+Learning Rate & 0.0005 ($5e^{-4}$) \\ \hline
+\multicolumn{2}{|c|}{\textbf{Optimizer}} \\ \hline
+Tipe & AdamW \\ \hline
+Weight Decay & 0.0001 ($1e^{-4}$) \\ \hline
+\multicolumn{2}{|c|}{\textbf{Learning Rate Scheduler}} \\ \hline
+Tipe & ReduceLROnPlateau \\ \hline
+Faktor Pengurangan & 0.5 \\ \hline
+Patience & 3 \\ \hline
+Target Metrik & Validation Loss \\ \hline
+\multicolumn{2}{|c|}{\textbf{Early Stopping}} \\ \hline
+Patience & 5 \\ \hline
 \multicolumn{2}{|c|}{\textbf{Reproducibilitas}} \\ \hline
 Random Seed & 42 \\ \hline
 Perangkat Keras & GPU NVIDIA GeForce GTX 1050 \\ \hline
