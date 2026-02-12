@@ -5,6 +5,8 @@
 ### 2026-02-12
 - Revisi Penjelasan Sigmoid -> Linear pada bagian 3.3.1.
 - Revisi nama tahapan dan penjelasan alur penelitian pada poin 2, 3, 6, 8, 9.
+- Menambahkan bagian 3.2.3. Standarisasi Format Audio.
+
 
 ### 2026-02-11
 - Train ulang dengan penyesuaian logika file checkpoint agar tidak tumpuk.

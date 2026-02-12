@@ -58,6 +58,22 @@ Mengingat dataset ini awalnya berisi 10 kelas suara umum di perkotaan yang terse
 Sebagai langkah antisipasi terhadap keterbatasan data setelah seleksi kelas, strategi augmentasi temporal diterapkan untuk memperkaya variasi data latih.
 Oleh karena itu, tahap pra-pemrosesan data menjamin integritas data dan mencegah kebocoran informasi (\textit{data leakage}) selama proses pelatihan, sebagaimana dijabarkan pada tahapan berikut.\par
 
+\subsection{Seleksi Kelas (\textit{Class Filtering})}
+Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan tunarungu. Oleh karena itu, dilakukan penyaringan untuk hanya mengambil 4 kelas prioritas yang merepresentasikan sinyal bahaya, yaitu:
+\begin{enumerate}
+    \item \textbf{\textit{gun\_shot} (Tembakan)} \newline
+    Suara tembakan senjata api merupakan sinyal bahaya dengan tingkat fatalitas yang sangat tinggi. Walaupun kejadiannya jarang terjadi, khususnya di Indonesia, deteksi suara ini menjadi langkah mitigasi risiko yang baik dalam melindungi penyandang tunarungu.
+    
+    \item \textbf{\textit{siren} (Sirine)} \newline
+    Suara sirine menandakan keberadaan kendaraan prioritas (ambulans, pemadam kebakaran, atau patroli polisi) yang sering kali melaju dengan kecepatan tinggi dan memiliki hak prioritas jalan. Dengan deteksi suara tersebut, pengguna dapat mengambil langkah untuk segera menepi dan menghindari jalur lintasan kendaraan tersebut.
+    
+    \item \textbf{\textit{dog\_bark} (Gonggongan Anjing)} \newline
+    Suara anjing yang menggonggong berpotensi menjadi sinyal bahaya, terutama jika anjing tersebut berupa anjing liar yang dapat menyerang secara tiba-tiba. Dengan mendeteksi suara ini, pengguna dapat langsung mengetahui di mana posisi anjing tersebut dan mengambil langkah untuk antisipasi ancaman.
+    
+    \item \textbf{\textit{car\_horn} (Klakson Mobil)} \newline
+    Suara klakson mobil menjadi sinyal penting pada lalu lintas, yang salah satu fungsinya adalah sebagai peringatan dari pengemudi kendaraan tersebut kepada pejalan kaki yang berada di jalur lintasnya. Dengan deteksi ini, pengguna dapat lebih waspada terhadap situasi lalu lintas di sekitarnya.
+\end{enumerate}
+
 \subsection{Strategi Penyusunan Ulang Data (\textit{Fold Mapping})}
 Dataset UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}. Untuk efisiensi eksperimen tanpa melanggar aturan independensi data, penelitian ini menyusun ulang 10 \textit{fold} tersebut menjadi 5 \textit{fold} eksperimen baru. Penyusunan ini dilakukan secara berurutan (misalnya Fold 1 dan 2 menjadi Fold Baru 1) tanpa pengacakan data antar \textit{fold}.
 % Gambar
@@ -73,20 +89,16 @@ Adapun penyusunan ini didasari oleh dua pertimbangan, yaitu rasio pembagian data
 
 Dikarenakan skema baru tersebut, maka mekanisme validasi yang digunakan selanjutnya pada model adalah \textit{5-fold cross validation}. Pada iterasi setiap pengujiannya, satu \textit{fold} dialokasikan sebagai data uji secara bergantian dan empat \textit{fold} sisanya akan digunakan sebagai data latih model. Mekanisme rotasi ini diterapkan agar model selalu diuji dengan data yang berbeda dari yang sudah pernah dipelajari saat proses latih, sehingga hasil evaluasi mencerminkan kemampuan generalisasi yang sebenarnya.
 
-\subsection{Seleksi Kelas (\textit{Class Filtering})}
-Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan tunarungu. Oleh karena itu, dilakukan penyaringan untuk hanya mengambil 4 kelas prioritas yang merepresentasikan sinyal bahaya, yaitu:
+\subsection{Standarisasi Format Audio}
+Sebelum data audio dapat diproses oleh model, diperlukan standarisasi format pada data tersebut mengingat data mentah memiliki format yang berbeda-beda.
+Ketidaksesuaian format input dapat menyebabkan kegagalan pada proses ekstraksi fitur, bahkan pelatihan model.
+Oleh karena itu, standarisasi format menjadi langkah penting untuk memastikan bahwa semua data audio memiliki format yang konsisten dan sesuai dengan kebutuhan model, di mana langkah-langkah tersebut mencakup :
 \begin{enumerate}
-    \item \textbf{\textit{gun\_shot} (Tembakan)} \newline
-    Suara tembakan senjata api merupakan sinyal bahaya dengan tingkat fatalitas yang sangat tinggi. Walaupun kejadiannya jarang terjadi, khususnya di Indonesia, deteksi suara ini menjadi langkah mitigasi risiko yang baik dalam melindungi penyandang tunarungu.
-    
-    \item \textbf{\textit{siren} (Sirine)} \newline
-    Suara sirine menandakan keberadaan kendaraan prioritas (ambulans, pemadam kebakaran, atau patroli polisi) yang sering kali melaju dengan kecepatan tinggi dan memiliki hak prioritas jalan. Dengan deteksi suara tersebut, pengguna dapat mengambil langkah untuk segera menepi dan menghindari jalur lintasan kendaraan tersebut.
-    
-    \item \textbf{\textit{dog\_bark} (Gonggongan Anjing)} \newline
-    Suara anjing yang menggonggong berpotensi menjadi sinyal bahaya, terutama jika anjing tersebut berupa anjing liar yang dapat menyerang secara tiba-tiba. Dengan mendeteksi suara ini, pengguna dapat langsung mengetahui di mana posisi anjing tersebut dan mengambil langkah untuk antisipasi ancaman.
-    
-    \item \textbf{\textit{car\_horn} (Klakson Mobil)} \newline
-    Suara klakson mobil menjadi sinyal penting pada lalu lintas, yang salah satu fungsinya adalah sebagai peringatan dari pengemudi kendaraan tersebut kepada pejalan kaki yang berada di jalur lintasnya. Dengan deteksi ini, pengguna dapat lebih waspada terhadap situasi lalu lintas di sekitarnya.
+    \item \textbf{Konversi \textit{Channel} Audio (\textit{Down-mixing})} \newline
+    Langkah ini diterapkan karena terdapat beberapa data audio dengan format stereo (dua \textit{channel}). Semua data audio dikonversi menjadi format mono (satu \textit{channel}) untuk menyederhanakan representasi suara dan mengurangi kompleksitas komputasi.
+
+    \item \textbf{Penyesuaian Sampling Rate (\textit{Resampling})} \newline
+    Setelah audio diubah menjadi format mono, dilakukan penyesuaian sampling rate (\textit{resampling}). Sampling rate pada dataset UrbanSound8K bervariatif, sehingga sampling rate pada data diubah menjadi 32.000 Hz agar sesuai dengan standar input pada model PANNs.
 \end{enumerate}
 
 \subsection{Augmentasi Temporal (\textit{Random Cropping})}

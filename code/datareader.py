@@ -62,16 +62,16 @@ class AudioDataset(Dataset):
             if waveform.ndim == 1:
                 waveform = waveform.unsqueeze(0) # Tambah channel dim
 
-            # --- 4. RESAMPLING ---
+            # --- 4. MIX TO MONO ---
+            # Jika audio stereo (2 channel), rata-rata kan jadi mono
+            if waveform.shape[0] > 1:
+                waveform = torch.mean(waveform, dim=0, keepdim=True)
+
+            # --- 5. RESAMPLING ---
             if sr != self.target_sr:
                 # Gunakan torchaudio transforms karena lebih cepat di GPU nantinya
                 resampler = T.Resample(sr, self.target_sr)
                 waveform = resampler(waveform)
-
-            # --- 5. MIX TO MONO ---
-            # Jika audio stereo (2 channel), rata-rata kan jadi mono
-            if waveform.shape[0] > 1:
-                waveform = torch.mean(waveform, dim=0, keepdim=True)
 
             # --- 6. PADDING / CROPPING (FIX LENGTH) ---
             current_len = waveform.shape[1]
