@@ -60,3 +60,4 @@ Setelah melatih model, hasil pelatihan model akan digambarkan dengan beberapa to
 2. F1-Score (Untuk melihat apakah semua suara yang sesuai kelasnya terdeteksi, melihat seberapa presisi tebakan dia)
 3. Grafik loss & accuracy (Untuk melihat proses model belajar)
 4. Waktu training (Untuk menjadi acuan performa komputasi model)
+

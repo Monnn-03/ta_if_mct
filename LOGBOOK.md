@@ -2,6 +2,9 @@
 
 ## February
 
+### 2026-02-12
+- Revisi Penjelasan Sigmoid -> Linear pada bagian 3.3.1.
+
 ### 2026-02-11
 - Train ulang dengan penyesuaian logika file checkpoint agar tidak tumpuk.
 - Train ulang dengan penambahan learning rate graph pada log WandB.

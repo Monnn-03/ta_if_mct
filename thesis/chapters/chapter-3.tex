@@ -118,10 +118,11 @@ Namun, agar model dapat berfungsi optimal sesuai dengan konteks klasifikasi 4 ke
 
 \subsection{Adaptasi Arsitektur (\textit{Transfer Learning})}
 Penyesuaian arsitektur dilakukan pada lapisan keluaran (\textit{output layer}) dan mekanisme pembekuan bobot (\textit{Freeze Base}). 
-Jumlah \textit{neuron} pada lapisan akhir disesuaikan dari 527 \textit{node} menjadi 4 \textit{node} (sesuai jumlah kelas pilihan). 
+Jumlah \textit{neuron} pada lapisan akhir disesuaikan dari 527 \textit{node} menjadi 4 \textit{node} (sesuai jumlah kelas pilihan). \par
+
 Pada model asli PANNs, lapisan akhir menggunakan fungsi aktivasi \textit{sigmoid} yang mengeluarkan output berupa probabilitas tiap kelasnya sendiri.
 Tentu saja, lapisan tersebut cocok dalam konteks klasifikasi \textit{Multi-Label}. 
-Akan tetapi, klasifikasi model yang ditentukan pada penelitian ini adalah klasifikasi \textit{Single-Label}, sehingga fungsi tersebut diganti menjadi lapisan \textit{Linear} (Logits) yang memilih satu kelas dengan probabilitas paling tinggi daripada kelas lainnya. \par
+Akan tetapi, klasifikasi model yang ditentukan pada penelitian ini adalah klasifikasi \textit{Single-Label}, sehingga terjadi modifikasi pada lapisan akhir menjadi lapisan \textit{Linear} (Logits) yang memilih satu kelas dengan probabilitas paling tinggi daripada kelas lainnya. \par
 
 Mengingat penelitian ini menggunakan metode \textit{Transfer Learning}, lapisan dasar fitur (\textit{base model}) pada model PANNs dibekukan agar model tidak menghapus ingatan fitur dasar yang telah dipelajari dari dataset besar sebelumnya (AudioSet). 
 Strategi ini memastikan model memiliki inisialisasi bobot yang baik dan hanya perlu mempelajari pola baru yang spesifik pada dataset target. \par
