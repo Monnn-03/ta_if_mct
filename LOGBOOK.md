@@ -6,6 +6,7 @@
 - Menambah penjelasan PANNs yang multilabel output pada Latar Belakang.
 - Perubahan pada Batasan Masalah tentang dataset UrbanSound8K.
 - Penyesuaian metrik evaluasi pada Bab I.
+- Menyusun subbab 3.4 Eksperimen Transfer Learning.
 
 ### 2026-02-12
 - Revisi Penjelasan Sigmoid -> Linear pada bagian 3.3.1.

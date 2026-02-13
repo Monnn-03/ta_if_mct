@@ -44,7 +44,8 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
     Proses ini bersifat iteratif. Apabila performa model belum mencapai target yang diharapkan, maka akan dilakukan penyesuaian ulang pada tahap \textit{pre-processing} data untuk melakukan penyesuaian data dan melakukan pelatihan kembali hingga diperoleh model yang optimal.
 
     \item \textbf{Evaluasi dan Analisis Hasil} \\
-    Performa model hasil \textit{Fine-tuning} dievaluasi menggunakan metrik \textit{F1-Score}, \textit{Loss} dan \textit{Confusion Matrix}, serta analisis efisiensi waktu komputasi yang juga menjadi tolak ukur efektivitas model.
+    Performa model hasil \textit{fine-tuning} dievaluasi menggunakan metrik \textit{F1-Score}, nilai \textit{Loss}, dan analisis \textit{Confusion Matrix}.
+    Evaluasi ini bertujuan untuk membandingkan dan menganalisis performa antara ketiga model dalam melakukan klasifikasi suara ancaman bahaya.
 
     \item \textbf{Kesimpulan} \\
     Berdasarkan hasil evaluasi, dilakukan perbandingan komparatif untuk menyimpulkan model mana yang memiliki performa paling unggul dan stabil.
@@ -52,7 +53,7 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
 
 \section{Pengumpulan dan Pra-pemrosesan Data} \label{III.Preprocessing}
 Sumber data utama dalam penelitian ini adalah dataset publik \textbf{UrbanSound8K} \cite{salamon2014dataset}.
-Dataset diunduh secara manual dari repositori Kaggle dalam format terkompresi (\texttt{.zip}).
+Dataset ini diunduh dalam format terkompresi (\texttt{.zip}).
 Setelah diekstraksi, struktur dataset terdiri dari 10 folder (masing-masing mewakili satu \textit{fold}) beserta satu file metadata (\texttt{.csv}) yang memuat informasi nama file audio, \textit{class ID}, dan \textit{fold} asal. \par
 
 Namun, dataset mentah ini memerlukan serangkaian penyesuaian agar relevan dengan konteks keselamatan penyandang tunarungu. 
@@ -77,7 +78,10 @@ Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan
 \end{enumerate}
 
 \subsection{Strategi Penyusunan Ulang Data (\textit{Fold Mapping})}
-Dataset UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}. Untuk efisiensi eksperimen tanpa melanggar aturan independensi data, penelitian ini menyusun ulang 10 \textit{fold} tersebut menjadi 5 \textit{fold} eksperimen baru. Penyusunan ini dilakukan secara berurutan (misalnya Fold 1 dan 2 menjadi Fold Baru 1) tanpa pengacakan data antar \textit{fold}.
+Dataset UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}.
+Untuk efisiensi eksperimen tanpa melanggar aturan independensi data, penelitian ini menyusun ulang 10 \textit{fold} tersebut menjadi 5 \textit{fold} eksperimen baru.
+Penyusunan ini dilakukan secara berurutan (misalnya Fold 1 dan 2 menjadi Fold Baru 1) tanpa pengacakan data antar \textit{fold}.
+Teknik penyusunan tersebut memastikan data latih dan data uji tidak tercampur pada fold yang sama, sehingga teknik penyusunan ini menghindari adanya kebocoran data (\textit{data leakage}) yang menyebabkan model menjadi \textit{overfitting}.
 % Gambar
 \begin{figure}[H]
     \centering
@@ -116,7 +120,8 @@ Setelah standarisasi durasi selesai, maka data siap untuk diproses menggunakan t
 
 Teknik augmentasi yang diterapkan adalah \textit{Random Cropping}, yaitu pemotongan acak pada segmen audio sepanjang durasi tertentu.
 Pada setiap \textit{epoch} pelatihan, segmen 1 detik akan diambil secara acak dari durasi 5 detik tersebut. Ini memberikan variasi temporal pada model untuk belajar mengenali karakteristik suara yang berbeda dari berbagai posisi dalam rekaman asli pada setiap \textit{epoch}.
-Teknik \textit{Random Cropping} ini tidak diterapkan pada data uji dikarenakan berpotensi mengubah distribusi data uji, sehingga model tidak dapat mencapai nilai evaluasi secara maksimal. \par
+Teknik \textit{Random Cropping} ini tidak diterapkan pada data uji dikarenakan berpotensi mengubah distribusi data uji, sehingga model tidak dapat mencapai nilai evaluasi secara maksimal. 
+Strategi ini memastikan bahwa data uji memiliki dimensi yang konsisten, sehingga performa model dapat dievaluasi secara stabil dan tolak ukur pengujian dapat direproduksi dengan akurat.\par
 
 \begin{figure}[H]
     \centering
@@ -141,12 +146,12 @@ Oleh karena itu, dilakukan dua penyesuaian utama:
     \item \textbf{Penyesuaian Fungsi Aktivasi pada Lapisan Akhir} \newline
     Pada model asli PANNs, lapisan akhir menggunakan fungsi aktivasi \textit{sigmoid} yang mengeluarkan output berupa probabilitas tiap kelasnya sendiri (cocok untuk \textit{multi-label}).
     Namun, klasifikasi model yang ditentukan pada penelitian ini adalah klasifikasi \textit{Single-Label}, sehingga terjadi modifikasi pada lapisan akhir menjadi lapisan \textit{Linear} yang mengeluarkan angka mentah (\textit{logits}).
+    Nilai \textit{logits} ini nantinya akan dikonversi menjadi distribusi probabilitas tunggal oleh fungsi kerugian (\textit{Loss Function}) selama fase pelatihan.
     Dengan perubahan ini, model akan memilih satu kelas pemenang dengan probabilitas tertinggi daripada kelas lainnya. \par
 \end{enumerate}
 
 \subsection{Strategi \textit{Freeze Base}}
-
-Mengingat penelitian ini menggunakan metode \textit{Transfer Learning}, lapisan dasar fitur (\textit{base model}) pada model PANNs dibekukan agar model tidak menghapus ingatan fitur dasar yang telah dipelajari dari dataset besar sebelumnya (AudioSet). 
+Mengingat penelitian ini menggunakan metode \textit{Transfer Learning}, lapisan dasar fitur (\textit{base model}) pada model PANNs dibekukan agar model tidak menghapus ingatan fitur dasar yang telah dipelajari dari dataset besar sebelumnya (AudioSet) \cite{gemmeke2017audioset}. 
 Strategi ini memastikan model memiliki inisialisasi bobot yang baik dan hanya perlu mempelajari pola baru yang spesifik pada dataset target. \par
 
 \begin{figure}[H]
@@ -156,6 +161,40 @@ Strategi ini memastikan model memiliki inisialisasi bobot yang baik dan hanya pe
     \label{fig:transfer_learning}
 \end{figure}
 
+\subsection{Parameter Konfigurasi Input}
+Selain melakukan modifikasi arsitektur, konfigurasi parameter input juga disesuaikan dengan standar yang ditetapkan pada PANNs untuk menjamin kompabilitas dimensi fitur antara data input dengan bobot \textit{pre-trained}, sehingga ekstraksi fitur dapat berjalan optimal tanpa adanya kesalahan dimensi. Rincian konfigurasi tersebut meliputi:
+
+\begin{table}[H]
+    \centering
+    \caption{Konfigurasi Parameter Input Audio Model PANNs}
+    \label{tab:panns_config}
+    \small % Opsional: Mengecilkan font tabel sedikit agar terlihat lebih manis
+    % Format kolom: 
+    % |l| : Kolom 1 rata kiri (lebar sesuai isi)
+    % |c| : Kolom 2 rata tengah (lebar sesuai isi)
+    % |X| : Kolom 3 fleksibel (mengisi sisa ruang & wrap text)
+    \begin{tabularx}{\textwidth}{|l|c|X|} 
+        \hline
+        \textbf{Parameter} & \textbf{Nilai} & \textbf{Keterangan} \\ \hline
+        Sampling Rate & 32.000 Hz & Frekuensi pencuplikan sinyal audio \\ \hline
+        Window Size & 1024 & Ukuran jendela FFT (\textit{Fast Fourier Transform}) \\ \hline
+        Hop Size & 320 & Jarak pergeseran antar jendela waktu \\ \hline
+        Mel-bins & 64 & Jumlah filter bank pada skala Mel (dimensi fitur vertikal) \\ \hline
+        F-min & 50 Hz & Batas frekuensi minimum \\ \hline
+        F-max & 14.000 Hz & Batas frekuensi maksimum \\ \hline
+    \end{tabularx}
+\end{table}
+
+Penggunaan \textit{sampling rate} 32 kHz dipilih merujuk pada spesifikasi standar PANNs \cite{kong2020panns}. Angka ini juga telah memenuhi kriteria Teorema Nyquist untuk menangkap frekuensi hingga 16 kHz. Rentang ini dinilai efisien karena sebagian besar energi spektral pada suara bahaya (seperti sirine, klakson, dan tembakan) berada pada rentang 50 Hz hingga 14.000 Hz, sehingga parameter ini dapat mempertahankan informasi vital sekaligus mereduksi beban komputasi dibandingkan standar audio 44.1 kHz.
+
+\section{Eksperimen \textit{Transfer Learning}} \label{sec:eksperimen}
+Setelah model dikonfigurasi sesuai kebutuhan penelitian, tahap selanjutnya adalah melakukan eksperimen \textit{Transfer Learning} dengan model PANN.
+Tahapan ini melibatkan konfigurasi hyperparameter pelatihan secara eksperimental dan penerapan beberapa strategi pelatihan yang bertujuan untuk mendapatkan hasil evaluasi yang optimal.
+Strategi penanganan ketidakseimbangan data 
+Strategi tersebut dijabarkan sebagai berikut.
+
+\subsection{Reproduksibilitas Eksperimen (\textit{Random Seed})}
+Dalam melatih model \textit{Deep Learning}, terdapat banyak proses yang melibatkan elemen acak (seperti inisialisasi bobot, pengacakan *batch* data, dan \textit{random cropping}). Untuk memastikan bahwa eksperimen ini bersifat deterministik dan dapat direproduksi ulang (\textit{reproducible}) dengan hasil yang sama persis, seluruh elemen pengacakan pada modul komputasi (PyTorch dan NumPy) dikunci menggunakan nilai \textit{Random Seed} sebesar 42.
 
 \subsection{Penanganan Ketidakseimbangan Data (\textit{Weight Penalty})}
 Meskipun dataset UrbanSound8K memiliki distribusi data yang relatif terstruktur, proses seleksi kelas dan penyusunan ulang \textit{fold} berpotensi menghasilkan ketidakseimbangan jumlah sampel antar kelas.
@@ -185,33 +224,22 @@ Sebagai ilustrasi, jika kelas \textit{gun\_shot} memiliki jumlah sampel yang jau
 Nilai bobot ini kemudian diaplikasikan sebagai argumen parameter pada fungsi \textit{Cross Entropy Loss}.
 Secara matematis, jika model melakukan kesalahan prediksi pada kelas \textit{gun\_shot}, nilai \textit{loss} akan dikalikan dengan faktor $W_j$ yang besar tersebut. Dengan begitu, model akan dihukum lebih berat dan dipaksa untuk belajar mengenali fitur kelas minoritas tersebut.
 
-\subsection{Parameter Konfigurasi Input}
-Selain melakukan modifikasi arsitektur, konfigurasi parameter input juga disesuaikan dengan standar yang ditetapkan pada PANNs untuk menjamin kompabilitas dimensi fitur antara data input dengan bobot \textit{pre-trained}, sehingga ekstraksi fitur dapat berjalan optimal tanpa adanya kesalahan dimensi. Rincian konfigurasi tersebut meliputi:
+\subsection{Konfigurasi \textit{Optimizer} dan \textit{Scheduler}}
+Proses pembaruan bobot model (\textit{weight update}) dilakukan menggunakan algoritma optimasi \textbf{AdamW} (\textit{Adam with Weight Decay}). Pemilihan AdamW didasari oleh kemampuannya dalam memisahkan mekanisme pembaruan bobot dengan \textit{weight decay} (regularisasi L2), sehingga lebih efektif dalam mencegah \textit{overfitting} dibandingkan algoritma Adam standar. Pelatihan dilakukan dalam \textit{batch size} sebesar 8 selama maksimal 50 \textit{epoch}, dengan pengaturan awal \textit{Learning Rate} sebesar 5e-4 dan nilai \textit{Weight Decay} sebesar 1e-4.
 
-\begin{table}[H]
-    \centering
-    \caption{Konfigurasi Parameter Input Audio Model PANNs}
-    \label{tab:panns_config}
-    \small % Opsional: Mengecilkan font tabel sedikit agar terlihat lebih manis
-    % Format kolom: 
-    % |l| : Kolom 1 rata kiri (lebar sesuai isi)
-    % |c| : Kolom 2 rata tengah (lebar sesuai isi)
-    % |X| : Kolom 3 fleksibel (mengisi sisa ruang & wrap text)
-    \begin{tabularx}{\textwidth}{|l|c|X|} 
-        \hline
-        \textbf{Parameter} & \textbf{Nilai} & \textbf{Keterangan} \\ \hline
-        Sampling Rate & 32.000 Hz & Frekuensi pencuplikan sinyal audio \\ \hline
-        Window Size & 1024 & Ukuran jendela FFT (\textit{Fast Fourier Transform}) \\ \hline
-        Hop Size & 320 & Jarak pergeseran antar jendela waktu \\ \hline
-        Mel-bins & 64 & Jumlah filter bank pada skala Mel (dimensi fitur vertikal) \\ \hline
-        F-min & 50 Hz & Batas frekuensi minimum \\ \hline
-        F-max & 14.000 Hz & Batas frekuensi maksimum \\ \hline
-    \end{tabularx}
-\end{table}
+Untuk mengoptimalkan proses konvergensi, diterapkan pula penyesuaian laju pembelajaran dinamis menggunakan \textbf{\textit{ReduceLROnPlateau}}. Mekanisme ini dirancang untuk memantau metrik \textit{Validation Loss}. Apabila nilai kerugian validasi tersebut tidak mengalami penurunan selama 3 \textit{epoch} berturut-turut (\textit{patience}), maka nilai \textit{Learning Rate} akan direduksi secara otomatis sebesar setengah dari nilai sebelumnya (faktor 0,5). Strategi ini membantu model untuk menemukan titik minimum global dengan lebih presisi saat mendekati akhir pelatihan.
 
-Penggunaan \textit{sampling rate} 32 kHz dipilih karena telah memenuhi kriteria Teorema Nyquist untuk menangkap frekuensi hingga 16 kHz. Rentang ini dinilai efisien karena sebagian besar energi spektral pada suara bahaya (seperti sirine, klakson, dan tembakan) berada pada rentang 50 Hz hingga 14.000 Hz, sehingga parameter ini dapat mempertahankan informasi vital sekaligus mereduksi beban komputasi dibandingkan standar audio 44.1 kHz.
+\subsection{Strategi Optimasi: \textit{Early Stopping} dan \textit{Checkpoint}}
+Mengingat pelatihan dilakukan pada dataset terbatas, risiko \textit{overfitting} pada \textit{epoch} lanjutan menjadi sangat tinggi. Untuk mencegah hal tersebut, diterapkan dua mekanisme pencegahan otomatis:
+\begin{enumerate}
+    \item \textbf{\textit{Early Stopping}}: Pelatihan model akan dihentikan secara paksa lebih awal apabila metrik evaluasi tidak mencatatkan rekor performa baru selama 5 \textit{epoch} berturut-turut. Ini mencegah model menghafal data latih secara berlebihan.
+    \item \textbf{\textit{Model Checkpointing}}: Selama proses pelatihan berjalan, sistem secara dinamis hanya akan menyimpan (\textit{save}) parameter bobot model pada \textit{epoch} yang berhasil mencetak nilai \textit{F1-Score} validasi tertinggi (\textit{best model}). Jika performa pada \textit{epoch} selanjutnya memburuk, model tidak akan disimpan, sehingga hasil akhir yang dievaluasi dipastikan adalah versi model yang paling optimal.
+\end{enumerate}
 
-\section{Konfigurasi Parameter Pelatihan} \label{sec:konfigurasi_eksperimen}
+\subsection{Pemantauan dan Pencatatan Eksperimen}
+Seluruh pergerakan metrik evaluasi pelatihan (termasuk \textit{Train/Validation Loss}, \textit{F1-Score}, dan pergerakan \textit{Learning Rate}) direkam dan divisualisasikan secara \textit{real-time} menggunakan dasbor \textbf{Weights \& Biases (WandB)}. Penggunaan pustaka ini memastikan transparansi rekam jejak pelatihan. Di akhir setiap pengujian \textit{fold}, sistem juga secara otomatis menggenerasi laporan grafik riwayat pelatihan dan visualisasi \textit{Confusion Matrix} berdasarkan prediksi dari model terbaik (\textit{best checkpoint}) untuk keperluan analisis lanjutan.
+
+\subsection{Konfigurasi Parameter Pelatihan} \label{sec:konfigurasi_eksperimen}
 Sebelum melakukan uji ketiga model, terdapat beberapa konfigurasi parameter yang perlu diterapkan pada training model.
 Hal ini bertujuan untuk menemukan konfigurasi pelatihan model yang paling optimal.
 Rincian parameter konfigurasi yang dikendalikan dalam eksperimen ini disajikan pada Tabel \ref{tab:parameter_latih}. \par

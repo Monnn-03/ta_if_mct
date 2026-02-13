@@ -32,7 +32,7 @@ Ketergantungan ini menjadi kendala signifikan pada kasus dengan ketersediaan dat
 
 % PARAGRAF 4: SOLUSI TEKNIS (PANNs & VARIABEL)
 Sebagai implementasi strategi tersebut, metode \textit{Transfer Learning} menjadi solusi efektif untuk mengatasi kelangkaan data. 
-Pendekatan ini memanfaatkan \textit{Pre-trained Audio Neural Networks} (PANNs), yaitu sebuah kerangka kerja model \textit{Deep Learning} skala besar yang telah dilatih sebelumnya (\textit{pre-trained}) pada dataset AudioSet untuk mengenali berbagai pola suara umum \cite{kong2020panns}. 
+Pendekatan ini memanfaatkan \textit{Pre-trained Audio Neural Networks} (PANNs) \cite{kong2020panns}, yaitu sebuah kerangka kerja model \textit{Deep Learning} skala besar yang telah dilatih sebelumnya (\textit{pre-trained}) pada dataset AudioSet \cite{gemmeke2017audioset} untuk mengenali berbagai pola suara umum. 
 Salah satu keunggulan PANNs terletak pada variasi arsitektur yang dirancang khusus untuk menangani dua jenis representasi input audio yang berbeda.
 Pertama adalah arsitektur berbasis satu dimensi yang mengolah \textit{Raw Waveform}, yaitu sinyal gelombang suara mentah dalam domain waktu.
 Kedua adalah arsitektur berbasis dua dimensi yang memanfaatkan \textit{Log-mel Spectrogram}, yaitu representasi visual yang memetakan intensitas energi frekuensi suara layaknya sebuah citra gambar.
@@ -40,7 +40,7 @@ Selain itu, PANNs juga menyediakan arsitektur dengan pendekatan \textit{Hybrid} 
 Ketersediaan variasi ini memunculkan urgensi untuk mengevaluasi arsitektur mana yang paling optimal untuk diterapkan pada kasus ini, apakah berbasis domain waktu, domain frekuensi, atau penggabungan keduanya (\textit{Hybrid}). \par
 
 % PARAGRAF 5: RESEARCH GAP (ARGUMEN ILMIAH UTAMA) -> INI YANG DIPECAH
-Meskipun Kong et al. \cite{kong2020panns} telah memaparkan tolak ukur kinerja model-model tersebut pada dataset masif AudioSet, performa tersebut belum tentu sebanding ketika diterapkan pada kasus penerapan spesifik dengan ketersediaan data yang terbatas (\textit{data scarcity}) seperti pada kasus klasifikasi suara lingkungan perkotaan.
+Meskipun Kong et al. \cite{kong2020panns} telah memaparkan tolak ukur kinerja model-model tersebut pada dataset masif AudioSet \cite{gemmeke2017audioset}, performa tersebut belum tentu sebanding ketika diterapkan pada kasus penerapan spesifik dengan ketersediaan data yang terbatas (\textit{data scarcity}) seperti pada kasus klasifikasi suara lingkungan perkotaan.
 Perbedaan karakteristik data ini memunculkan dugaan bahwa kompleksitas arsitektur model \textit{Hybrid} dan \textit{Log-mel Spectrogram} justru memiliki risiko \textit{overfitting} yang lebih tinggi dibandingkan model \textit{Raw Waveform} ketika dilatih pada dataset yang kecil.
 Selain itu, terdapat juga perbedaan mendasar pada jenis keluaran klasifikasi, di mana PANNs dilatih untuk mendeteksi banyak label sekaligus (\textit{Multi-Label}), sedangkan penelitian ini dirancang untuk memprioritaskan identifikasi sumber bahaya paling dominan (\textit{Single-Label}).
 Pendekatan \textit{Single-Label} ini dipilih untuk menyelaraskan karakteristik dataset UrbanSound8K yang memiliki anotasi satu sumber suara dominan (\textit{salient event}), serta guna menghindari ambiguitas peringatan agar pengguna dapat mengambil keputusan responsif.
