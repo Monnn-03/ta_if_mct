@@ -3,8 +3,9 @@
 ## February
 
 ### 2026-02-13
-- Menambah penjelasan PANNs yang multilabel output.
+- Menambah penjelasan PANNs yang multilabel output pada Latar Belakang.
 - Perubahan pada Batasan Masalah tentang dataset UrbanSound8K.
+- Penyesuaian metrik evaluasi pada Bab I.
 
 ### 2026-02-12
 - Revisi Penjelasan Sigmoid -> Linear pada bagian 3.3.1.

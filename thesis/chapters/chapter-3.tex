@@ -22,10 +22,12 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
     Dilakukan kajian literatur mendalam untuk menemukan urgensi penelitian, khususnya mengenai kebutuhan teknologi asistif yang mampu mengurangi risiko kecelakaan bagi penyandang tunarungu melalui pengenalan sinyal bahaya. Ini menjadi landasan teoritis bagaimana teknologi klasifikasi suara dapat menjadi solusi yang efektif dalam mengatasi permasalahan tersebut.
 
     \item \textbf{Identifikasi dan Akuisisi Data} \\
-    Akuisisi data dilakukan dengan mengambil dataset sekunder yang sudah terstandarisasi, yaitu UrbanSound8K. Akuisisi data primer tidak dilakukan demi menghindari \textit{device bias} akibat perekaman dataset dengan perangkat non-standar (seperti smartphone) serta kendala regulasi keamanan pada perekaman kelas \textit{gun\_shot}. Dari dataset tersebut, dilakukan seleksi kelas sinyal bahaya dengan strategi antisipasi terhadap kendala ketidakseimbangan data (\textit{imbalanced data}) yang telah disiapkan sejak awal.    
+    Akuisisi data dilakukan dengan mengambil dataset sekunder yang sudah terstandarisasi, yaitu UrbanSound8K \cite{salamon2014dataset}. Akuisisi data primer tidak dilakukan demi menghindari \textit{device bias} akibat perekaman dataset dengan perangkat non-standar (seperti smartphone) serta kendala regulasi keamanan pada perekaman kelas \textit{gun\_shot}. Dari dataset tersebut, dilakukan seleksi kelas sinyal bahaya dengan strategi antisipasi terhadap kendala ketidakseimbangan data (\textit{imbalanced data}) yang telah disiapkan sejak awal.    
 
     \item \textbf{Pemilihan Model \textit{Pre-trained}} \\
-    Mengingat keterbatasan data berisiko menyebabkan kegagalan pelatihan \textit{from scratch}, digunakan pendekatan \textit{Transfer Learning} memanfaatkan model \textit{Pre-trained}. Arsitektur PANNs (\textit{Pre-trained Audio Neural Networks}) dipilih karena telah dilatih pada dataset masif dan memiliki performa yang teruji.
+    Mengingat keterbatasan data berisiko menyebabkan kegagalan pelatihan \textit{from scratch}, digunakan pendekatan \textit{Transfer Learning} dengan memanfaatkan model \textit{Pre-trained}.
+    Tiga varian arsitektur PANNs (\textit{Pre-trained Audio Neural Networks}) \cite{kong2020panns} dipilih untuk mewakili domain input yang berbeda, yaitu \textit{Res1dNet31} (domain waktu), \textit{ResNet38} (domain frekuensi), dan \textit{Wavegram-Logmel-CNN} (\textit{hybrid}). 
+    Arsitektur PANNs dipilih karena telah dilatih pada dataset masif (AudioSet) dan memiliki performa yang teruji. \par
 
     \item \textbf{Studi Dokumentasi Teknis} \\
     Tahap ini mempelajari karakteristik data dan model yang digunakan.
@@ -42,14 +44,14 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
     Proses ini bersifat iteratif. Apabila performa model belum mencapai target yang diharapkan, maka akan dilakukan penyesuaian ulang pada tahap \textit{pre-processing} data untuk melakukan penyesuaian data dan melakukan pelatihan kembali hingga diperoleh model yang optimal.
 
     \item \textbf{Evaluasi dan Analisis Hasil} \\
-    Performa model hasil \textit{Fine-tuning} dievaluasi menggunakan metrik \textit{F1-Score}, \textit{Loss} dan \textit{Confusion Matrix}, serta analisis efisiensi waktu komputasi untuk memastikan kelayakan implementasi secara \textit{real-time}.
+    Performa model hasil \textit{Fine-tuning} dievaluasi menggunakan metrik \textit{F1-Score}, \textit{Loss} dan \textit{Confusion Matrix}, serta analisis efisiensi waktu komputasi yang juga menjadi tolak ukur efektivitas model.
 
     \item \textbf{Kesimpulan} \\
     Berdasarkan hasil evaluasi, dilakukan perbandingan komparatif untuk menyimpulkan model mana yang memiliki performa paling unggul dan stabil.
 \end{enumerate}
 
 \section{Pengumpulan dan Pra-pemrosesan Data} \label{III.Preprocessing}
-Sumber data utama dalam penelitian ini adalah dataset publik \textbf{UrbanSound8K}.
+Sumber data utama dalam penelitian ini adalah dataset publik \textbf{UrbanSound8K} \cite{salamon2014dataset}.
 Dataset diunduh secara manual dari repositori Kaggle dalam format terkompresi (\texttt{.zip}).
 Setelah diekstraksi, struktur dataset terdiri dari 10 folder (masing-masing mewakili satu \textit{fold}) beserta satu file metadata (\texttt{.csv}) yang memuat informasi nama file audio, \textit{class ID}, dan \textit{fold} asal. \par
 
@@ -125,17 +127,24 @@ Teknik \textit{Random Cropping} ini tidak diterapkan pada data uji dikarenakan b
 
 \section{Konfigurasi Model} \label{sec:konfigurasi_model}
 % Kasih paragraf pembuka
-Model yang digunakan dalam penelitian ini adalah model PANNs dengan 3 arsitektur berbeda, yaitu \textit{Res1dNet31}, \textit{ResNet38}, dan \textit{Wavegram-Logmel-CNN}.
+Model yang digunakan dalam penelitian ini adalah model PANNs \cite{kong2020panns} dengan 3 arsitektur berbeda, yaitu \textit{Res1dNet31}, \textit{ResNet38}, dan \textit{Wavegram-Logmel-CNN}.
 Ketiga arsitektur ini telah terbukti memiliki performa yang baik pada tugas klasifikasi audio berdasarkan masing-masing representasi inputnya. 
 Namun, agar model dapat berfungsi optimal sesuai dengan konteks klasifikasi 4 kelas bahaya pada dataset UrbanSound8K, diperlukan beberapa penyesuaian konfigurasi model, yaitu sebagai berikut. \par
 
-\subsection{Adaptasi Arsitektur (\textit{Transfer Learning})}
-Penyesuaian arsitektur dilakukan pada lapisan keluaran (\textit{output layer}) dan mekanisme pembekuan bobot (\textit{Freeze Base}). 
-Jumlah \textit{neuron} pada lapisan akhir disesuaikan dari 527 \textit{node} menjadi 4 \textit{node} (sesuai jumlah kelas pilihan). \par
+\subsection{Modifikasi Arsitektur PANNs}
+Modifikasi beberapa komponen pada arsitektur PANNs diperlukan pada lapisan keluaran (\textit{output layer}). 
+Langkah ini dilakukan mengingat jumlah kelas pada \textit{output layer} yang belum sesuai dengan target kelas suara yang ditentukan dan penyesuaian jenis output klasifikasi PANNs yang awalnya \textit{multi-label}.
+Oleh karena itu, dilakukan dua penyesuaian utama:
+\begin{enumerate}
+    \item \textbf{Penyesuaian Jumlah Neuron pada Lapisan Akhir} \newline
+    Jumlah \textit{neuron} pada lapisan akhir disesuaikan dari 527 \textit{node} menjadi 4 \textit{node} (sesuai jumlah kelas pilihan).
+    \item \textbf{Penyesuaian Fungsi Aktivasi pada Lapisan Akhir} \newline
+    Pada model asli PANNs, lapisan akhir menggunakan fungsi aktivasi \textit{sigmoid} yang mengeluarkan output berupa probabilitas tiap kelasnya sendiri (cocok untuk \textit{multi-label}).
+    Namun, klasifikasi model yang ditentukan pada penelitian ini adalah klasifikasi \textit{Single-Label}, sehingga terjadi modifikasi pada lapisan akhir menjadi lapisan \textit{Linear} yang mengeluarkan angka mentah (\textit{logits}).
+    Dengan perubahan ini, model akan memilih satu kelas pemenang dengan probabilitas tertinggi daripada kelas lainnya. \par
+\end{enumerate}
 
-Pada model asli PANNs, lapisan akhir menggunakan fungsi aktivasi \textit{sigmoid} yang mengeluarkan output berupa probabilitas tiap kelasnya sendiri.
-Tentu saja, lapisan tersebut cocok dalam konteks klasifikasi \textit{Multi-Label}. 
-Akan tetapi, klasifikasi model yang ditentukan pada penelitian ini adalah klasifikasi \textit{Single-Label}, sehingga terjadi modifikasi pada lapisan akhir menjadi lapisan \textit{Linear} (Logits) yang memilih satu kelas dengan probabilitas paling tinggi daripada kelas lainnya. \par
+\subsection{Strategi \textit{Freeze Base}}
 
 Mengingat penelitian ini menggunakan metode \textit{Transfer Learning}, lapisan dasar fitur (\textit{base model}) pada model PANNs dibekukan agar model tidak menghapus ingatan fitur dasar yang telah dipelajari dari dataset besar sebelumnya (AudioSet). 
 Strategi ini memastikan model memiliki inisialisasi bobot yang baik dan hanya perlu mempelajari pola baru yang spesifik pada dataset target. \par
@@ -175,6 +184,32 @@ Bobot penalti ($W_j$) untuk setiap kelas ke-$j$ dihitung secara otomatis sebelum
 Sebagai ilustrasi, jika kelas \textit{gun\_shot} memiliki jumlah sampel yang jauh lebih sedikit dibandingkan \textit{car\_horn}, maka nilai $N_j$ yang kecil pada penyebut akan menghasilkan nilai $W_j$ yang besar.
 Nilai bobot ini kemudian diaplikasikan sebagai argumen parameter pada fungsi \textit{Cross Entropy Loss}.
 Secara matematis, jika model melakukan kesalahan prediksi pada kelas \textit{gun\_shot}, nilai \textit{loss} akan dikalikan dengan faktor $W_j$ yang besar tersebut. Dengan begitu, model akan dihukum lebih berat dan dipaksa untuk belajar mengenali fitur kelas minoritas tersebut.
+
+\subsection{Parameter Konfigurasi Input}
+Selain melakukan modifikasi arsitektur, konfigurasi parameter input juga disesuaikan dengan standar yang ditetapkan pada PANNs untuk menjamin kompabilitas dimensi fitur antara data input dengan bobot \textit{pre-trained}, sehingga ekstraksi fitur dapat berjalan optimal tanpa adanya kesalahan dimensi. Rincian konfigurasi tersebut meliputi:
+
+\begin{table}[H]
+    \centering
+    \caption{Konfigurasi Parameter Input Audio Model PANNs}
+    \label{tab:panns_config}
+    \small % Opsional: Mengecilkan font tabel sedikit agar terlihat lebih manis
+    % Format kolom: 
+    % |l| : Kolom 1 rata kiri (lebar sesuai isi)
+    % |c| : Kolom 2 rata tengah (lebar sesuai isi)
+    % |X| : Kolom 3 fleksibel (mengisi sisa ruang & wrap text)
+    \begin{tabularx}{\textwidth}{|l|c|X|} 
+        \hline
+        \textbf{Parameter} & \textbf{Nilai} & \textbf{Keterangan} \\ \hline
+        Sampling Rate & 32.000 Hz & Frekuensi pencuplikan sinyal audio \\ \hline
+        Window Size & 1024 & Ukuran jendela FFT (\textit{Fast Fourier Transform}) \\ \hline
+        Hop Size & 320 & Jarak pergeseran antar jendela waktu \\ \hline
+        Mel-bins & 64 & Jumlah filter bank pada skala Mel (dimensi fitur vertikal) \\ \hline
+        F-min & 50 Hz & Batas frekuensi minimum \\ \hline
+        F-max & 14.000 Hz & Batas frekuensi maksimum \\ \hline
+    \end{tabularx}
+\end{table}
+
+Penggunaan \textit{sampling rate} 32 kHz dipilih karena telah memenuhi kriteria Teorema Nyquist untuk menangkap frekuensi hingga 16 kHz. Rentang ini dinilai efisien karena sebagian besar energi spektral pada suara bahaya (seperti sirine, klakson, dan tembakan) berada pada rentang 50 Hz hingga 14.000 Hz, sehingga parameter ini dapat mempertahankan informasi vital sekaligus mereduksi beban komputasi dibandingkan standar audio 44.1 kHz.
 
 \section{Konfigurasi Parameter Pelatihan} \label{sec:konfigurasi_eksperimen}
 Sebelum melakukan uji ketiga model, terdapat beberapa konfigurasi parameter yang perlu diterapkan pada training model.
