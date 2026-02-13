@@ -230,7 +230,7 @@ def run_training():
         weights_tensor = torch.tensor(weights_list).float().to(CONFIG["device"])
         criterion = nn.CrossEntropyLoss(weight=weights_tensor)
         
-        model = AudioClassifier(model_type=CONFIG["model_type"], num_classes=CONFIG["num_classes"])
+        model = AudioClassifier(model_type=CONFIG["model_type"], num_classes=CONFIG["num_classes"], freeze_base=True)
         model = model.to(CONFIG["device"])
 
         # LOGIKA PEMILIHAN OPTIMIZER BERDASARKAN CONFIG

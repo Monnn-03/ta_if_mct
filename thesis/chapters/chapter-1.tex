@@ -6,19 +6,19 @@
 % PARAGRAF 1: URGENSI MASALAH (SOSIAL)
 Keselamatan berlalu lintas di lingkungan perkotaan merupakan tantangan krusial yang dihadapi masyarakat saat ini, terutama bagi kelompok rentan seperti penyandang disabilitas \cite{who2023road}. 
 Dalam aktivitas tersebut, indra pendengaran berperan sebagai mekanisme deteksi alami yang penting untuk mengetahui kondisi lingkungan di sekitar. 
-Namun, fungsi indra tersebut tidak dimiliki oleh penyandang Tuna Rungu, yang hanya bisa mengandalkan penglihatan mereka untuk memantau keadaan. 
+Namun, fungsi indra tersebut tidak dimiliki oleh penyandang tunarungu, yang hanya bisa mengandalkan penglihatan mereka untuk memantau keadaan. 
 Ketergantungan penuh pada aspek visual ini dapat menjadi kerentanan serius, mengingat mereka memiliki keterbatasan sudut pandang dan tidak dapat memantau kondisi di luar jangkauan penglihatan. 
 Akibatnya, ancaman yang muncul dari titik buta (\textit{blind spot}), seperti gonggongan dari anjing yang mengejar atau klakson kendaraan yang melaju kencang dari arah belakang, seringkali terlambat disadari akibat tidak adanya peringatan suara.
 Keterlambatan respon inilah yang secara signifikan meningkatkan risiko terjadinya kecelakaan fatal \cite{thorslund2013effects}.
 Maka dari itu, diperlukan mekanisme bantu yang dapat menggantikan peran indra pendengaran dalam mendeteksi ancaman yang muncul dari luar jangkauan visual. \par
 
 % PARAGRAF 2: KELEMAHAN SOLUSI EKSISTING (ABD)
-Saat ini, Alat Bantu Dengar (ABD) merupakan perangkat yang umum digunakan untuk menunjang komunikasi verbal penyandang Tuna Rungu. 
+Saat ini, Alat Bantu Dengar (ABD) merupakan perangkat yang umum digunakan untuk menunjang komunikasi verbal penyandang tunarungu. 
 Meskipun efektif untuk komunikasi verbal jarak dekat, alat ini memiliki keterbatasan signifikan dalam konteks keselamatan di luar ruangan. 
 Hal ini disebabkan oleh penurunan selektivitas frekuensi (\textit{reduced frequency selectivity}) yang umum terjadi pada gangguan pendengaran sensorineural, sehingga menyulitkan pemisahan sinyal suara utama dari kebisingan latar belakang yang tumpang tindih \cite{moore1996perceptual}. 
 Kondisi ini diperburuk oleh keterbatasan teknis ABD, di mana sekadar amplifikasi sinyal suara tidak cukup untuk mengembalikan kemampuan pemilahan suara secara alami. 
 Akibatnya, sinyal ancaman penting seringkali tertutup oleh suara-suara lainnya, yang berdampak pada hilangnya kewaspadaan situasional pengguna. 
-Keterbatasan perangkat keras dalam memilah sinyal suara ini memunculkan kebutuhan teknologi bagi penyandang Tuna Rungu agar dapat mengidentifikasi suara bahaya melalui pola sinyal suara, dan bukan sekadar amplifikasi sinyal.\par
+Keterbatasan perangkat keras dalam memilah sinyal suara ini memunculkan kebutuhan teknologi bagi penyandang tunarungu agar dapat mengidentifikasi suara bahaya melalui pola sinyal suara, dan bukan sekadar amplifikasi sinyal.\par
 
 % PARAGRAF 3: SOLUSI TEKNOLOGI (ESC) Konvensional -> Deep Learning
 Guna mengatasi keterbatasan ini, dikembangkanlah metode cerdas yang dikenal sebagai Klasifikasi Suara Lingkungan atau \textit{Environmental Sound Classification} (ESC).
@@ -40,22 +40,24 @@ Selain itu, PANNs juga menyediakan arsitektur dengan pendekatan \textit{Hybrid} 
 Ketersediaan variasi ini memunculkan urgensi untuk mengevaluasi arsitektur mana yang paling optimal untuk diterapkan pada kasus ini, apakah berbasis domain waktu, domain frekuensi, atau penggabungan keduanya (\textit{Hybrid}). \par
 
 % PARAGRAF 5: RESEARCH GAP (ARGUMEN ILMIAH UTAMA) -> INI YANG DIPECAH
-Meskipun Kong et al. \cite{kong2020panns} telah memaparkan tolak ukur kinerja model-model tersebut pada dataset masif AudioSet, performa tersebut belum tentu sebanding ketika diterapkan pada kasus penerapan spesifik dengan ketersediaan data yang terbatas (\textit{data scarcity}) seperti pada kasus klasifikasi suara lingkungan perkotaan. 
-Perbedaan karakteristik data ini memunculkan dugaan bahwa kompleksitas arsitektur model \textit{Hybrid} dan \textit{Log-mel Spectrogram} justru memiliki risiko \textit{overfitting} yang lebih tinggi dibandingkan model \textit{Raw Waveform} ketika dilatih pada dataset yang kecil. 
+Meskipun Kong et al. \cite{kong2020panns} telah memaparkan tolak ukur kinerja model-model tersebut pada dataset masif AudioSet, performa tersebut belum tentu sebanding ketika diterapkan pada kasus penerapan spesifik dengan ketersediaan data yang terbatas (\textit{data scarcity}) seperti pada kasus klasifikasi suara lingkungan perkotaan.
+Perbedaan karakteristik data ini memunculkan dugaan bahwa kompleksitas arsitektur model \textit{Hybrid} dan \textit{Log-mel Spectrogram} justru memiliki risiko \textit{overfitting} yang lebih tinggi dibandingkan model \textit{Raw Waveform} ketika dilatih pada dataset yang kecil.
+Selain itu, terdapat juga perbedaan mendasar pada jenis keluaran klasifikasi, di mana PANNs dilatih untuk mendeteksi banyak label sekaligus (\textit{Multi-Label}), sedangkan penelitian ini dirancang untuk memprioritaskan identifikasi sumber bahaya paling dominan (\textit{Single-Label}).
+Pendekatan \textit{Single-Label} ini dipilih untuk menyelaraskan karakteristik dataset UrbanSound8K yang memiliki anotasi satu sumber suara dominan (\textit{salient event}), serta guna menghindari ambiguitas peringatan agar pengguna dapat mengambil keputusan responsif.
 Ketidakpastian inilah yang menjadi celah penelitian (\textit{research gap}) yang belum terjamah.
 Oleh karena itu, penelitian ini menjadi krusial untuk mengevaluasi ulang adaptabilitas dan melakukan analisis komparasi ketiga arsitektur tersebut secara spesifik pada dataset UrbanSound8K. \par
 
 % PARAGRAF 6: TUJUAN PENELITIAN
-Guna menjawab tantangan adaptabilitas pada dataset terbatas tersebut, penelitian ini bertujuan utama secara teknis untuk menginvestigasi dan membandingkan kinerja tiga pendekatan representasi input, yaitu \textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid} dalam mengklasifikasikan suara tanda bahaya yang mengancam keselamatan penyandang Tuna Rungu. 
+Guna menjawab tantangan adaptabilitas pada dataset terbatas tersebut, penelitian ini bertujuan utama secara teknis untuk menginvestigasi dan membandingkan kinerja tiga pendekatan representasi input, yaitu \textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid} dalam mengklasifikasikan suara tanda bahaya yang mengancam keselamatan penyandang tunarungu. 
 Studi komparasi ini diposisikan sebagai langkah fundamental untuk menemukan konfigurasi model yang paling \textit{robust} (tahan uji) terhadap minimnya data, sekaligus meminimalisir kesalahan deteksi fatal. 
-Dengan demikian, hasil evaluasi ini diharapkan dapat menjadi landasan teknis yang valid bagi pengembangan teknologi asistif yang benar-benar andal untuk menjamin keselamatan komunitas Tuna Rungu.
+Dengan demikian, hasil evaluasi ini diharapkan dapat menjadi landasan teknis yang valid bagi pengembangan teknologi asistif yang benar-benar andal untuk menjamin keselamatan komunitas tunarungu.
 
 \section{Rumusan Masalah} \label{I.Rumusan Masalah}
 Berdasarkan latar belakang yang telah diuraikan, maka rumusan masalah dalam penelitian ini adalah: \par
 
 \begin{enumerate}[noitemsep]
   \item Bagaimana pengaruh perbedaan representasi input (\textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid}) terhadap performa model \textit{Pre-trained Audio Neural Networks} (PANNs) dalam mengklasifikasikan suara bahaya pada kondisi ketersediaan data yang terbatas?
-  \item Representasi input manakah yang menghasilkan model paling optimal (berdasarkan metrik \textit{Accuracy}, \textit{Precision}, \textit{Recall}, dan \textit{F1-Score}) untuk meminimalisir kesalahan deteksi pada sistem keselamatan penyandang Tuna Rungu?
+  \item Representasi input manakah yang menghasilkan model paling optimal (berdasarkan metrik \textit{Accuracy}, \textit{Precision}, \textit{Recall}, dan \textit{F1-Score}) untuk meminimalisir kesalahan deteksi pada sistem keselamatan penyandang tunarungu?
 \end{enumerate}
 
 \section{Tujuan Penelitian} \label{I.Tujuan}
@@ -63,14 +65,14 @@ Tujuan dari penelitian ini adalah : \par
 
 \begin{enumerate}[noitemsep]
   \item Menganalisis pengaruh perbedaan representasi input (\textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid}) terhadap performa model \textit{Pre-trained Audio Neural Networks} (PANNs) dalam mengklasifikasikan suara bahaya pada kondisi ketersediaan data yang terbatas.
-  \item Mengevaluasi pendekatan representasi input yang menghasilkan model paling optimal (berdasarkan metrik \textit{Accuracy}, \textit{Precision}, \textit{Recall}, dan \textit{F1-Score}) untuk meminimalisir kesalahan deteksi pada sistem keselamatan penyandang Tuna Rungu.
+  \item Mengevaluasi pendekatan representasi input yang menghasilkan model paling optimal (berdasarkan metrik \textit{Accuracy}, \textit{Precision}, \textit{Recall}, dan \textit{F1-Score}) untuk meminimalisir kesalahan deteksi pada sistem keselamatan penyandang tunarungu.
 \end{enumerate}
 
 \section{Batasan Masalah} \label{I.Batasan}
 Batasan masalah yang didefinisikan dalam penelitian ini adalah sebagai berikut : \par
 
 \begin{enumerate}[noitemsep]
-  \item Penulis tidak mengumpulkan dataset secara langsung (manual).
+  \item Dataset yang digunakan adalah dataset sekunder terstandarisasi, yaitu UrbanSound8K, tanpa melakukan perekaman data primer secara manual.
   \item Lingkup klasifikasi dibatasi pada kategori suara lingkungan yang merepresentasikan indikator bahaya atau peringatan bagi keselamatan fisik di jalan raya.
   \item Fokus penelitian terbatas pada eksperimen pelatihan (\textit{training}) dan evaluasi performa model \textit{Deep Learning}, serta tidak mencakup perancangan perangkat keras (\textit{hardware}), pengembangan antarmuka pengguna (\textit{User Interface}), maupun implementasi sistem secara \textit{real-time}.
 \end{enumerate}
@@ -80,7 +82,7 @@ Manfaat dari penelitian ini adalah : \par
 
 \begin{enumerate}[noitemsep]
 	\item Memberikan bukti nyata terkait efektivitas metode \textit{Transfer Learning} pada arsitektur PANNs serta perbandingan performa antara representasi input \textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid} dalam mengatasi keterbatasan dataset.
-	\item Berkontribusi dalam pengembangan teknologi asistif berbasis AI yang dapat meningkatkan keselamatan dan kemandirian mobilitas penyandang Tuna Rungu melalui deteksi suara bahaya yang akurat.
+	\item Berkontribusi dalam pengembangan teknologi asistif berbasis AI yang dapat meningkatkan keselamatan dan kemandirian mobilitas penyandang tunarungu melalui deteksi suara bahaya yang akurat.
 	\item Menjadi referensi bagi penelitian selanjutnya atau pengembang aplikasi dalam menentukan konfigurasi model yang paling optimal untuk diterapkan pada sistem peringatan dini.
 \end{enumerate}
 
