@@ -2,7 +2,8 @@
 \chapter{METODE PENELITIAN} \label{Bab III}
 
 \section{Alur Penelitian} \label{III.Alur}
-Penelitian ini dilaksanakan melalui serangkaian tahapan sistematis guna memastikan model klasifikasi suara yang dikembangkan dapat bekerja optimal pada domain keselamatan penyandang tunarungu. Diagram alur penelitian ditunjukkan pada Gambar \ref{fig:alur_penelitian}.
+Penelitian ini dilaksanakan melalui serangkaian tahapan sistematis guna memastikan model klasifikasi suara ancaman bahaya yang dikembangkan dapat bekerja optimal pada domain keselamatan penyandang tunarungu.
+Diagram alur penelitian ditunjukkan pada Gambar \ref{fig:alur_penelitian}.
 
 \begin{figure}[H]
     \centering
@@ -33,6 +34,8 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
     Tahap ini mempelajari karakteristik data dan model yang digunakan.
     Fokus utama dalam tahap ini adalah memahami mekanisme pembagian data (fold) pada dataset guna mencegah kebocoran data (\textit{data leakage}) dan mempelajari variasi representasi input pada arsitektur PANNs untuk menentukan skenario komparasi yang tepat.
 
+    \newpage
+    
     \item \textbf{\textit{Pre-processing} Data} \\
     Serangkaian proses dilakukan untuk mengubah data mentah menjadi format yang siap latih, meliputi penanganan struktur \textit{fold}, seleksi kelas, dan penyesuaian format audio, serta penerapan teknik augmentasi temporal berupa \textit{random cropping} untuk menstandarisasi durasi input.
 
@@ -188,13 +191,69 @@ Selain melakukan modifikasi arsitektur, konfigurasi parameter input juga disesua
 Penggunaan \textit{sampling rate} 32 kHz dipilih merujuk pada spesifikasi standar PANNs \cite{kong2020panns}. Angka ini juga telah memenuhi kriteria Teorema Nyquist untuk menangkap frekuensi hingga 16 kHz. Rentang ini dinilai efisien karena sebagian besar energi spektral pada suara bahaya (seperti sirine, klakson, dan tembakan) berada pada rentang 50 Hz hingga 14.000 Hz, sehingga parameter ini dapat mempertahankan informasi vital sekaligus mereduksi beban komputasi dibandingkan standar audio 44.1 kHz.
 
 \section{Eksperimen \textit{Transfer Learning}} \label{sec:eksperimen}
-Setelah model dikonfigurasi sesuai kebutuhan penelitian, tahap selanjutnya adalah melakukan eksperimen \textit{Transfer Learning} dengan model PANN.
+Setelah model dikonfigurasi sesuai kebutuhan penelitian, tahap selanjutnya adalah melakukan eksperimen \textit{Transfer Learning} dengan arsitektur PANNs.
 Tahapan ini melibatkan konfigurasi hyperparameter pelatihan secara eksperimental dan penerapan beberapa strategi pelatihan yang bertujuan untuk mendapatkan hasil evaluasi yang optimal.
-Strategi penanganan ketidakseimbangan data 
-Strategi tersebut dijabarkan sebagai berikut.
+Beberapa strategi teknis yang diterapkan mencakup pengondisian lingkungan implementasi, penerapan standar reproduksibilitas, penanganan ketidakseimbangan data, serta mekanisme kontrol pelatihan untuk memastikan model mempelajari data dengan baik dan menghindari \textit{overfitting}.
+Penggunaan WandB sebagai alat pemantauan dan pencatatan eksperimen pelatihan model secara \textit{real-time} termasuk ke dalam strategi untuk memastikan transparansi dan menjaga validitas dalam merekam hasil eksperimen.
+Rincian beberapa langkah strategi teknis tersebut dijabarkan sebagai berikut.
 
-\subsection{Reproduksibilitas Eksperimen (\textit{Random Seed})}
-Dalam melatih model \textit{Deep Learning}, terdapat banyak proses yang melibatkan elemen acak (seperti inisialisasi bobot, pengacakan *batch* data, dan \textit{random cropping}). Untuk memastikan bahwa eksperimen ini bersifat deterministik dan dapat direproduksi ulang (\textit{reproducible}) dengan hasil yang sama persis, seluruh elemen pengacakan pada modul komputasi (PyTorch dan NumPy) dikunci menggunakan nilai \textit{Random Seed} sebesar 42.
+\subsection{Lingkungan Implementasi dan Reproduksibilitas}
+Seluruh rangkaian eksperimen pelatihan dijalankan pada satu perangkat komputasi terdedikasi guna menjaga konsistensi performa dan waktu komputasi.
+Mengingat perangkat keras memiliki dampak signifikan terhadap efisiensi proses \textit{fine-tuning} model, rincian spesifikasi perangkat keras (\textit{hardware}) yang digunakan dijabarkan pada Tabel \ref{tab:hardware_spec}.
+
+\begin{table}[H]
+    \centering
+    \caption{Spesifikasi Perangkat Keras untuk Pelatihan}
+    \label{tab:hardware_spec}
+    \small % Opsional: Mengecilkan font tabel sedikit agar terlihat lebih manis
+    % Format kolom: 
+    % |l| : Kolom 1 rata kiri (lebar sesuai isi)
+    % |c| : Kolom 2 rata tengah (lebar sesuai isi)
+    % |X| : Kolom 3 fleksibel (mengisi sisa ruang & wrap text)
+    \begin{tabularx}{\textwidth}{|l|p{3.8cm}|X|} 
+        \hline
+        \textbf{Komponen} & \textbf{Spesifikasi} & \textbf{Keterangan} \\ \hline
+        Processor (CPU) & Intel Core i7-7700HQ & Bertanggung jawab atas \textit{pre-processing} data, augmentasi dan manajemen \textit{dataloader}. \\ \hline
+        Kartu Grafis (GPU) & NVIDIA GeForce GTX 1050 (4 GB VRAM) & Berperan dalam akselerasi komputasi tensor selama pelatihan model. \\ \hline
+        Memori (RAM) & 8 GB DDR4 & Menunjang alokasi data sementara dengan kecepatan transfer 2400 MHz. \\ \hline
+        Penyimpanan & 1 TB HDD & Digunakan sebagai repositori penyimpanan dataset utama. \\ \hline
+    \end{tabularx}
+\end{table}
+
+Selain perangkat keras, lingkungan perangkat lunak juga dikonfigurasi menggunakan pustaka (\textit{library}) standar industri untuk menjamin reliabilitas eksperimen pelatihan.
+Implementasi dilakukan menggunakan bahasa pemrograman \textbf{Python} dengan kerangka kerja utama \textbf{PyTorch}.
+Rincian lengkap \textit{library} yang digunakan beserta fungsinya ditampilkan pada Tabel \ref{tab:software_spec}.
+
+\begin{table}[H]
+    \centering
+    \caption{Daftar Perangkat Lunak dan Pustaka Pendukung}
+    \label{tab:software_spec}
+    \small
+    \begin{tabularx}{\textwidth}{|l|X|} 
+        \hline
+        \textbf{Perangkat Lunak} & \textbf{Fungsi Utama} \\ \hline
+        Python & Bahasa pemrograman dasar untuk seluruh implementasi teknis penelitian. \\ \hline
+        PyTorch & Kerangka kerja utama untuk pembangunan, pelatihan, dan evaluasi model \textit{Deep Learning}. \\ \hline
+        NumPy & Pustaka komputasi numerik untuk manipulasi matriks dan array. \\ \hline
+        Scikit-learn & Pustaka untuk perhitungan metrik evaluasi (\textit{F1-Score}) dan \textit{Confusion Matrix}. \\ \hline
+        Matplotlib \& Seaborn & Pustaka visualisasi data untuk pembuatan grafik hasil pelatihan. \\ \hline
+        Weights \& Biases & Platform pemantauan (\textit{monitoring}) metrik pelatihan secara \textit{real-time}. \\ \hline
+    \end{tabularx}
+\end{table}
+
+Guna memastikan eksperimen dapat direproduksi ulang (\textit{reproducible}) pada aspek logika program, dilakukan penguncian benih acak (\textit{Random Seed}) bernilai tetap (42) pada tiga komponen pustaka utama, yaitu:
+\begin{enumerate}[noitemsep]
+    \item \textbf{Python Native Random} \\
+    Mengunci pengacakan pada operasi dasar.
+    \item \textbf{NumPy} \\
+    Menjamin konsistensi pada operasi manipulasi matriks dan pembagian data (\textit{fold splitting}).
+    \item \textbf{PyTorch (CPU \& CUDA)} \\
+    Mengunci inisialisasi bobot awal jaringan saraf agar start pelatihan selalu sama.
+\end{enumerate}
+
+Meskipun inisialisasi bobot dan pembagian data telah dikunci secara deterministik, konfigurasi \texttt{cudnn.deterministic} pada \textit{backend} GPU tetap dinonaktifkan (\textit{False}).
+Keputusan ini diambil untuk memprioritaskan efisiensi sumber daya dan kecepatan komputasi, mengingat penegakan determinisme penuh pada operasi konvolusi GPU dapat meningkatkan waktu pelatihan secara signifikan.
+Variasi hasil numerik mikroskopis yang mungkin timbul akibat optimasi perangkat keras ini dinilai dapat diabaikan (\textit{negligible}) dan tidak mempengaruhi validitas tren performa model secara keseluruhan. \par
 
 \subsection{Penanganan Ketidakseimbangan Data (\textit{Weight Penalty})}
 Meskipun dataset UrbanSound8K memiliki distribusi data yang relatif terstruktur, proses seleksi kelas dan penyusunan ulang \textit{fold} berpotensi menghasilkan ketidakseimbangan jumlah sampel antar kelas.
@@ -225,24 +284,33 @@ Nilai bobot ini kemudian diaplikasikan sebagai argumen parameter pada fungsi \te
 Secara matematis, jika model melakukan kesalahan prediksi pada kelas \textit{gun\_shot}, nilai \textit{loss} akan dikalikan dengan faktor $W_j$ yang besar tersebut. Dengan begitu, model akan dihukum lebih berat dan dipaksa untuk belajar mengenali fitur kelas minoritas tersebut.
 
 \subsection{Konfigurasi \textit{Optimizer} dan \textit{Scheduler}}
-Proses pembaruan bobot model (\textit{weight update}) dilakukan menggunakan algoritma optimasi \textbf{AdamW} (\textit{Adam with Weight Decay}). Pemilihan AdamW didasari oleh kemampuannya dalam memisahkan mekanisme pembaruan bobot dengan \textit{weight decay} (regularisasi L2), sehingga lebih efektif dalam mencegah \textit{overfitting} dibandingkan algoritma Adam standar. Pelatihan dilakukan dalam \textit{batch size} sebesar 8 selama maksimal 50 \textit{epoch}, dengan pengaturan awal \textit{Learning Rate} sebesar 5e-4 dan nilai \textit{Weight Decay} sebesar 1e-4.
+Proses pembaruan bobot model (\textit{weight update}) dilakukan menggunakan algoritma optimasi \textit{optimizer} \textbf{AdamW} (\textit{Adam with Weight Decay}).
+Pemilihan AdamW didasari oleh kemampuannya dalam memisahkan mekanisme pembaruan bobot dengan \textit{weight decay}, sehingga lebih efektif dalam mencegah \textit{overfitting} dibandingkan algoritma Adam standar.
+Pelatihan dilakukan dalam \textit{batch size} sebesar 8 selama maksimal 50 \textit{epoch}, dengan pengaturan \textit{Learning Rate} awal sebesar 5e-4 dan nilai \textit{Weight Decay} sebesar 1e-4.
 
-Untuk mengoptimalkan proses konvergensi, diterapkan pula penyesuaian laju pembelajaran dinamis menggunakan \textbf{\textit{ReduceLROnPlateau}}. Mekanisme ini dirancang untuk memantau metrik \textit{Validation Loss}. Apabila nilai kerugian validasi tersebut tidak mengalami penurunan selama 3 \textit{epoch} berturut-turut (\textit{patience}), maka nilai \textit{Learning Rate} akan direduksi secara otomatis sebesar setengah dari nilai sebelumnya (faktor 0,5). Strategi ini membantu model untuk menemukan titik minimum global dengan lebih presisi saat mendekati akhir pelatihan.
+Untuk mengoptimalkan proses adaptasi pelatihan model, diterapkan pula penyesuaian laju pembelajaran dinamis menggunakan \textit{scheduler} \textbf{\textit{ReduceLROnPlateau}}.
+Mekanisme ini dirancang untuk memantau metrik \textit{Validation Loss}.
+Apabila nilai kerugian validasi tersebut tidak mengalami penurunan selama 3 \textit{epoch} berturut-turut (\textit{patience}), maka nilai \textit{Learning Rate} akan direduksi secara otomatis sebesar setengah dari nilai sebelumnya (faktor 0,5).
+Strategi ini membantu model untuk menemukan detail kecil global dengan lebih presisi (konvergensi) saat mendekati akhir pelatihan.
 
 \subsection{Strategi Optimasi: \textit{Early Stopping} dan \textit{Checkpoint}}
 Mengingat pelatihan dilakukan pada dataset terbatas, risiko \textit{overfitting} pada \textit{epoch} lanjutan menjadi sangat tinggi. Untuk mencegah hal tersebut, diterapkan dua mekanisme pencegahan otomatis:
 \begin{enumerate}
-    \item \textbf{\textit{Early Stopping}}: Pelatihan model akan dihentikan secara paksa lebih awal apabila metrik evaluasi tidak mencatatkan rekor performa baru selama 5 \textit{epoch} berturut-turut. Ini mencegah model menghafal data latih secara berlebihan.
-    \item \textbf{\textit{Model Checkpointing}}: Selama proses pelatihan berjalan, sistem secara dinamis hanya akan menyimpan (\textit{save}) parameter bobot model pada \textit{epoch} yang berhasil mencetak nilai \textit{F1-Score} validasi tertinggi (\textit{best model}). Jika performa pada \textit{epoch} selanjutnya memburuk, model tidak akan disimpan, sehingga hasil akhir yang dievaluasi dipastikan adalah versi model yang paling optimal.
+    \item \textbf{\textit{Early Stopping}} \\
+    Pelatihan model akan dihentikan secara paksa lebih awal apabila metrik evaluasi tidak mencatatkan rekor performa baru selama 5 \textit{epoch} berturut-turut. Ini mencegah model menghafal data latih secara berlebihan.
+    \item \textbf{\textit{Model Checkpointing}} \\
+    Selama proses pelatihan berjalan, sistem secara dinamis hanya akan menyimpan (\textit{save}) parameter bobot model pada \textit{epoch} yang berhasil mencetak nilai \textit{F1-Score} validasi tertinggi (\textit{best model}). Jika performa pada \textit{epoch} selanjutnya memburuk, model tidak akan disimpan, sehingga hasil akhir yang dievaluasi dipastikan adalah versi model yang paling optimal.
 \end{enumerate}
 
 \subsection{Pemantauan dan Pencatatan Eksperimen}
-Seluruh pergerakan metrik evaluasi pelatihan (termasuk \textit{Train/Validation Loss}, \textit{F1-Score}, dan pergerakan \textit{Learning Rate}) direkam dan divisualisasikan secara \textit{real-time} menggunakan dasbor \textbf{Weights \& Biases (WandB)}. Penggunaan pustaka ini memastikan transparansi rekam jejak pelatihan. Di akhir setiap pengujian \textit{fold}, sistem juga secara otomatis menggenerasi laporan grafik riwayat pelatihan dan visualisasi \textit{Confusion Matrix} berdasarkan prediksi dari model terbaik (\textit{best checkpoint}) untuk keperluan analisis lanjutan.
+Dalam memantau pergerakan metrik evaluasi pelatihan (termasuk \textit{Train/Validation Loss}, \textit{F1-Score}, dan pergerakan \textit{Learning Rate}), metrik tersebut direkam dan divisualisasikan secara \textit{real-time} menggunakan alat bantu berupa \textit{dashboard} \textbf{Weights \& Biases (WandB)}.
+Penggunaan alat ini memastikan transparansi rekam jejak pelatihan model.
+Di akhir setiap pengujian \textit{fold}, sistem juga secara otomatis menggenerasi laporan grafik riwayat pelatihan dengan menampilkan metrik yang dijadikan bahan evaluasi.
 
 \subsection{Konfigurasi Parameter Pelatihan} \label{sec:konfigurasi_eksperimen}
-Sebelum melakukan uji ketiga model, terdapat beberapa konfigurasi parameter yang perlu diterapkan pada training model.
-Hal ini bertujuan untuk menemukan konfigurasi pelatihan model yang paling optimal.
-Rincian parameter konfigurasi yang dikendalikan dalam eksperimen ini disajikan pada Tabel \ref{tab:parameter_latih}. \par
+Rincian skenario pelatihan tadi telah membawa beberapa hyperparameter yang akan dijadikan sebagai tolak ukur eksperimen pada training model.
+Hyperparameter yang dikendalikan dalam eksperimen ini disajikan pada Tabel \ref{tab:parameter_latih}.
+Nilai-nilai yang ditetapkan dalam tabel ini ditetapkan berdasarkan studi literatur dan eksperimen awal untuk mendapatkan konvergensi yang optimal.\par
 
 \begin{table}[H]
 \centering
@@ -252,13 +320,11 @@ Rincian parameter konfigurasi yang dikendalikan dalam eksperimen ini disajikan p
 \begin{tabular}{|l|l|}
 \hline
 \textbf{Kategori} & \textbf{Konfigurasi / Nilai} \\ \hline
-\multicolumn{2}{|c|}{\textbf{Preprocessing Data}} \\ \hline
-Input Sampling Rate & 32.000 Hz \\ \hline
 \multicolumn{2}{|c|}{\textbf{Hyperparameter Training}} \\ \hline
 Batch Size & 8 \\ \hline
 \textit{Epoch} & 50 \\ \hline
 Num Workers & 2 \\ \hline
-Learning Rate & 0.0005 ($5e^{-4}$) \\ \hline
+Learning Rate Awal & 0.0005 ($5e^{-4}$) \\ \hline
 \multicolumn{2}{|c|}{\textbf{Optimizer}} \\ \hline
 Tipe & AdamW \\ \hline
 Weight Decay & 0.0001 ($1e^{-4}$) \\ \hline
@@ -269,9 +335,9 @@ Patience & 3 \\ \hline
 Target Metrik & Validation Loss \\ \hline
 \multicolumn{2}{|c|}{\textbf{Early Stopping}} \\ \hline
 Patience & 5 \\ \hline
+Target Metrik & Validation F1-Score \textless= Best Validation F1-Score \\ \hline
 \multicolumn{2}{|c|}{\textbf{Reproducibilitas}} \\ \hline
 Random Seed & 42 \\ \hline
-Perangkat Keras & GPU NVIDIA GeForce GTX 1050 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -279,8 +345,10 @@ Perangkat Keras & GPU NVIDIA GeForce GTX 1050 \\ \hline
 Setelah proses pelatihan selesai, kinerja model diukur menggunakan empat indikator utama:
 
 \begin{enumerate}
-    \item \textbf{Confusion Matrix:} Digunakan untuk melihat detail distribusi prediksi benar dan salah pada setiap kelas spesifik.
-    \item \textbf{F1-Score:} Digunakan sebagai metrik utama untuk mengukur presisi dan sensitivitas model secara harmonis, memastikan semua kelas bahaya terdeteksi dengan baik.
-    \item \textbf{Grafik Loss \& Accuracy:} Digunakan untuk memantau proses konvergensi model selama pelatihan dan mendeteksi indikasi \textit{overfitting} atau \textit{underfitting}.
-    \item \textbf{Waktu Training:} Digunakan sebagai acuan efisiensi komputasi model.
+    \item \textbf{\textit{F1-Score}} \\
+    Digunakan sebagai metrik utama untuk mengukur akurasi dan sensitivitas model secara harmonis, memastikan semua kelas bahaya terdeteksi dengan baik.
+    \item \textbf{Nilai \textit{Loss}} \\
+    Digunakan untuk memantau proses konvergensi model selama pelatihan dan mendeteksi indikasi \textit{overfitting} atau \textit{underfitting}.
+    \item \textbf{\textit{Confusion Matrix}} \\ 
+    Digunakan untuk melihat detail distribusi prediksi benar dan salah pada setiap kelas spesifik.
 \end{enumerate}

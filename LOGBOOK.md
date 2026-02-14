@@ -2,6 +2,17 @@
 
 ## February
 
+### 2026-02-14
+- Menambahkan beberapa teknik optimasi pada skenario pelatihan pada subbab 3.4.
+- Merapihkan format penulisan pada sub bab 3.5.
+- Review : 
+1. Judul
+2. Bab I (Dibawah ini bagian yang saya ubah, tetapi bisa jadi konteks keseluruhannya berubah)
+a. Paragraf 5 (Tantangan PANNs adalah output multi-label dan reasoning untuk single-label).
+b. Rumusan Masalah, Tujuan Penelitian (Metrik Evaluasi Berubah)
+c. Batasan Masalah (Dataset lebih diperjelas).
+3. Bab III (Full)
+
 ### 2026-02-13
 - Menambah penjelasan PANNs yang multilabel output pada Latar Belakang.
 - Perubahan pada Batasan Masalah tentang dataset UrbanSound8K.
