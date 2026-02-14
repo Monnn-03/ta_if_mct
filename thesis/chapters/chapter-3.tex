@@ -153,17 +153,6 @@ Oleh karena itu, dilakukan dua penyesuaian utama:
     Dengan perubahan ini, model akan memilih satu kelas pemenang dengan probabilitas tertinggi daripada kelas lainnya. \par
 \end{enumerate}
 
-\subsection{Strategi \textit{Freeze Base}}
-Mengingat penelitian ini menggunakan metode \textit{Transfer Learning}, lapisan dasar fitur (\textit{base model}) pada model PANNs dibekukan agar model tidak menghapus ingatan fitur dasar yang telah dipelajari dari dataset besar sebelumnya (AudioSet) \cite{gemmeke2017audioset}. 
-Strategi ini memastikan model memiliki inisialisasi bobot yang baik dan hanya perlu mempelajari pola baru yang spesifik pada dataset target. \par
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{figure/Transfer_Learning.pdf} 
-    \caption{Ilustrasi \textit{Transfer Learning} (\textit{Freeze} vs \textit{Trainable Base})}
-    \label{fig:transfer_learning}
-\end{figure}
-
 \subsection{Parameter Konfigurasi Input}
 Selain melakukan modifikasi arsitektur, konfigurasi parameter input juga disesuaikan dengan standar yang ditetapkan pada PANNs untuk menjamin kompabilitas dimensi fitur antara data input dengan bobot \textit{pre-trained}, sehingga ekstraksi fitur dapat berjalan optimal tanpa adanya kesalahan dimensi. Rincian konfigurasi tersebut meliputi:
 
@@ -284,9 +273,12 @@ Nilai bobot ini kemudian diaplikasikan sebagai argumen parameter pada fungsi \te
 Secara matematis, jika model melakukan kesalahan prediksi pada kelas \textit{gun\_shot}, nilai \textit{loss} akan dikalikan dengan faktor $W_j$ yang besar tersebut. Dengan begitu, model akan dihukum lebih berat dan dipaksa untuk belajar mengenali fitur kelas minoritas tersebut.
 
 \subsection{Konfigurasi \textit{Optimizer} dan \textit{Scheduler}}
-Proses pembaruan bobot model (\textit{weight update}) dilakukan menggunakan algoritma optimasi \textit{optimizer} \textbf{AdamW} (\textit{Adam with Weight Decay}).
+Proses \textit{fine-tuning} dilakukan secara menyeluruh, baik pada lapisan \textit{backbone} maupun \textit{head} tanpa melakukan pembekuan bobot (\textit{unfrozen layers}).
+Hal ini bertujuan agar fitur ekstraktor pada model PANNs dapat beradaptasi sepenuhnya terhadap karakteristik fitur yang diambil dari audio dataset UrbanSound8K, khususnya pada 4 kelas yang telah diseleksi. \par
+
+Pembaruan bobot model (\textit{weight update}) dilakukan menggunakan algoritma optimasi \textit{optimizer} \textbf{AdamW} (\textit{Adam with Weight Decay}).
 Pemilihan AdamW didasari oleh kemampuannya dalam memisahkan mekanisme pembaruan bobot dengan \textit{weight decay}, sehingga lebih efektif dalam mencegah \textit{overfitting} dibandingkan algoritma Adam standar.
-Pelatihan dilakukan dalam \textit{batch size} sebesar 8 selama maksimal 50 \textit{epoch}, dengan pengaturan \textit{Learning Rate} awal sebesar 5e-4 dan nilai \textit{Weight Decay} sebesar 1e-4.
+Pelatihan dilakukan dalam \textit{batch size} sebesar 8 selama maksimal 50 \textit{epoch}, dengan pengaturan \textit{Learning Rate} awal sebesar 5e-4 dan nilai \textit{Weight Decay} sebesar 1e-4. \par
 
 Untuk mengoptimalkan proses adaptasi pelatihan model, diterapkan pula penyesuaian laju pembelajaran dinamis menggunakan \textit{scheduler} \textbf{\textit{ReduceLROnPlateau}}.
 Mekanisme ini dirancang untuk memantau metrik \textit{Validation Loss}.
