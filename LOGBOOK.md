@@ -2,6 +2,9 @@
 
 ## February
 
+### 2026-02-17
+- Mengubah judul sesuai revisi 17-02-2026
+
 ### 2026-02-15
 - Mempelajari fungsi dari freeze base dan fine-tuning full.
 - Menghapus bagian freeze base dan menambahkan sedikit kalimat penjelasan pada bagian optimizer dan scheduler.
