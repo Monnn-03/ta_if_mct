@@ -2,8 +2,20 @@
 
 ## February
 
+### 2026-02-18
+- Menambahkan ilustrasi beserta penjelasan pada mekanisme checkpointing.
+- Menghilangkan parameter Random Seed pada tabel parameter pelatihan karena bersifat redundan.
+- Detail Review 18-02-2026:
+1. Judul
+2. Bab III 
+a. Dengan beberapa revisi sebelumnya
+b. Saya memutuskan tidak menggunakan freeze base karena hasil performanya lebih rendah daripada fine-tuning sepenuhnya. Subbab Freeze Base dihilangkan dan penjelasan fine-tuning dipindahkan ke subbab "3.4.3 Konfigurasi Optimizer dan Scheduler" paragraf pertama.
+
 ### 2026-02-17
 - Mengubah judul sesuai revisi 17-02-2026
+- Menambahkan keterangan pada loop Eksperimen -> Preprocessing
+- Memperjelas ilustrasi Random Cropping
+- Menambahkan sitasi pendukung pada pendekatan Cost-Sensitive Learning (Weight Penalty)
 
 ### 2026-02-15
 - Mempelajari fungsi dari freeze base dan fine-tuning full.

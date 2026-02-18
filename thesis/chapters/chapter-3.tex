@@ -64,7 +64,7 @@ Mengingat dataset ini awalnya berisi 10 kelas suara umum di perkotaan yang terse
 Sebagai langkah antisipasi terhadap keterbatasan data setelah seleksi kelas, strategi augmentasi temporal diterapkan untuk memperkaya variasi data latih.
 Oleh karena itu, tahap pra-pemrosesan data menjamin integritas data dan mencegah kebocoran informasi (\textit{data leakage}) selama proses pelatihan, sebagaimana dijabarkan pada tahapan berikut.\par
 
-\subsection{Seleksi Kelas (\textit{Class Filtering})}
+\subsection{Seleksi Kelas}
 Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan tunarungu. Oleh karena itu, dilakukan penyaringan untuk hanya mengambil 4 kelas prioritas yang merepresentasikan sinyal bahaya, yaitu:
 \begin{enumerate}
     \item \textbf{\textit{gun\_shot} (Tembakan)} \newline
@@ -129,7 +129,7 @@ Strategi ini memastikan bahwa data uji memiliki dimensi yang konsisten, sehingga
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{figure/Random_Crop.pdf} 
-    \caption{Ilustrasi Teknik \textit{Random Cropping} Pada Setiap \textit{Epoch}}
+    \caption{Ilustrasi Teknik \textit{Random Cropping}}
     \label{fig:random_cropping}
 \end{figure}
 
@@ -244,11 +244,11 @@ Meskipun inisialisasi bobot dan pembagian data telah dikunci secara deterministi
 Keputusan ini diambil untuk memprioritaskan efisiensi sumber daya dan kecepatan komputasi, mengingat penegakan determinisme penuh pada operasi konvolusi GPU dapat meningkatkan waktu pelatihan secara signifikan.
 Variasi hasil numerik mikroskopis yang mungkin timbul akibat optimasi perangkat keras ini dinilai dapat diabaikan (\textit{negligible}) dan tidak mempengaruhi validitas tren performa model secara keseluruhan. \par
 
-\subsection{Penanganan Ketidakseimbangan Data (\textit{Weight Penalty})}
+\subsection{Penanganan Ketidakseimbangan Data (\textit{Cost-Sensitive Learning})}
 Meskipun dataset UrbanSound8K memiliki distribusi data yang relatif terstruktur, proses seleksi kelas dan penyusunan ulang \textit{fold} berpotensi menghasilkan ketidakseimbangan jumlah sampel antar kelas.
 Ketidakseimbangan ini dapat memicu bias pada model, di mana model akan cenderung memprediksi kelas mayoritas (jumlah sampel banyak) dan mengabaikan kelas minoritas karena kontribusinya terhadap nilai \textit{loss} yang kecil. \par
 
-Untuk memitigasi risiko tersebut, diterapkan strategi \textit{Weight Penalty} atau pemberian bobot penalti pada fungsi kerugian (\textit{Loss Function}).
+Untuk memitigasi risiko tersebut, diterapkan pendekatan \textit{Cost-Sensitive Learning} \cite{elkan2001foundations} atau pemberian bobot penalti pada fungsi kerugian (\textit{Loss Function}).
 Strategi ini bekerja dengan memberikan bobot \textit{loss} yang besar pada kelas dengan jumlah sampel sedikit, dan sebaliknya. 
 Hal ini memaksa model untuk memberikan perhatian yang setara pada semua kelas selama proses pembaruan gradien tanpa memperhitungkan jumlah sampelnya.
 
@@ -289,9 +289,32 @@ Strategi ini membantu model untuk menemukan detail kecil global dengan lebih pre
 Mengingat pelatihan dilakukan pada dataset terbatas, risiko \textit{overfitting} pada \textit{epoch} lanjutan menjadi sangat tinggi. Untuk mencegah hal tersebut, diterapkan dua mekanisme pencegahan otomatis:
 \begin{enumerate}
     \item \textbf{\textit{Early Stopping}} \\
-    Pelatihan model akan dihentikan secara paksa lebih awal apabila metrik evaluasi tidak mencatatkan rekor performa baru selama 5 \textit{epoch} berturut-turut. Ini mencegah model menghafal data latih secara berlebihan.
+    Mekanisme \textit{Early Stopping} berfungsi sebagai penghenti darurat dalam pelatihan model.
+    Hal ini dilakukan untuk mencegah model yang sudah mencapai performa maksimal lebih awal menjadi \textit{overfitting} pada data latih. \par
+
+    Secara teknis, meskipun batas maksimal jumlah \textit{epoch} telah ditetapkan sebanyak 50 \textit{epoch}, durasi sebenarnya bergantung pada pemantauan metrik \textit{Validation Loss} sebagai tolak ukur performa model.
+    Ketika metrik tersebut tidak mengalami penurunan melebihi rekor minimal selama 5 \textit{epoch} berturut-turut (\textit{patience}), pelatihan model akan dihentikan secara paksa lebih awal. 
+    Mekanisme ini menyebabkan model tidak diberikan kesempatan untuk terus belajar data yang nantinya akan dihafal oleh model tersebut. \par
+
     \item \textbf{\textit{Model Checkpointing}} \\
-    Selama proses pelatihan berjalan, sistem secara dinamis hanya akan menyimpan (\textit{save}) parameter bobot model pada \textit{epoch} yang berhasil mencetak nilai \textit{F1-Score} validasi tertinggi (\textit{best model}). Jika performa pada \textit{epoch} selanjutnya memburuk, model tidak akan disimpan, sehingga hasil akhir yang dievaluasi dipastikan adalah versi model yang paling optimal.
+    Mekanisme \textit{checkpointing} berfungsi untuk menyimpan parameter bobot model terbaik secara otomatis.
+    Selama proses pelatihan berjalan, sistem secara dinamis hanya akan menyimpan file bobot pada \textit{epoch} yang berhasil mencetak nilai \textit{F1-Score} validasi tertinggi.
+    Jika performa pada \textit{epoch} selanjutnya memburuk, parameter bobot model tidak akan diperbarui, sehingga hasil akhir yang dievaluasi dipastikan adalah versi model dengan konfigurasi bobot paling optimal. \par
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{figure/Checkpointing.pdf} 
+        \caption{Ilustrasi Mekanisme \textit{Checkpointing}}
+        \label{fig:checkpointing}
+    \end{figure}
+
+    Contoh mekanisme ini dapat dilihat pada Gambar \ref{fig:checkpointing}.
+    Pada \textit{epoch} ke-1 dan ke-2, model mencetak nilai \textit{validation F1-Score} yang terus meningkat, sehingga \textit{checkpointing} dilakukan 2 kali berturut-turut (memperbarui rekor lama).
+    Namun pada \textit{epoch} ke-3, nilai tersebut menurun cukup drastis, sehingga sistem tetap mempertahankan bobot dari \textit{epoch} ke-2.
+    Walaupun terdapat kenaikan nilai pada \textit{epoch} ke-4, capaiannya belum melampaui rekor \textit{epoch} ke-2, sehingga tidak terjadi \textit{checkpointing} baru.
+    Pembaruan \textit{checkpoint} akhirnya dilakukan kembali pada \textit{epoch} ke-5 karena nilainya berhasil mengalahkan rekor \textit{epoch} ke-2.
+    Dengan demikian, parameter bobot dari \textit{epoch} ke-5 inilah yang disimpan sebagai model final untuk tahap pengujian. \par
+
 \end{enumerate}
 
 \subsection{Pemantauan dan Pencatatan Eksperimen}
@@ -328,8 +351,6 @@ Target Metrik & Validation Loss \\ \hline
 \multicolumn{2}{|c|}{\textbf{Early Stopping}} \\ \hline
 Patience & 5 \\ \hline
 Target Metrik & Validation F1-Score \textless= Best Validation F1-Score \\ \hline
-\multicolumn{2}{|c|}{\textbf{Reproducibilitas}} \\ \hline
-Random Seed & 42 \\ \hline
 \end{tabular}
 \end{table}
 
