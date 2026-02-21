@@ -2,6 +2,11 @@
 
 ## February
 
+### 2026-02-21
+- Mendapat Revisi Beberapa Bagian pada Bab III dari Pak MCT (21-02-2026).
+- Menjelaskan lebih rinci bagaimana proses konversi down-mixing ke mono.
+- Penjelasan asal usul PANNs dan AudioSet pada subbab 3.4 Eksperimen Transfer Learning.
+
 ### 2026-02-18
 - Menambahkan ilustrasi beserta penjelasan pada mekanisme checkpointing.
 - Menghilangkan parameter Random Seed pada tabel parameter pelatihan karena bersifat redundan.

@@ -104,7 +104,28 @@ Ketidaksesuaian format input dapat menyebabkan kegagalan pada proses ekstraksi f
 Oleh karena itu, standarisasi format menjadi langkah penting untuk memastikan bahwa semua data audio memiliki format yang konsisten dan sesuai dengan kebutuhan model, di mana langkah-langkah tersebut mencakup :
 \begin{enumerate}
     \item \textbf{Konversi \textit{Channel} Audio (\textit{Down-mixing})} \newline
-    Langkah ini diterapkan karena terdapat beberapa data audio dengan format stereo (dua \textit{channel}). Semua data audio dikonversi menjadi format mono (satu \textit{channel}) untuk menyederhanakan representasi suara dan mengurangi kompleksitas komputasi.
+    Langkah ini diterapkan karena terdapat beberapa data audio pada Dataset UrbanSound8K dengan format stereo (dua saluran). 
+    Untuk menyeragamkan dimensi input pada model nanti, seluruh data audio dikonversi menjadi format mono (satu saluran).
+    Proses \textit{down-mixing} ini dilakukan dengan mengambil nilai rata-rata amplitudo dari saluran kiri dan kanan pada setiap titik sampel waktu. \par
+    
+    Secara matematis, proses ini direpresentasikan sebagai berikut:
+    
+    \begin{equation}
+        x_{mono}[n] = \frac{x_{left}[n] + x_{right}[n]}{2}
+        \label{eq:channel_convert}
+    \end{equation}
+
+    \noindent Keterangan:
+    \begin{itemize}
+        \item $x$ : Amplitudo Sinyal
+        \item $n$ : Indeks Waktu
+        \item $x_{mono}[n]$ : Amplitudo saluran \textit{mono} pada sampel ke-$n$.
+        \item $x_{left}[n]$ : Amplitudo saluran kiri pada sampel ke-$n$.
+        \item $x_{right}[n]$ : Amplitudo saluran kanan pada sampel ke-$n$.
+    \end{itemize}
+    \medskip
+    
+    Konversi ini dilakukan untuk menyederhanakan representasi suara untuk keperluan klasifikasi dan mengurangi kompleksitas komputasi. \par
 
     \item \textbf{Penyesuaian Sampling Rate (\textit{Resampling})} \newline
     Setelah audio diubah menjadi format mono, dilakukan penyesuaian sampling rate (\textit{resampling}). Sampling rate pada dataset UrbanSound8K bervariatif, sehingga sampling rate pada data diubah menjadi 32.000 Hz agar sesuai dengan standar input pada model PANNs.
@@ -180,7 +201,15 @@ Selain melakukan modifikasi arsitektur, konfigurasi parameter input juga disesua
 Penggunaan \textit{sampling rate} 32 kHz dipilih merujuk pada spesifikasi standar PANNs \cite{kong2020panns}. Angka ini juga telah memenuhi kriteria Teorema Nyquist untuk menangkap frekuensi hingga 16 kHz. Rentang ini dinilai efisien karena sebagian besar energi spektral pada suara bahaya (seperti sirine, klakson, dan tembakan) berada pada rentang 50 Hz hingga 14.000 Hz, sehingga parameter ini dapat mempertahankan informasi vital sekaligus mereduksi beban komputasi dibandingkan standar audio 44.1 kHz.
 
 \section{Eksperimen \textit{Transfer Learning}} \label{sec:eksperimen}
-Setelah model dikonfigurasi sesuai kebutuhan penelitian, tahap selanjutnya adalah melakukan eksperimen \textit{Transfer Learning} dengan arsitektur PANNs.
+Konsep utama dari \textit{Transfer Learning} adalah memanfaatkan pengetahuan yang telah dipelajari oleh model terlatih sebelumnya (\textit{pre-trained model}) dengan dataset berskala besar untuk diterapkan pada permasalahan spesifik yang memiliki keterbatasan data.
+Dalam penelitian ini, arsitektur PANNs yang digunakan merupakan \textit{pre-trained model} yang sebelumnya telah dilatih menggunakan dataset AudioSet \cite{kong2020panns}.
+AudioSet merupakan sebuah dataset audio berskala besar yang berisi lebih dari 2.084.320 klip suara berdurasi 10 detik yang mencakup berbagai macam suara manusia, hewan, alat musik, genre dan suara lingkungan dengan 632 kategori kelas (\textit{multi-label classification}) \cite{gemmeke2017audioset}.
+Adapun data yang digunakan pada saat melatih model PANNs berjumlah 1,9 juta klip suara yang mencakup 527 kategori kelas dari AudioSet \cite{kong2020panns}. \par
+
+Pada fase \textit{pre-training} tersebut, para peneliti PANNs melatih beberapa varian arsitekturnya menggunakan representasi input yang spesifik, yakni \textit{Raw Waveform}, \textit{Log-mel Spectrogram}, serta kombinasi keduanya (\textit{Hybrid}), untuk mengenali berbagai pola hierarkis suara \cite{kong2020panns}.
+Pengetahuan berupa parameter bobot ekstraktor fitur dari masing-masing varian arsitektur inilah yang nantinya akan diadaptasikan ke dalam domain penelitian ini. \par
+
+Setelah model dikonfigurasi sesuai kebutuhan penelitian, tahap selanjutnya adalah melakukan \textit{fine-tuning model} secara menyeluruh pada dataset UrbanSound8K.
 Tahapan ini melibatkan konfigurasi hyperparameter pelatihan secara eksperimental dan penerapan beberapa strategi pelatihan yang bertujuan untuk mendapatkan hasil evaluasi yang optimal.
 Beberapa strategi teknis yang diterapkan mencakup pengondisian lingkungan implementasi, penerapan standar reproduksibilitas, penanganan ketidakseimbangan data, serta mekanisme kontrol pelatihan untuk memastikan model mempelajari data dengan baik dan menghindari \textit{overfitting}.
 Penggunaan WandB sebagai alat pemantauan dan pencatatan eksperimen pelatihan model secara \textit{real-time} termasuk ke dalam strategi untuk memastikan transparansi dan menjaga validitas dalam merekam hasil eksperimen.
