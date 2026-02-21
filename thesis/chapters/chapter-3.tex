@@ -110,10 +110,13 @@ Oleh karena itu, standarisasi format menjadi langkah penting untuk memastikan ba
     
     Secara matematis, proses ini direpresentasikan sebagai berikut:
     
-    \begin{equation}
+    \begin{equationcaptioned}{
         x_{mono}[n] = \frac{x_{left}[n] + x_{right}[n]}{2}
         \label{eq:channel_convert}
-    \end{equation}
+    }{
+        Konversi \textit{Stereo} ke \textit{Mono}
+    }
+    \end{equationcaptioned}
 
     \noindent Keterangan:
     \begin{itemize}
@@ -283,10 +286,13 @@ Hal ini memaksa model untuk memberikan perhatian yang setara pada semua kelas se
 
 Bobot penalti ($W_j$) untuk setiap kelas ke-$j$ dihitung secara otomatis sebelum pelatihan dimulai menggunakan formulasi berikut:
 
-\begin{equation}
+\begin{equationcaptioned}[]{
     W_j = \frac{N}{C \times N_j}
-    \label{eq:class_weight}
-\end{equation}
+    \label{eq:weight_penalty}
+}{
+    \textit{Cost Sensitive-Learning}
+}
+\end{equationcaptioned}
 
 \noindent Keterangan:
 \begin{itemize}

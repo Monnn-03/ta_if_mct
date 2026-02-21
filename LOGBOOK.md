@@ -6,6 +6,7 @@
 - Mendapat Revisi Beberapa Bagian pada Bab III dari Pak MCT (21-02-2026).
 - Menjelaskan lebih rinci bagaimana proses konversi down-mixing ke mono.
 - Penjelasan asal usul PANNs dan AudioSet pada subbab 3.4 Eksperimen Transfer Learning.
+- Menambahkan daftar rumus pada awal dan mengubah eq menjadi eqcaptioned.
 
 ### 2026-02-18
 - Menambahkan ilustrasi beserta penjelasan pada mekanisme checkpointing.
