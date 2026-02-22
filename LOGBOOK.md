@@ -2,11 +2,16 @@
 
 ## February
 
+### 2026-02-22
+- Membuat draft Dasar Teori : Format Saluran Suara
+
 ### 2026-02-21
 - Mendapat Revisi Beberapa Bagian pada Bab III dari Pak MCT (21-02-2026).
 - Menjelaskan lebih rinci bagaimana proses konversi down-mixing ke mono.
 - Penjelasan asal usul PANNs dan AudioSet pada subbab 3.4 Eksperimen Transfer Learning.
 - Menambahkan daftar rumus pada awal dan mengubah eq menjadi eqcaptioned.
+- Membuat paragraf pembuka Bab II, subbab 2.2 Dasar Teori.
+- Membuat draft Dasar Teori (Konsep Dasar Suara, Sampling Rate) pada file markdown terlebih dahulu.
 
 ### 2026-02-18
 - Menambahkan ilustrasi beserta penjelasan pada mekanisme checkpointing.

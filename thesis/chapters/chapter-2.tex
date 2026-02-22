@@ -1,7 +1,7 @@
 \newpage
 \chapter{TINJAUAN PUSTAKA} \label{Bab II}
 
-% \section{Tinjauan Pustaka} \label{II.Tinjauan}
+\section{Tinjauan Pustaka} \label{II.Tinjauan}
 % Tinjauan pustaka dijelaskan dalam Tabel \ref{table:2.literasi} dan digunakan sebagai referensi berdasarkan penelitian yang berkaitan dengan penelitian ini.
 
 % % \begin{longtable}{| b{0.05\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.25\textwidth}|} % Longtable berguna agar tabel dapat terpotong di halaman baru
@@ -35,10 +35,23 @@
 % % 	\hline
 % % \end{longtable}
 
-% \section{Dasar Teori} \label{II.Teori}
+\section{Dasar Teori} \label{II.Teori}
+Dasar teori ini akan menjadi fondasi utama dalam menyusun metode dalam penelitian ini.
+Pemaparan diawali dengan membahas mengenai konsep fisika suara, pemrosesan audio digital, serta teknik ekstraksi fitur suara input yang digunakan untuk menerjemahkan sinyal audio ke dalam format yang dapat diproses oleh mesin.
+Selanjutnya, pembahasan akan diarahkan pada inti dari penelitian ini, yaitu arsitektur \textit{Deep Learning} yang digunakan, mekanisme \textit{Transfer Learning}, hingga berbagai strategi optimasi dan regulasi pelatihan model.
+Sebagai penutup, metrik evaluasi akan diuraikan pada bab ini sebagai bahan analisis untuk menyimpulkan hasil dari penelitian ini.
 
-% \subsection{Spectrogram} \label{II.Teori1}
-% Spectrogram merupakan representasi visual dari frekuensi sinyal audio terhadap waktu.
+% \subsection{Suara Digital} \label{II.Teori1}
+% Suara yang biasa kita dengar merupakan suara dalam bentuk fisik.
+% Agar suara dapat didengar oleh mesin, suara perlu diterjemahkan ke dalam format yang bisa dimengerti bahasa mesin.
+% Konversi tersebut mengalami dua tahap, yaitu mengubah sinyal fisik menjadi sinyal analog, kemudian sinyal analog tersebut dikonversikan lagi menjadi sinyal digital.
+% Sinyal digital inilah yang dapat dimengerti oleh mesin, di mana bentuknya berubah dari gelombang fisik menjadi bentuk biner (terdiri dari 0 dan 1) yang dapat dimengerti oleh bahasa mesin.
+% Konversi tersebut perlu dilakukan karena mesin tidak dapat membaca suara secara langsung, melainkan mesin hanya dapat membaca nilai biner (diskrit).
+
+% Gelombang suara yang dibaca oleh mesin memiliki nilai amplitudo yang mewakili nilai getaran pada suara tersebut.
+% Pengambilan seluruh nilai tersebut sanagt bergantung pada kekuatan mesin dalam mengambil banyak sampel dalam satu waktu yang dilambangkan dengan istilah Sampling Rate, yaitu banyak nilai titik sampel yang diambil per detik durasi audio (Hz).
+% Sebagai contoh jika audio asli memiliki sampling rate 32.000 Hz, maka audio tersebut mengambil detail 32.000 titik sampel dalam 1 detik.
+% Semakin banyak 
 
 % \subsection{Convolutional Neural Network (CNN)} \label{II.Teori2}
 % Convolutional Neural Network atau CNN adalah arsitektur jaringan saraf dalam pembelajaran mendalam, digunakan untuk klasifikasi citra dan spectrogram.
