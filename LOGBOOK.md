@@ -4,6 +4,8 @@
 
 ### 2026-02-22
 - Membuat draft Dasar Teori : Format Saluran Suara
+- Membuat draft Dasar Teori : Raw Waveform
+
 
 ### 2026-02-21
 - Mendapat Revisi Beberapa Bagian pada Bab III dari Pak MCT (21-02-2026).
