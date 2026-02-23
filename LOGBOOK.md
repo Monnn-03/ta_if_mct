@@ -2,6 +2,13 @@
 
 ## February
 
+### 2026-02-24
+- Membuat draft Dasar Teori : 3 Model PANNs sementara
+
+### 2026-02-23
+- Membuat draft Dasar Teori : Log-mel Spectrogram
+- Membuat draft Dasar Teori : Hybrid
+
 ### 2026-02-22
 - Membuat draft Dasar Teori : Format Saluran Suara
 - Membuat draft Dasar Teori : Raw Waveform
