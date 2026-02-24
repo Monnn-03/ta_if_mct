@@ -4,6 +4,9 @@
 
 ### 2026-02-24
 - Membuat draft Dasar Teori : 3 Model PANNs sementara
+- Membuat draft Dasar Teori : Paragraf pembuka PANNs.
+- Menambahkan beberapa pembahasan pada Dasar Teori (ESC, Dataset, dll).
+- Menambahkan penjelasan dasar teori (Pra-pemrosesan data).
 
 ### 2026-02-23
 - Membuat draft Dasar Teori : Log-mel Spectrogram

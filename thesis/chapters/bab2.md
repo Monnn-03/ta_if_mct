@@ -1,26 +1,61 @@
-# Konsep Suara Digital
-Suara yang biasa kita dengar merupakan suara dalam bentuk fisik.
-Agar suara dapat didengar oleh mesin, suara perlu diterjemahkan ke dalam format yang bisa dimengerti bahasa mesin.
-Konversi tersebut mengalami dua tahap, yaitu mengubah sinyal fisik menjadi sinyal analog, kemudian sinyal analog tersebut dikonversikan lagi menjadi sinyal digital.
-Sinyal digital inilah yang dapat dimengerti oleh mesin, di mana bentuknya berubah dari gelombang fisik menjadi bentuk biner (terdiri dari 0 dan 1) yang dapat dimengerti oleh bahasa mesin.
-Konversi tersebut perlu dilakukan karena mesin tidak dapat membaca suara secara langsung, melainkan mesin hanya dapat membaca nilai biner (diskrit).
+# Environmental Sound Classification (ESC)
+Environmental Sound Classification (ESC) merupakan jenis klasifikasi suara yang lebih merujuk kepada suara-suara akustik pada lingkungan sekitar kita.
+Suara-suara tersebut dibedakan menjadi dua jenis, yaitu suara alami yang berasal dari aktivitas alam, dan suara lingkungan buatan yang berasal dari aktivitas manusia atau perkotaan. ESC memiliki berbagai manfaat, mulai dari lingkup pengetahuan hingga digunakan sebagai alat bantu bagi penyandang tunarungu.
 
-## Sampling Rate
-Pengambilan seluruh nilai amplitudo tersebut sangat bergantung pada kekuatan mesin dalam mengambil banyak sampel dalam satu waktu yang dilambangkan dengan istilah Sampling Rate, yaitu banyak nilai titik sampel yang diambil per detik durasi audio (Hz).
-Sebagai contoh jika audio asli memiliki sampling rate 32.000 Hz, maka audio tersebut mengambil detail 32.000 titik sampel dalam 1 detik.
-Semakin besar nilai sampling rate suatu audio, maka semakin jelas rekaman suara yang diambil.
+# Konsep Suara Digital
+Konsep suara digital diawali dengan bentuk suara pada mulanya, di mana suara yang kita dengar berupa suara dalam bentuk fisik. Agar suara dapat didengar oleh mesin, suara perlu diterjemahkan ke dalam format yang bisa dimengerti bahasa mesin. Konversi tersebut mengalami dua tahap, yaitu mengubah sinyal fisik menjadi sinyal analog, kemudian sinyal analog tersebut dikonversikan lagi menjadi sinyal digital. Sinyal digital inilah yang dapat dimengerti oleh mesin, di mana bentuknya berubah dari gelombang fisik menjadi bentuk biner (terdiri dari 0 dan 1) yang dapat dimengerti oleh bahasa mesin. Konversi tersebut perlu dilakukan karena mesin tidak dapat membaca suara secara langsung, melainkan mesin hanya dapat membaca nilai biner (diskrit).
+
+Sinyal digital nantinya akan berisi nilai amplitudo dari gelombang suara yang didapatkan oleh mesin. 
+Nilai amplitudo ini yang menjadi komponen dasar pemrosesan sinyal suara pada mesin nantinya.
+
+## Sampling Rate & Teorema Nyquist
+Pengambilan seluruh nilai amplitudo tersebut bergantung pada kekuatan mesin dalam mengambil banyak sampel dalam satu waktu yang dilambangkan dengan istilah Sampling Rate, yaitu banyak nilai titik sampel yang diambil per detik durasi audio (Hz). Sebagai contoh jika audio asli memiliki sampling rate 32.000 Hz, maka audio tersebut mengambil detail 32.000 titik sampel dalam 1 detik. Semakin besar nilai sampling rate suatu audio, maka semakin jelas rekaman suara yang diambil.
+
+Harry Nyquist mengemukakan teoremanya (Teorema Nyquist) bahwa nilai sampling rate pada sebuah audio harus 2 kali frekuensi pendengaran manusia pada umumnya (2 x f). Ini didasarkan pada konsep frekuensi suara yang merupakan banyaknya gelombang suara dalam 1 detik.  Gelombang suara harus terdiri dari dua bagian, yaitu 1 bagian puncak dan 1 bagian lembah. Teorema ini memastikan bahwa nilai sampling rate menangkap 2 titik sampel bagian dalam gelombang agar sesuai dengan nilai frekuensi pada audio tersebut. 
+
+## Bit Depth
+Jika sampling rate memastikan pengambilan titik sampel pada frekuensi, Bit Depth mengatur detail penempatan nilai amplitudo pada sebuah audio. Nilai bit depth yang tinggi memperjelas transisi kekuatan atau volume suara pada audio. Proyeksi nilai amplitudo tersebut dikalkulasikan dalam rumus berikut yang menentukan jumlah, batas bawah dan batas atas nilai amplitudo.
+
+- Banyak nilai n bit depth = 2^n
+- Nilai batas bawah n bit depth = -2^(n-1)
+- Nilai batas atas n bit depth = 2^(n-1) - 1
+
+Nilai batas bawah mendapatkan lebih banyak angka daripada nilai batas atas disebabkan oleh angka 0 ikut ke dalam nilai tersebut, dan ini diatur dalam hukum Two's Complement.
 
 ## Format Saluran Suara
-Detail pengambilan rekaman suara bergantung pada jumlah dan kualitas perangkat perekam. 
-Banyak jumlah perangkat yang merekam dari berbeda sudut pandang menciptakan pengalaman mendengar suara rekaman yang realistik.
-Maka dari itu, salah satu istilah penting dalam domain suara adalah saluran suara.
+Detail pengambilan rekaman suara bergantung pada jumlah dan kualitas perangkat perekam. Banyak jumlah perangkat yang merekam dari berbeda sudut pandang menciptakan pengalaman mendengar suara rekaman yang realistik. Maka dari itu, teknologi pengalaman suara tersebut diatur dalam format saluran suara. Seiring perkembangan teknologi, format saluran suara juga semakin berkembang dan canggih. 
 
-Dalam penelitian ini, terdapat dua format saluran suara yang dibahas, yaitu satu saluran (mono) dan dua saluran (stereo).
-Keunggulan mendengar suara dengan format stereo ialah dapat mendengarkan suara kejadian pada rekaman dari sisi kiri dan kanan dibandingkan dengan format mono yang hanya merekam pada satu sisi saja. Mesin membaca format suara stereo yang menghasilkan dua kelompok nilai amplitudo yang dibungkus dalam dua array.
+Umumnya terdapat dua format saluran suara yang digunakan, yaitu satu saluran (mono) dan dua saluran (stereo). Keunggulan mendengar suara dengan format stereo ialah dapat mendengarkan suara kejadian pada rekaman dari sisi kiri dan kanan dibandingkan dengan format mono yang hanya merekam pada satu sisi saja. Mesin membaca format suara stereo yang menghasilkan dua kelompok nilai amplitudo yang dibungkus dalam dua array.
 
-Merujuk pada konteks klasifikasi suara, pemilihan dan penyamarataan format mono pada dataset suara didasarkan oleh beberapa alasan. 
-Klasifikasi suara bertujuan ingin mempelajari karakteristik suara, di mana format suara mono sudah cukup untuk merepresentasikan karakteristik suara yang ingin dipelajari dibandingkan dengan klasifikasi suara berformat stereo yang terkesan ikut mempelajari sisi pengambilan rekaman suara.
-Selain menyesuaikan konteks klasifikasi, format suara mono mempermudah proses komputasi karena nilai amplitudo yang dibaca hanya berupa satu array, bukan dua array.
+# Dataset UrbanSound8K
+Dataset UrbanSound8K merupakan kumpulan data yang mengandung 8732 suara lingkungan perkotaan (format `.wav`) dengan kategori 10 kelas, di mana kategori tersebut mencakup :
+a. air_conditioner (pendingin ruangan)
+b. car_horn (klakson mobil)
+c. children playing (anak-anak sedang bermain)
+d. dog_bark (gonggongan anjing)
+e. drilling (aktivitas mengebor)
+f. engine_drilling (mesin pengebor)
+g. gun_shot (tembakan senjata)
+h. jackhammer (penghancur permukaan keras)
+i. siren (sirene)
+j. street_music (musik jalanan)
+
+Selain file audio, dataset ini juga menyediakan file `.csv` sebagai informasi metadata untuk setiap file audionya. Terdapat format penamaan file audio didalam file metadata tersebut dengan format : `[fsID]-[classID]-[occurenceID]-[sliceID].wav`. Penomoran classID dimulai dari angka 0 sampai 9, sesuai dengan urutan yang tertera di atas.
+
+Semua file audio telah disusun ke dalam 10 fold, dengan format penamaan folder : `fold1` - `fold10`. Penyusunan ini dibuat sedemikian rupa karena ada beberapa file audio yang direkam di tempat dan kejadian yang sama, sehingga beberapa rekaman tersebut disatukan pada fold yang sama demi menghindari kebocoran data. Kebocoran data merupakan fenomena yang terjadi saat data yang seharusnya menjadi data uji, tercampur dengan data latih sehingga model mendapatkan karakteristik suara yang sama saat validasi pembelajaran (dan berlaku sebaliknya).
+
+Maka dari itu, pembuat dataset sangat tidak menganjurkan pengacakan data ulang karena berpotensi mengakibatkan model mengalami overfitting, yaitu model memiliki nilai akurasi tinggi hanya saat menebak data lokal. Ketika diberikan data baru yang belum pernah dipelajari sebelumnya, maka model akan menjadi bodoh.
+
+# Pra-pemrosesan Data
+Salah satu keberhasilan model dalam klasifikasi adalah kualitas data yang cukup baik dan sesuai konteksnya. Sebelum data digunakan untuk pelatihan model, pra-pemrosesan (pre-processing) data perlu dilakukan agar kualitas data sesuai dengan kebutuhan input model untuk mendapatkan hasil performa maksimal. 
+
+## Down-mixing
+Down-mixing merupakan proses penggabungan beberapa saluran suara menjadi lebih sedikit. Penggunaan down-mixing lebih efektif jika format saluran suara yang sedikit sudah cukup untuk merepresentasikan karakteristik suara yang ingin dipelajari. Proses tersebut juga membuat komputasi menjadi lebih ringan karena hanya sedikit kelompok nilai amplitudo yang diproses.
+
+## Resampling
+Resampling adalah proses mengubah jumlah titik sampel yang berada dalam 1 detik. Perubahan tersebut dapat mempengaruhi kejelasan suara, sehingga sample rate tujuan harus memiliki nilai yang dapat menangkap seluruh frekuensi gelombang pada suara. 
+
+## Augmentasi
 
 # Representasi Input Suara
 ## Raw Waveform
@@ -50,14 +85,20 @@ Maka dari itu, proses logaritma menjadi solusi yang menyamaratakan nilai amplitu
 Nilai amplitudo yang kecil pada rentang amplitudo diubah melalui rumus logaritma yang menghasilkan nilai baru dengan satuan Desibel (DB).
 Proyeksi Mel-Spectrogram yang telah diberikan proses logaritma (dapat disebut Log-mel Spectrogram) sangat menyerupai pendengaran manusia sehingga mesin dapat mempelajari suara tersebut layaknya manusia mempelajarinya.
 
-## Hybrid
-Jenis input Hybrid adalah penggabungan kedua fitur suara yang telah dijelaskan sebelumnya (Raw Waveform dan Log-mel Spectrogram). 
-Ini merupakan ide dari penemu PANNs itu sendiri, yaitu Qiuqiangkong, yang bertujuan untuk menciptakan model dengan pembelajaran variasi input yang lebih detil.
-Proses ini melibatkan dua kejadian yang berjalan secara paralel, di mana model dengan input Hybrid akan memiliki dua cabang input yang masing-masing meminta input Raw Waveform.
-Pada cabang pertama, Raw Waveform akan diubah menjadi Log-mel Spectrogram dengan proses FFT.
-Berbeda dengan cabang lainnya yang membiarkan model tersebut memproses Raw Waveform menjadi sebuah bentuk 2 dimensi, yang dinamakan Wavegram.
+# CNN
 
 # Pre-trained Audio Neural Networks (PANNs)
+Dalam dunia pre-trained model, PANNs menjadi salah satu pilihan yang menyediakan model klasifikasi suara dengan bobot terlatih dari dataset suara berskala besar (AudioSet).
+Arsitektur ini dibuat dan dilatih oleh seorang peneliti bernama Qiuqiang Kong.
+Pertimbangan penggunaan PANNs disebabkan oleh keterbatasan jumlah data pada dataset sekunder.
+Walaupun begitu, arsitektur mengeluarkan output klasifikasi multi-label (Multi-label Classification) ke dalam 527 kelas pada dataset AudioSet, sehingga diperlukan penyesuaian pada lapisan akhir model agar dapat menyesuaikan output pada kelas suara yang ditentukan pada penelitian ini.
+
+Penelitian Qiuqiang Kong mengenai PANNs juga telah menguji performa setiap arsitektur yang dipetakan ke dalam 3 metrik, yaitu mAP, AUC, dan d-prime.
+Semua arsitektur yang ada dalam PANNs memiliki representasi input yang berbeda-beda.
+Arsitektur PANNs dengan representasi input 1 dimensi ada DaiNet, LeeNet, Res1dNet, dan Wavegram-CNN.
+Dilanjutkan dengan arsitektur representasi input 2 dimensi yaitu CNN, ResNet, dan MobileNet.
+Yang terakhir, satu-satunya arsitektur dengan pendekatan input Hybrid yaitu Wavegram-Logmel-CNN.
+Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi inputnya masing-masing, yaitu Res1dNet31, ResNet38, dan Wavegram-Logmel-CNN14.
 
 ## Res1dNet31
 Res1dNet31 merupakan arsitektur ResNet (Residual Network) 1 dimensi milik PANNs yang paling unggul dalam menangani representasi input domain waktu dibandingkan model lainnya dengan jenis input yang sama.
@@ -96,7 +137,27 @@ Kedua fitur ini nantinya akan digabungkan dan diproses melalui arsitektur CNN14.
 Penggabungan kedua pendekatan ini berfungsi untuk menutupi kekurangan satu sama lain.
 Raw Waveform murni yang diekstrak dan sulit dipelajari, dilengkapi dengan Log-mel Spectrogram dengan proyeksi pola yang mudah untuk dipelajari walaupun mengalami kehilangan informasi secara utuh.
 
+# Transfer Learning
+Setelah memilih model pre-trained, tahap selanjutnya adalah Transfer Learning.
+Metode ini bekerja dengan cara mengadaptasi model pre-trained dengan data yang memiliki domain lebih spesifik.
+Dalam kasus penelitian ini, PANNs yang sudah paham mengenali suara yang umum diarahkan untuk lebih spesifik mengenali suara kedaruratan di perkotaan.
 
+Untuk melaksanakan transfer learning, terdapat dua jenis lingkup pelatihan model pre-trained, yaitu Freeze Base dan Fine Tuning.
+
+## Freeze Base
+Freeze Base merupakan jenis transfer learning yang bekerja dengan membekukan lapisan backbone pada model.
+Pembekuan lapisan tersebut menyebabkan parameter bobot tidak akan disesuaikan oleh data yang baru.
+Penyesuaian hanya dilakukan pada lapisan belakang (head) yang memutuskan label pada data tersebut, dalam penelitian ini menyesuaikan output klasifikasi 527 kelas multi-label menjadi 4 kelas dengan klasifikasi single-label.
+Mekanisme ini menjadi sesuai jika dihadapkan dengan kondisi data yang sangat terbatas, sehingga menghindari kerusakan bobot akibat kekurangan data untuk dipelajari.
+
+## Fine Tuning
+Berbeda dengan Freeze Base, metode Fine Tuning menyesuaikan bobot lapisan backbone pada konteks data baru yang ingin dipelajari.
+Ini mengizinkan model untuk menyesuaikan ulang bobot pada lapisan backbone, sehingga model mempunyai bobot yang telah diperbarui dan bisa menangani kasus klasifikasi dengan konteks khusus yang sudah dipelajari. 
+Untuk mendapatkan hasil yang efektif, diperlukan data dengan jumlah yang cukup agar model memiliki bekal cukup dalam memperbarui bobotnya.
+
+# Strategi Optimasi Pelatihan
+
+# Metrik Evaluasi
 
 
 
