@@ -2,6 +2,9 @@
 
 ## February
 
+### 2026-02-25
+- Membuat seluruh draft awal dasar teori dan memetakan urutan strukturnya.
+
 ### 2026-02-24
 - Membuat draft Dasar Teori : 3 Model PANNs sementara
 - Membuat draft Dasar Teori : Paragraf pembuka PANNs.

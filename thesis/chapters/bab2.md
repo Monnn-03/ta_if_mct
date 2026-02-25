@@ -53,9 +53,10 @@ Salah satu keberhasilan model dalam klasifikasi adalah kualitas data yang cukup 
 Down-mixing merupakan proses penggabungan beberapa saluran suara menjadi lebih sedikit. Penggunaan down-mixing lebih efektif jika format saluran suara yang sedikit sudah cukup untuk merepresentasikan karakteristik suara yang ingin dipelajari. Proses tersebut juga membuat komputasi menjadi lebih ringan karena hanya sedikit kelompok nilai amplitudo yang diproses.
 
 ## Resampling
-Resampling adalah proses mengubah jumlah titik sampel yang berada dalam 1 detik. Perubahan tersebut dapat mempengaruhi kejelasan suara, sehingga sample rate tujuan harus memiliki nilai yang dapat menangkap seluruh frekuensi gelombang pada suara. 
+Resampling adalah proses mengubah jumlah titik sampel yang berada dalam 1 detik. Perubahan tersebut dapat mempengaruhi kejelasan suara, sehingga sample rate tujuan harus memiliki nilai yang cukup untuk menangkap seluruh frekuensi gelombang pada suara. Banyaknya titik sampel dalam satu detik juga mempengaruhi proses komputasi.
 
 ## Augmentasi
+Augmentasi merupakan salah satu teknik yang ampuh dalam memperbanyak variasi data dalam dunia pelatihan model. Variasi tersebut dilakukan dengan cara memanipulasi bagian data, seperti menambahkan gangguan (noise) atau melakukan pemotongan durasi secara acak. Dengan variasi data yang selalu acak pada setiap iterasi pelatihan model (epoch), keyakinan model untuk menjawab secara benar meningkat. Model juga tidak hanya memiliki bobot yang bervariasi, tetapi juga tahan uji ketika menghadapi data yang mengalami sedikit kerusakan.
 
 # Representasi Input Suara
 ## Raw Waveform
@@ -85,32 +86,46 @@ Maka dari itu, proses logaritma menjadi solusi yang menyamaratakan nilai amplitu
 Nilai amplitudo yang kecil pada rentang amplitudo diubah melalui rumus logaritma yang menghasilkan nilai baru dengan satuan Desibel (DB).
 Proyeksi Mel-Spectrogram yang telah diberikan proses logaritma (dapat disebut Log-mel Spectrogram) sangat menyerupai pendengaran manusia sehingga mesin dapat mempelajari suara tersebut layaknya manusia mempelajarinya.
 
-# CNN
+# Convolutional Neural Network (CNN)
+Convolutional Neural Network (CNN) adalah arsitektur model Deep Learning berupa jaringan saraf yang bekerja dengan cara mengenali pola dan meringkas informasi penting yang didapatkan pada setiap lapisannya. CNN dikenal karena keandalannya dalam mempelajari dan mengenali gambar. Terdapat beberapa bagian dalam arsitektur CNN, yaitu Input Layer (kaki), Backbone (punggung), Neck (leher), dan Head (kepala / klasifikator).
+
+Setiap bagian memiliki fungsinya masing-masing. Input Layer merupakan lapisan awal sebagai penerima input data untuk dijadikan bahan belajar model. Backbone bertugas mengekstraksi fitur input yang telah diberikan dan menghasilkan informasi ringkas karakteristik input. Keberadaan Neck sebenarnya opsional, tetapi bagian ini bertugas untuk meringkas informasi dari backbone yang banyak menjadi deretan 1 baris angka yang sederhana. Head akan memproses ringkasan informasi dari neck dan mengambil keputusan terhadap hasil karakteristik input ke dalam kelas yang telah dipetakan. 
+
+## Kernel
+Kernel merupakan komponen pengamat fitur yang biasanya berbentuk persegi berukuran tertentu. Tugasnya adalah menemukan pola (filter) pada fitur yang sedang disorot dan meneruskannya ke lapisan berikutnya.
+
+## Stride
+Stride merupakan mekanisme lompatan kernel untuk melewati beberapa urutan fitur yang seharusnya. Fungsinya mempercepat proses pengambilan informasi pada fitur, sehingga meminimalkan komputasi.
+
+## Batch Normalization (BN)
+Batch Normalization merupakan mekanisme normalisasi rentang nilai yang diperoleh dari lapisan sebelumnya. Mekanisme ini membuat komputasi nilai menjadi lebih mudah untuk diproses ke lapisan berikutnya.
+
+## ReLU
+ReLU adalah komponen yang bertugas untuk menyaring dan membuang nilai negatif pada informasi ekstraksi fitur. Komponen ini hanya akan mengembalikan informasi pola dengan nilai yang kuat didalamnya.
+
+## Max Pooling
+Pooling merupakan komponen yang bertugas mengecilkan ukuran data. Hal ini bertujuan untuk mempermudah proses komputasi saat pelatihan. Akan tetapi, fungsi ini mulai sering digantikan dengan stride yang cukup mengambil fungsinya dalam mempercepat pengambilan informasi fitur.
+
+## Fully Connected Layer (Linear)
+Fully Connected (FC) Layer merupakan lapisan yang berada di bagian Head sebagai pengambil keputusan. Lapisan ini menerima informasi yang sudah diekstraksi oleh backbone dan diringkas oleh neck, kemudian menghubungkan semua informasi yang didapatkan. Dari kesimpulan tersebut, lapisan ini akan menebak kelas data ini sesuai dengan ciri-ciri fitur tersebut dengan representasi angka mentah (logits).
+
+## Sigmoid (Fungsi Aktivasi Keluaran)
+Sigmoid merupakan fungsi yang mengubah hasil angka mentah pada FC Layer menjadi probabilitas independen berupa persentase. Angka yang dihasilkan oleh FC Layer tidak representatif untuk dijadikan hasil akhir untuk dilihat pengguna karena penentuan nilainya sangat abstrak. Maka dari itu, perubahan angka tersebut menjadi nilai persentase lebih informatif untuk disajikan kepada pengguna.
+
+
 
 # Pre-trained Audio Neural Networks (PANNs)
-Dalam dunia pre-trained model, PANNs menjadi salah satu pilihan yang menyediakan model klasifikasi suara dengan bobot terlatih dari dataset suara berskala besar (AudioSet).
-Arsitektur ini dibuat dan dilatih oleh seorang peneliti bernama Qiuqiang Kong.
-Pertimbangan penggunaan PANNs disebabkan oleh keterbatasan jumlah data pada dataset sekunder.
-Walaupun begitu, arsitektur mengeluarkan output klasifikasi multi-label (Multi-label Classification) ke dalam 527 kelas pada dataset AudioSet, sehingga diperlukan penyesuaian pada lapisan akhir model agar dapat menyesuaikan output pada kelas suara yang ditentukan pada penelitian ini.
+Dalam dunia pre-trained model, PANNs menjadi salah satu pilihan yang menyediakan model klasifikasi suara dengan bobot terlatih dari dataset suara berskala besar (AudioSet). Arsitektur ini dibuat dan dilatih oleh seorang peneliti bernama Qiuqiang Kong. Keluaran klasifikasi nya berupa multi-label (Multi-label Classification) ke dalam 527 kelas pada dataset AudioSet, sehingga diperlukan penyesuaian pada lapisan akhir model agar dapat menyesuaikan output pada kelas suara yang ditentukan pada penelitian ini.
+
+[GAMBAR_TABEL_PENGUJIAN_MODEL_PANNs]
 
 Penelitian Qiuqiang Kong mengenai PANNs juga telah menguji performa setiap arsitektur yang dipetakan ke dalam 3 metrik, yaitu mAP, AUC, dan d-prime.
-Semua arsitektur yang ada dalam PANNs memiliki representasi input yang berbeda-beda.
-Arsitektur PANNs dengan representasi input 1 dimensi ada DaiNet, LeeNet, Res1dNet, dan Wavegram-CNN.
-Dilanjutkan dengan arsitektur representasi input 2 dimensi yaitu CNN, ResNet, dan MobileNet.
-Yang terakhir, satu-satunya arsitektur dengan pendekatan input Hybrid yaitu Wavegram-Logmel-CNN.
-Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi inputnya masing-masing, yaitu Res1dNet31, ResNet38, dan Wavegram-Logmel-CNN14.
+Semua arsitektur yang ada dalam PANNs memiliki representasi input yang berbeda-beda. Arsitektur PANNs dengan representasi input 1 dimensi ada DaiNet, LeeNet, Res1dNet, dan Wavegram-CNN. Dilanjutkan dengan arsitektur representasi input 2 dimensi yaitu CNN, ResNet, dan MobileNet. Terakhir, satu-satunya arsitektur dengan pendekatan input Hybrid yaitu Wavegram-Logmel-CNN. Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi inputnya masing-masing, yaitu Res1dNet31, ResNet38, dan Wavegram-Logmel-CNN14.
 
 ## Res1dNet31
-Res1dNet31 merupakan arsitektur ResNet (Residual Network) 1 dimensi milik PANNs yang paling unggul dalam menangani representasi input domain waktu dibandingkan model lainnya dengan jenis input yang sama.
+Res1dNet31 merupakan arsitektur ResNet (Residual Network) 1 dimensi milik PANNs yang paling unggul dalam menangani representasi input domain waktu dibandingkan model lainnya dengan jenis input yang sama. Arsitektur ini menerima input berupa sinyal digital 1 dimensi (Raw Waveform) dengan sample rate 32 KHz. Keunggulan arsitektur ini dirancang untuk mempelajari fitur data suara mentah yang diperoleh secara alami dibandingkan fitur Logmel-Spectrogram yang sudah diproses dengan metode buatan manusia (FFT dan Logmel).
 
-Arsitektur ini menerima input berupa sinyal digital 1 dimensi (Raw Waveform) dengan sample rate 32 KHz.
-
-Proses komputasi dimulai dengan mengekstrak fitur Raw Waveform menggunakan lapisan konvolusi awal  dengan Kernel berukuran 3 dan stride bernilai 5. 
-Informasi diproses lebih dalam melalui backbone ResNet dengan 14 blok residu, di mana setiap blok terdiri dari 2 lapisan konvolusi residu yang masing-masing mengandung dilatasi 1 dan 2. 
-Akhirnya, hasil daripada backbone dilanjutkan ke 2 lapisan terakhir untuk mendapatkan kesimpulan klasifikasi final.
-Seluruh lapisan pada arsitektur ini berjumlah 31 lapisan.
-
-Keunggulan arsitektur ini dirancang untuk mempelajari fitur data suara mentah yang diperoleh secara alami dibandingkan fitur Logmel-Spectrogram yang sudah diproses dengan metode buatan manusia (FFT dan Logmel).
+Proses komputasinya diawali dengan mengekstrak fitur Raw Waveform menggunakan lapisan konvolusi awal  dengan Kernel berukuran 3 dan stride bernilai 5. Informasi diproses lebih dalam melalui backbone ResNet dengan 14 blok residu, di mana setiap blok terdiri dari 2 lapisan konvolusi residu yang masing-masing mengandung dilatasi 1 dan 2. Akhirnya, hasil daripada backbone dilanjutkan ke 2 lapisan terakhir untuk mendapatkan kesimpulan klasifikasi final. Seluruh lapisan pada arsitektur ini berjumlah 31 lapisan.
 
 ## ResNet38
 ResNet38 merupakan salah satu arsitektur ResNet 2 dimensi milik PANNs dengan nilai mAP tertinggi dalam menangani jenis input dengan dimensi tersebut.
@@ -119,7 +134,7 @@ Arsitektur ini menerima input berupa Raw Waveform yang nantinya akan diekstrak d
 
 Proses komputasi dimulai dengan blok konvolusi 512 filter dengan kernel berukuran 3x3 dan mengandung Batch Normalization (BN) serta ReLU.
 Proses blok tersebut dilakukan sebanyak 2 kali dan dilakukan Max Pooling 2x2.
-Setelah itu, fitur dimasukkan ke dalam backbone yang berisikan 16 Basic Blocks dan yang diikuti dengan Max Pooling 2x2 setiap iterasinya.
+Setelah itu, fitur dimasukkan ke dalam backbone yang berisikan 16 Basic Blocks, di mana setiap blok berisikan kernel, BN dan ReLU. Setiap Basic Blocks diakhiri dengan Max Pooling berukuran 2x2.
 Lapisan akhir pada arsitektur ini berupa lapisan Fully Connected dengan 527 jawaban kelas serta fungsi aktivasi sigmoid.
 
 Keunggulan arsitektur ini terletak pada kemampuannya dalam menangani input domain frekuensi yang sudah tergambar dalam grafis (2 dimensi).
@@ -155,10 +170,151 @@ Berbeda dengan Freeze Base, metode Fine Tuning menyesuaikan bobot lapisan backbo
 Ini mengizinkan model untuk menyesuaikan ulang bobot pada lapisan backbone, sehingga model mempunyai bobot yang telah diperbarui dan bisa menangani kasus klasifikasi dengan konteks khusus yang sudah dipelajari. 
 Untuk mendapatkan hasil yang efektif, diperlukan data dengan jumlah yang cukup agar model memiliki bekal cukup dalam memperbarui bobotnya.
 
-# Strategi Optimasi Pelatihan
+# Strategi Optimasi dan Regulasi Pelatihan
+Dalam pelatihan dari nol atau Fine-tuning model, perlu adanya beberapa regulasi untuk memastikan model memiliki cara belajar yang tepat.
+Regulasi tersebut mengatur mekanisme jalannya pelatihan. Untuk mendapatkan hasil yang lebih maksimal, strategi optimasi juga diterapkan dalam proses pelatihan model.
+
+## Hyperparameter Pelatihan
+Hyperparameter merupakan parameter regulasi pelatihan pada eksperimen pelatihan (pelatihan berulang). Perubahan tersebut bertujuan mendapatkan parameter yang paling optimal untuk menghasilkan performa model terbaik.
+
+## Epoch
+Epoch merupakan istilah pengukuran iterasi pelatihan model. 
+
+## Step
+Step adalah hitungan langkah dalam setiap epoch ketika pekerja CPU mengambil data dan diantarakan ke lapisan input model.
+
+## Batch Size
+Batch Size mengukur banyaknya data (file) yang diambil setiap step.
+
+## Num Workers
+Num Workers adalah jumlah pekerja CPU yang mengambil data setiap stepnya.
+
+## Learning Rate
+Learning Rate adalah parameter untuk mengatur jarak langkah belajar model.
+
+## Cross-Entropy Loss
+Loss merupakan nilai yang cukup penting dalam pelatihan model. Jika nilai akurasi mengukur jumlah tebakan benar model, maka nilai Loss mengukur seberapa yakin model ketika salah menebak data. Kalkulasi nilai ini membutuhkan nilai probabilitas hasil tebakan yang didapatkan dari fungsi Sigmoid.
+
+[Rumus]
+
+Perhitungan ini berlaku sama rata untuk semua kelas yang ditentukan.
+
+## Cost-Sensitive Learning
+Cost-Sensitive Learning merupakan adaptasi perhitungan Cross Entropy Loss sebelumnya yang memberikan nilai loss lebih pada kelas yang lebih penting. Adaptasi tersebut hanya menambahkan bobot khusus pada setiap kelasnya, sehingga penambahan nilai Loss digambarkan pada rumus berikut :
+
+[Rumus_Cost-Sensitive-Learn]
+
+## Optimizer
+Optimizer merupakan mekanisme penting yang berfungsi sebagai pengatur strategi cara belajar model setelah menebak. Komponen yang diatur dalam optimizer ini adalah bobot dan bias pada arsitektur model.
+
+Bobot dan bias baru pada setiap lapisan akan dikalkulasikan dengan rumus berikut:
+- w/b baru = w/b lama - (lr x gradient)
+
+Gradient didapatkan dari hasil kalkulasi nilai loss dengan bobot pada setiap lapisan.
+
+## Adam
+AdamW merupakan salah satu jenis optimizer yang terkenal mengandalkan momentum. 
+
+## AdamW
+Mengatasi kekurangan pada versi optimizer sebelumnya, AdamW merupakan perbaikan dari Adam dalam menangani Weight Decay.
+
+## ReduceLROnPlateau (LR Scheduler)
+Learning Rate (LR) Scheduler merupakan mekanisme untuk mengatur Learning Rate pada pelatihan. Ini melengkapi mekanisme optimizer yang hanya menyesuaikan nilai Gradient saja.
+
+ReduceLROnPlateau merupakan LR Scheduler bawaan Pytorch yang berfungsi mengurangi Learning Rate ketika suatu metrik tidak melebihi nilai target dengan jumlah batas toleransi (patience) yang ditentukan. Pengurangan Learning Rate menggunakan faktor pengali yang akan mengurangi nilai Learning Rate sebelumnya.
+
+## Early Stopping
+Early Stopping merupakan mekanisme berupa pemberhentian pelatihan model jika suatu metrik tidak melebihi nilai tertingginya. Penyesuaian batas toleransi (patience) ketika metrik yang ditentukan tidak melewati rekor dilakukan berulang sesuai dengan analisa performa model. 
+Mekanisme ini diciptakan untuk menghindari model mengalami overfitting. Jika mekanisme ini tidak diterapkan, model yang sudah pernah mencapai performa tertingginya pada suatu epoch akan terus berlatih dan diuji dengan data yang sama pada sisa epochnya, sehingga model malah menghafal data uji dan data latih. 
+
+## Checkpointing
+Saat model mencapai nilai performa terbaiknya, mekanisme Checkpointing hadir untuk melakukan otomatisasi penyimpanan bobot model. Bobot model yang disimpan berekstensi `.pth` dan disimpan pada direktori yang telah ditentukan.
 
 # Metrik Evaluasi
 
+## Confusion Matrix
+Confusion Matrix adalah metrik yang memetakan jumlah jawaban benar dan salah model menebak data uji. Nilai metrik tersebut dikategorikan ke dalam 4 istilah:
+1. True Positive (TP)
+Pada data dengan kelas X, model menebak itu kelas X (Benar).
+2. True Negative (TN)
+Pada data dengan kelas Y, model menebak itu kelas Y, bukan kelas X (Benar). 
+3. False Positive (FP)
+Pada data dengan kelas Y, model menebak itu kelas X (Salah).
+4. False Negative (FN)
+Pada data dengan kelas X, model menebak itu kelas Y (Salah).
+
+## Precision
+Precision mengukur seberapa tepat model menebak benar suatu kelas dari total tebakan kelas tersebut. Pengukuran dirumuskan ke dalam rumus berikut:
+- Precision = TP / (TP + FP)
+
+## Recall
+Recall mengukur seberapa tepat model menebak suatu kelas saat data dengan kelas tersebut dipanggil. Pengukuran dirumuskan ke dalam rumus berikut:
+- Recall = TP / (TP + FN)
+
+## F1-Score
+F1-Score adalah penggabungan nilai rata-rata dari kedua metrik sebelumnya, yaitu Precision dan Recall.
+
+## Kurva Loss
+Kurva loss merupakan metrik pengukur keyakinan model dalam menebak data latih (train loss) maupun data uji (validation loss). Nilai loss akan bernilai tinggi jika model terlalu yakin ketika salah menebak kelas pada data, begitupun sebaliknya. Pembacaan kerdua kurva (train dan validation) loss tersebut penting dalam menganalisis apakah model tersebut mempelajari atau sekedar menghafal data.
+
+Overfitting merupakan fenomena dimana model pintar menebak data latih, tetapi bodoh ketika menebak data uji. Fenomena ini digambarkan dengan kurva train loss yang menurun, tetapi kurva validation loss yang meningkat.
+
+Underfitting merupakan fenomena dimana model payah dalam menebak data latih dan data uji. Ini digambarkan dengan kurva loss keduanya yang cukup tinggi dan sulit untuk turun.
+
+
+# Struktur Dasar Teori
+1. Environmental Sound Classification (ESC)
+2. Konsep Suara Digital 
+a. Sampling Rate
+b. Bit Depth
+c. Format Saluran Suara
+3. UrbanSound8K (Dataset)
+4. Preprocessing Data
+a. Down-mixing
+b. Resampling
+c. Augmentasi Data
+5. Representasi Input Suara
+5.1. Raw Waveform
+5.2. Log-mel Spectrogram
+6. Convolutional Neural Network (CNN)
+a. Kernel
+b. Stride
+c. Batch Normalization (BN)
+d. Retrified Linear Unit (ReLU)
+e. Max Pooling
+f. Fully Connected Layer
+g. Sigmoid
+7. Pre-trained Audio Neural Networks (PANNs)
+7.1. Res1dNet31
+7.2. ResNet38
+7.3. Wavegram_Logmel_Cnn14
+8. Transfer Learning
+a. Freeze Base
+b. Fine Tuning
+9. Strategi Optimasi dan Skenario Pelatihan
+9.1. Hyperparameter Pelatihan
+a. Epoch
+b. Batch Size
+c. Num Workers
+d. Learning Rate
+9.2. Fungsi Kerugian dan Cost Sensitive Learning
+a. Cross Entropy Loss
+b. Cost Sensitive Learning
+9.3. Optimizer (Adam & AdamW) dan Scheduler
+a. Optimizer
+. Adam
+. AdamW
+b. Scheduler
+. ReduceLROnPlateau
+10. Mitigasi Overfitting (Early Stopping dan Checkpointing)
+a. Early Stopping
+b. Checkpointing
+11. Metrik Evaluasi
+a. Confusion Matrix
+b. Precision
+c. Recall
+d. F1-Score
+e. Kurva Loss (Loss Curve)
 
 
 
