@@ -41,17 +41,26 @@ Pemaparan diawali dengan membahas mengenai konsep fisika suara, pemrosesan audio
 Selanjutnya, pembahasan akan diarahkan pada inti dari penelitian ini, yaitu arsitektur \textit{Deep Learning} yang digunakan, mekanisme \textit{Transfer Learning}, hingga berbagai strategi optimasi dan regulasi pelatihan model.
 Sebagai penutup, metrik evaluasi akan diuraikan pada bab ini sebagai bahan analisis untuk menyimpulkan hasil dari penelitian ini.
 
-% \subsection{Suara Digital} \label{II.Teori1}
-% Suara yang biasa kita dengar merupakan suara dalam bentuk fisik.
-% Agar suara dapat didengar oleh mesin, suara perlu diterjemahkan ke dalam format yang bisa dimengerti bahasa mesin.
-% Konversi tersebut mengalami dua tahap, yaitu mengubah sinyal fisik menjadi sinyal analog, kemudian sinyal analog tersebut dikonversikan lagi menjadi sinyal digital.
-% Sinyal digital inilah yang dapat dimengerti oleh mesin, di mana bentuknya berubah dari gelombang fisik menjadi bentuk biner (terdiri dari 0 dan 1) yang dapat dimengerti oleh bahasa mesin.
-% Konversi tersebut perlu dilakukan karena mesin tidak dapat membaca suara secara langsung, melainkan mesin hanya dapat membaca nilai biner (diskrit).
+\subsection{\textit{Environmental Sound Classification} (ESC)} \label{II.Teori1}
+% Definisi
+Fenomena yang terjadi di sekitar lingkungan dapat kita identifikasi, baik melalui visual ataupun akustik (suara).
+Seiring berkembangnya teknologi kecerdasan buatan (AI), komputer (mesin) memiliki kemampuan untuk berperilaku seperti manusia, salah satu contohnya adalah mampu mengidentifikasi suatu kejadian melalui masukan akustik. 
+Environmental Sound Classification (ESC) merupakan klasifikasi kejadian akustik, di mana aktivitas di sekitar kita diidentifikasi dan dikelompokkan untuk memicu sebuah sistem untuk bekerja (aktif) \cite{bansal2022environmental}.
+Klasifikasi ini memiliki kompleksitas yang lebih rumit dibandingkan dengan jenis klasifikasi akustik lainnya.
+Pengenalan suara manusia (speech) memiliki struktur ejaan dan pengenalan musik memiliki pola ritme dan melodi yang teratur, sedangkan suara lingkungan bersifat tidak statis dan tidak memiliki struktur baku \cite{bansal2022environmental}.
+Ini menandakan bahwa ESC memiliki batasan dan kompleksitas yang khusus. \par
 
-% Gelombang suara yang dibaca oleh mesin memiliki nilai amplitudo yang mewakili nilai getaran pada suara tersebut.
-% Pengambilan seluruh nilai tersebut sanagt bergantung pada kekuatan mesin dalam mengambil banyak sampel dalam satu waktu yang dilambangkan dengan istilah Sampling Rate, yaitu banyak nilai titik sampel yang diambil per detik durasi audio (Hz).
-% Sebagai contoh jika audio asli memiliki sampling rate 32.000 Hz, maka audio tersebut mengambil detail 32.000 titik sampel dalam 1 detik.
-% Semakin banyak 
+% Kelebihan (Manfaat)
+Penerapan ESC memiliki manfaat dalam beberapa ruang lingkup (domain), salah satunya adalah pengembangan sistem cerdas.
+Pada sistem rumah cerdas (Smart Home), ESC diimplementasikan dengan suara yang ditangkap oleh mikrofon dan dijadikan masukan untuk sistem responsnya \cite{tremblay_exploiting}.
+Contohnya ketika sistem mendeteksi kaca pecah, maka sistem keamanan akan menyala sebagai respons dari tanda bahaya tersebut.
+Pada lingkup diluar rumah, ESC juga diterapkan pada sistem pemantauan kota pintar (smart city surveillance).
+Teknologi ini membantu infrastruktur kota mendeteksi kejadian darurat di jalan raya secara otomatis melalui sensor akustik \cite{zhang2023automatic}. 
+Dari beberapa bentuk penerapan tersebut, penelitian ini membawa pemanfaatan ESC ke dalam lingkup teknologi alat bantu personal (asistif), yaitu pengenalan kejadian akustik darurat perkotaan khusus bagi penyandang disabilitas tunarungu.
+Keterbatasannya dalam batas pandang visual dapat diatasi oleh pengenalan akustik yang diidentifikasi dari segala sudut pandang \cite{bansal2022environmental}. \par
+
+% Tantangan
+
 
 % \subsection{Convolutional Neural Network (CNN)} \label{II.Teori2}
 % Convolutional Neural Network atau CNN adalah arsitektur jaringan saraf dalam pembelajaran mendalam, digunakan untuk klasifikasi citra dan spectrogram.
