@@ -43,30 +43,97 @@ Sebagai penutup, metrik evaluasi akan diuraikan pada bab ini sebagai bahan anali
 
 \subsection{\textit{Environmental Sound Classification} (ESC)} \label{II.Teori1}
 % Definisi
-Fenomena yang terjadi di sekitar lingkungan dapat kita identifikasi, baik melalui visual ataupun akustik (suara).
+Fenomena yang terjadi di sekitar lingkungan dapat diidentifikasi, baik melalui visual ataupun akustik (suara).
 Seiring berkembangnya teknologi kecerdasan buatan (AI), komputer (mesin) memiliki kemampuan untuk berperilaku seperti manusia, salah satu contohnya adalah mampu mengidentifikasi suatu kejadian melalui masukan akustik. 
-Environmental Sound Classification (ESC) merupakan klasifikasi kejadian akustik, di mana aktivitas di sekitar kita diidentifikasi dan dikelompokkan untuk memicu sebuah sistem untuk bekerja (aktif) \cite{bansal2022environmental}.
+\textit{Environmental Sound Classification} (ESC) merupakan klasifikasi kejadian akustik, di mana aktivitas di lingkungan sekitar diidentifikasi dan dikelompokkan sehingga dapat memicu sebuah sistem untuk bekerja (aktif) \cite{bansal2022environmental}.
 Klasifikasi ini memiliki kompleksitas yang lebih rumit dibandingkan dengan jenis klasifikasi akustik lainnya.
-Pengenalan suara manusia (speech) memiliki struktur ejaan dan pengenalan musik memiliki pola ritme dan melodi yang teratur, sedangkan suara lingkungan bersifat tidak statis dan tidak memiliki struktur baku \cite{bansal2022environmental}.
-Ini menandakan bahwa ESC memiliki batasan dan kompleksitas yang khusus. \par
+Pengenalan suara manusia (\textit{speech}) memiliki struktur ejaan dan pengenalan musik memiliki pola ritme dan melodi yang teratur, sedangkan suara lingkungan bersifat tidak statis dan tidak memiliki struktur baku \cite{bansal2022environmental}.
+Hal tersebut menunjukkan bahwa ESC memiliki batasan dan kompleksitas yang khusus. \par
 
 % Kelebihan (Manfaat)
 Penerapan ESC memiliki manfaat dalam beberapa ruang lingkup (domain), salah satunya adalah pengembangan sistem cerdas.
-Pada sistem rumah cerdas (Smart Home), ESC diimplementasikan dengan suara yang ditangkap oleh mikrofon dan dijadikan masukan untuk sistem responsnya \cite{tremblay_exploiting}.
+Sistem rumah pintar (\textit{Smart Home}) memanfaatkan tangkapan suara dari mikrofon sebagai masukan dan mengambil tindakan respons atas suara tersebut \cite{tremblay_exploiting}.
 Contohnya ketika sistem mendeteksi kaca pecah, maka sistem keamanan akan menyala sebagai respons dari tanda bahaya tersebut.
-Pada lingkup diluar rumah, ESC juga diterapkan pada sistem pemantauan kota pintar (smart city surveillance).
+Pada skala ruang yang lebih luas, ESC juga diterapkan pada sistem pemantauan kota pintar (\textit{smart city surveillance}).
 Teknologi ini membantu infrastruktur kota mendeteksi kejadian darurat di jalan raya secara otomatis melalui sensor akustik \cite{zhang2023automatic}. 
 Dari beberapa bentuk penerapan tersebut, penelitian ini membawa pemanfaatan ESC ke dalam lingkup teknologi alat bantu personal (asistif), yaitu pengenalan kejadian akustik darurat perkotaan khusus bagi penyandang disabilitas tunarungu.
-Keterbatasannya dalam batas pandang visual dapat diatasi oleh pengenalan akustik yang diidentifikasi dari segala sudut pandang \cite{bansal2022environmental}. \par
+Keterbatasan visual penyandang tunarungu dapat dijembatani melalui teknologi pengenalan akustik yang diidentifikasi dari segala sudut pandang \cite{bansal2022environmental}. \par
 
 % Tantangan
+Namun, klasifikasi suara lingkungan memiliki tantangan tersendiri.
+Tantangan tersebut terletak pada variasi jarak pengambilan sampel dan pencampuran dengan kebisingan latar belakang \cite{bansal2022environmental}.
+Oleh karena itu, diperlukan pendekatan komputasi yang kuat, seperti \textit{Deep Learning} untuk mengekstraksi pola inti fitur dan mengatasi variasi akustik pada ESC \cite{piczak2015environmental}. \par
+
+\subsection{Konsep Suara Digital} \label{II.Teori2}
+Pada mulanya, suara yang didengar manusia memiliki sinyal fisik yang tidak dapat dilihat secara langsung.
+Dengan perangkat pengambil suara, seperti mikrofon, sinyal fisik ditangkap dan dikonversikan menjadi sinyal analog dalam bentuk gelombang kontinu.
+Sistem komputasi tidak dapat memproses gelombang sinyal kontinu, karena arsitektur mesin hanya beroperasi menggunakan data biner (0 dan 1).
+Untuk memahami sinyal analog tersebut, diperlukan proses pencuplikan gelombang secara berkala untuk diubah menjadi deretan nilai diskrit (angka). 
+Proses konversi ini disebut Analog-to-Digital Conversion (ADC) \cite{oppenheim2010discrete}.
+Hasil dari proses konversi ini berupa deretan sinyal digital yang merepresentasikan nilai diskrit amplitudo gelombang suara pada setiap titik waktu tertentu. 
+Nilai amplitudo inilah yang menjadi fondasi dasar dalam komputasi dan pemrosesan sinyal audio pada mesin. \par
+
+Adapun tiga komponen utama yang membentuk karakteristik dari suara digital adalah sebagai berikut:
+\begin{enumerate}
+    \item \textbf{\textit{Sampling Rate} dan Teorema Nyquist} \\
+    Pengambilan seluruh nilai amplitudo tersebut bergantung pada kapasitas perangkat keras dalam mencuplik sampel pada satu rentang waktu.
+		Konsep ini dilambangkan dengan istilah \textit{Sampling Rate}, yaitu jumlah titik sampel yang diambil per detik dari sebuah sinyal audio, dengan satuan Hertz (Hz) \cite{oppenheim2010discrete}.
+		Sebagai contoh, jika sebuah audio memiliki \textit{sampling rate} sebesar 32.000 Hz, maka sistem mengambil 32.000 titik sampel amplitudo dalam 1 detik.
+		Semakin tinggi nilai \textit{sampling rate}, maka semakin akurat rekaman digital tersebut merepresentasikan bentuk gelombang suara aslinya. \par
+    
+		Terkait hal ini, Teorema Nyquist-Shannon mengemukakan aturan matematis bahwa nilai \textit{sampling rate} minimum harus dua kali lipat dari frekuensi tertinggi yang ada pada sinyal suara asli tersebut ($f_s \geq 2f_{max}$) \cite{oppenheim2010discrete}.
+		Aturan ini didasarkan pada konsep frekuensi, yaitu banyaknya gelombang dalam satu detik. 
+		Karena satu siklus gelombang penuh harus terdiri dari satu bagian puncak dan satu bagian lembah, Teorema Nyquist memastikan bahwa proses pencuplikan menangkap setidaknya dua titik tersebut agar salah satu bagian gelombang tidak hilang (\textit{aliasing}) saat diubah ke dalam bentuk digital \cite{oppenheim2010discrete}. \par
+
+    \item \textbf{\textit{Bit Depth}} \\
+    Jika \textit{sampling rate} berfokus pada seberapa sering sampel diambil berdasarkan urutan waktu (frekuensi), maka \textit{bit depth} menentukan tingkat ketelitian atau resolusi dari nilai amplitudo pada setiap sampel tersebut.
+		Semakin tinggi nilai \textit{bit depth}, maka semakin halus transisi volume suara yang dihasilkan, sehingga meminimalisir distorsi atau hilangnya informasi sinyal (\textit{quantization error}) \cite{li2014fundamentals}.
+		
+		Rentang nilai diskrit amplitudo ini dikalkulasikan menggunakan persamaan berikut:
+    \begin{itemize}
+			\item Total kemungkinan nilai pada resolusi $n$ bit = $2^n$
+			\item Nilai batas bawah (minimum) $n$ bit = $-2^{(n-1)}$
+			\item Nilai batas atas (maksimum) $n$ bit = $2^{(n-1)}-1$
+		\end{itemize}
+		\medskip
+		Perbedaan rentang antara batas atas dan batas bawah terjadi karena nilai 0 tergolong ke bagian dari nilai positif.
+    Representasi perbedaan ini diatur dalam hukum \textit{Two's Complement} yang merupakan standar fundamental dalam arsitektur komputasi modern \cite{patterson2013computer}. \par
+
+    \item \textbf{Format Saluran Suara (\textit{Audio Channel})} \\
+    Karakteristik spasial dari sebuah rekaman audio ditentukan oleh format saluran suaranya.
+		Format ini bergantung pada jumlah perangkat mikrofon yang digunakan serta posisi pengambilan saat proses perekaman \cite{li2014fundamentals}.
+		Secara umum, terdapat dua format saluran suara yang paling dasar, yaitu saluran tunggal (\textit{mono}) dan saluran ganda (\textit{stereo}).
+		Format \textit{mono} merekam seluruh sinyal suara ke dalam satu lintasan tunggal, sedangkan format \textit{stereo} menggunakan dua lintasan terpisah (kiri dan kanan) untuk menciptakan ilusi arah dan dimensi ruang pada suara yang dihasilkan \cite{li2014fundamentals}.
+		
+		Dalam proses komputasi, format saluran ini secara langsung memengaruhi dimensi struktur data pada memori mesin.
+		Suara dengan format \textit{mono} direpresentasikan sebagai satu baris deret (\textit{array}) nilai amplitudo, sedangkan suara \textit{stereo} direpresentasikan sebagai dua baris \textit{array} nilai amplitudo terpisah \cite{li2014fundamentals}.
+		Dalam tahap prapemrosesan (\textit{preprocessing}) data untuk pelatihan model kecerdasan buatan (\textit{Deep Learning}), keberagaman format saluran suara dari data mentah seringkali diseragamkan (\textit{down-mixing}) menjadi format \textit{mono} \cite{kong2020panns}. 
+		Hal ini dilakukan untuk menjaga konsistensi dimensi data input pada model dan meminimalkan beban komputasi tanpa menghilangkan fitur utama dari sinyal suara tersebut. \par
+\end{enumerate}
+
+\subsection{Dataset UrbanSound8K} \label{II.Teori3}
+Dataset UrbanSound8K merupakan kumpulan data yang mengandung 8732 suara lingkungan perkotaan (format `.wav`) dengan kategori 10 kelas, di mana kategori tersebut mencakup :
+
+\begin{enumerate}
+	\item air\_conditioner (pendingin ruangan)
+	\item car\_horn (klakson mobil)
+	\item children playing (anak-anak sedang bermain)
+	\item dog\_bark (gonggongan anjing)
+	\item drilling (aktivitas mengebor)
+	\item engine\_idling (mesin menyala statis)
+	\item gun\_shot (tembakan senjata)
+	\item jackhammer (penghancur permukaan keras)
+	\item siren (sirene)
+	\item street\_music (musik jalanan)
+\end{enumerate}
+ 
 
 
-% \subsection{Convolutional Neural Network (CNN)} \label{II.Teori2}
-% Convolutional Neural Network atau CNN adalah arsitektur jaringan saraf dalam pembelajaran mendalam, digunakan untuk klasifikasi citra dan spectrogram.
+Selain file audio, dataset ini juga menyediakan file `.csv` sebagai informasi metadata untuk setiap file audionya. Terdapat format penamaan file audio didalam file metadata tersebut dengan format : `[fsID]-[classID]-[occurenceID]-[sliceID].wav`. Penomoran classID dimulai dari angka 0 sampai 9, sesuai dengan urutan yang tertera di atas.
 
-% \subsection{Feature Extraction Audio} \label{II.Teori3}
-% Feature Extraction Audio merupakan proses mengambil fitur penting seperti mel-frequency cepstral coefficients (MFCC), chroma, atau spectrogram.
+Semua file audio telah disusun ke dalam 10 fold, dengan format penamaan folder : `fold1` - `fold10`. Penyusunan ini dibuat sedemikian rupa karena ada beberapa file audio yang direkam di tempat dan kejadian yang sama, sehingga beberapa rekaman tersebut disatukan pada fold yang sama demi menghindari kebocoran data. Kebocoran data merupakan fenomena yang terjadi saat data yang seharusnya menjadi data uji, tercampur dengan data latih sehingga model mendapatkan karakteristik suara yang sama saat validasi pembelajaran (dan berlaku sebaliknya).
+
+Maka dari itu, pembuat dataset sangat tidak menganjurkan pengacakan data ulang karena berpotensi mengakibatkan model mengalami overfitting, yaitu model memiliki nilai akurasi tinggi hanya saat menebak data lokal. Ketika diberikan data baru yang belum pernah dipelajari sebelumnya, maka model akan menjadi bodoh.
 
 % \subsection{Korean Ballad} \label{II.Teori4}
 % Korean Ballad adalah genre musik asal Korea yang dikenal lembut, emosional, dan memiliki aransemen instrumental kuat.

@@ -3,7 +3,8 @@
 ## February
 
 ### 2026-02-26
-- Membuat draft pada subbab ESC.
+- Membuat draft Dasar Teori pada subbab ESC.
+- Membuat draft Dasar Teori pada subbab Konsep Suara Digital.
 
 ### 2026-02-25
 - Membuat seluruh draft awal dasar teori dan memetakan urutan strukturnya.
