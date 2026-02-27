@@ -106,27 +106,7 @@ Oleh karena itu, standarisasi format menjadi langkah penting untuk memastikan ba
     \item \textbf{Konversi \textit{Channel} Audio (\textit{Down-mixing})} \newline
     Langkah ini diterapkan karena terdapat beberapa data audio pada Dataset UrbanSound8K dengan format stereo (dua saluran). 
     Untuk menyeragamkan dimensi input pada model nanti, seluruh data audio dikonversi menjadi format mono (satu saluran).
-    Proses \textit{down-mixing} ini dilakukan dengan mengambil nilai rata-rata amplitudo dari saluran kiri dan kanan pada setiap titik sampel waktu. \par
-    
-    Secara matematis, proses ini direpresentasikan sebagai berikut:
-    
-    \begin{equationcaptioned}{
-        x_{mono}[n] = \frac{x_{left}[n] + x_{right}[n]}{2}
-        \label{eq:channel_convert}
-    }{
-        Konversi \textit{Stereo} ke \textit{Mono}
-    }
-    \end{equationcaptioned}
-
-    \noindent Keterangan:
-    \begin{itemize}
-        \item $x$ : Amplitudo Sinyal
-        \item $n$ : Indeks Waktu
-        \item $x_{mono}[n]$ : Amplitudo saluran \textit{mono} pada sampel ke-$n$.
-        \item $x_{left}[n]$ : Amplitudo saluran kiri pada sampel ke-$n$.
-        \item $x_{right}[n]$ : Amplitudo saluran kanan pada sampel ke-$n$.
-    \end{itemize}
-    \medskip
+    Proses \textit{down-mixing} ini menggunakan persamaan \textbf{\ref{eq:channel_convert}} pada Bab II. \par
     
     Konversi ini dilakukan untuk menyederhanakan representasi suara untuk keperluan klasifikasi dan mengurangi kompleksitas komputasi. \par
 

@@ -1,6 +1,7 @@
 # Research Logbook
 
 ## February
+- Membuat draft Dasar Teori pada subbab Dataset UrbanSound8K dan Prapemrosesan Data.
 
 ### 2026-02-26
 - Membuat draft Dasar Teori pada subbab ESC.

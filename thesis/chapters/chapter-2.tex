@@ -37,7 +37,7 @@
 
 \section{Dasar Teori} \label{II.Teori}
 Dasar teori ini akan menjadi fondasi utama dalam menyusun metode dalam penelitian ini.
-Pemaparan diawali dengan membahas mengenai konsep fisika suara, pemrosesan audio digital, serta teknik ekstraksi fitur suara input yang digunakan untuk menerjemahkan sinyal audio ke dalam format yang dapat diproses oleh mesin.
+Pemaparan diawali dengan membahas mengenai konsep fisika suara, pemrosesan audio digital, serta teknik ekstraksi fitur suara masukan (\textit{input}) yang digunakan untuk menerjemahkan sinyal audio ke dalam format yang dapat diproses oleh mesin.
 Selanjutnya, pembahasan akan diarahkan pada inti dari penelitian ini, yaitu arsitektur \textit{Deep Learning} yang digunakan, mekanisme \textit{Transfer Learning}, hingga berbagai strategi optimasi dan regulasi pelatihan model.
 Sebagai penutup, metrik evaluasi akan diuraikan pada bab ini sebagai bahan analisis untuk menyimpulkan hasil dari penelitian ini.
 
@@ -112,28 +112,117 @@ Adapun tiga komponen utama yang membentuk karakteristik dari suara digital adala
 \end{enumerate}
 
 \subsection{Dataset UrbanSound8K} \label{II.Teori3}
-Dataset UrbanSound8K merupakan kumpulan data yang mengandung 8732 suara lingkungan perkotaan (format `.wav`) dengan kategori 10 kelas, di mana kategori tersebut mencakup :
+Dataset UrbanSound8K merupakan kumpulan data yang mengandung 8732 suara kejadian di lingkungan perkotaan.
+Semua file audio di dalam UrbanSound8K berdurasi maksimal 4 detik dan berekstensi \texttt{.wav} \cite{salamon2014dataset}. 
+UrbanSound8K mengelompokkan label datanya ke dalam 10 kelas, di mana kategori tersebut mencakup :
 
 \begin{enumerate}
-	\item air\_conditioner (pendingin ruangan)
-	\item car\_horn (klakson mobil)
+	\item air conditioner (pendingin ruangan)
+	\item car horn (klakson mobil)
 	\item children playing (anak-anak sedang bermain)
-	\item dog\_bark (gonggongan anjing)
+	\item dog bark (gonggongan anjing)
 	\item drilling (aktivitas mengebor)
-	\item engine\_idling (mesin menyala statis)
-	\item gun\_shot (tembakan senjata)
+	\item engine idling (mesin menyala statis)
+	\item gun shot (tembakan senjata)
 	\item jackhammer (penghancur permukaan keras)
 	\item siren (sirene)
-	\item street\_music (musik jalanan)
+	\item street music (musik jalanan)
 \end{enumerate}
  
+Selain file audio, dataset ini juga menyediakan file \texttt{.csv} sebagai informasi metadata untuk setiap file audionya.
+Terdapat format penamaan file audio di dalam file metadata tersebut dengan format : \texttt{[fsID]-[classID]-[occurrenceID]-[sliceID].wav}.
+Penomoran \texttt{classID} dimulai dari angka 0 sampai 9, sesuai dengan urutan yang tertera di atas \cite{salamon2014dataset}. \par
+
+Semua file audio telah disusun ke dalam 10 fold, dengan format penamaan folder : `fold1` - `fold10`.
+Penyusunan ini dibuat sedemikian rupa karena ada beberapa file audio yang direkam di tempat dan kejadian yang sama, sehingga beberapa rekaman tersebut disatukan pada fold yang sama demi menghindari kebocoran data.
+Kebocoran data merupakan fenomena yang terjadi saat data yang seharusnya menjadi data uji, tercampur dengan data latih sehingga model mendapatkan karakteristik suara yang sama saat validasi pembelajaran (dan berlaku sebaliknya).
+Maka dari itu, pembuat dataset sangat tidak menganjurkan pengacakan data ulang karena berpotensi mengakibatkan model mengalami overfitting, yaitu model memiliki nilai akurasi tinggi hanya saat memprediksi data latihnya saja \cite{salamon2014dataset}.
+Ketika diberikan data baru yang belum pernah dipelajari sebelumnya, maka model akan gagal memahami data dan mengalami penurunan performa ketika dihadapkan pada suara baru dengan label yang sama. \par
+
+Dalam dataset UrbanSound8K, file audionya merupakan hasil kompilasi rekaman dari berbagai kontributor di situs repositori Freesound, sehingga \textit{sampling rate}, \textit{bit depth}, dan format saluran suara tidak seragam \cite{salamon2014dataset}.
+Agar model memiliki dimensi input yang sesuai dan seragam, diperlukan tahap prapemrosesan data untuk menyamaratakan dimensi data pada UrbanSound8K.
+
+\subsection{Prapemrosesan Data} \label{II.Teori4}
+Salah satu kunci utama penentu keberhasilan model kecerdasan buatan dalam tugas klasifikasi adalah kualitas data yang digunakan \cite{han2011data}.
+Mengingat tingginya variasi karakteristik fisik audio pada dataset mentah UrbanSound8K, tahap prapemrosesan (\textit{preprocessing}) data perlu dilakukan sebelum data tersebut digunakan untuk pelatihan model.
+Tahapan ini bertujuan untuk menyamaratakan karakteristik kualitas data sesuai dengan kebutuhan input model untuk mendapatkan hasil performa maksimal \cite{han2011data}. \par
+Adapun tahapan prapemrosesan data yang diterapkan pada sinyal suara digital dijelaskan sebagai berikut:
+
+\begin{enumerate}
+	\item \textbf{\textit{Down-mixing}} \\
+	\textit{Down-mixing} merupakan teknik pemrosesan sinyal untuk mereduksi jumlah saluran suara, yang dalam konteks ini melakukan konversi format \textit{stereo} menjadi format \textit{mono}. 
+	Pada tugas klasifikasi suara lingkungan, informasi spasial atau arah datangnya suara tidak memiliki relevansi yang signifikan terhadap identitas kelas suara tersebut \cite{kong2020panns}.
+	Proses reduksi ini dilakukan dengan mengalkulasi nilai rata-rata (\textit{mean}) amplitudo dari saluran kiri dan saluran kanan pada setiap titik sampel waktu yang sama \cite{li2014fundamentals}.
+	Persamaan matematis untuk operasi ini dirumuskan sebagai berikut:
+    
+  \begin{equationcaptioned}{
+      x_{mono}[n] = \frac{x_{left}[n] + x_{right}[n]}{2}
+      \label{eq:channel_convert}
+  }{
+      Konversi \textit{Stereo} ke \textit{Mono}
+  }
+  \end{equationcaptioned}
+
+  \noindent Keterangan:
+  \begin{itemize}
+      \item $x$ : Amplitudo Sinyal
+      \item $n$ : Indeks Waktu
+      \item $x_{mono}[n]$ : Amplitudo saluran \textit{mono} pada sampel ke-$n$.
+      \item $x_{left}[n]$ : Amplitudo saluran kiri pada sampel ke-$n$.
+      \item $x_{right}[n]$ : Amplitudo saluran kanan pada sampel ke-$n$.
+  \end{itemize}
+  \medskip
+
+	Langkah reduksi ini memangkas dimensi struktur data sebesar 50\%, yang berdampak langsung pada efisiensi alokasi memori serta meringankan beban komputasi model saat proses pelatihan berlangsung tanpa menghilangkan karakteristik frekuensi utama dari sinyal tersebut \cite{kong2020panns}. \par
+	
+	\item \textbf{\textit{Resampling}} \\
+	\textit{Resampling} adalah proses transformasi digital untuk mengubah \textit{sampling rate} dari suatu sinyal audio \cite{oppenheim2010discrete}.
+	Dalam konteks tugas klasifikasi, proses ini sangat krusial karena arsitektur model klasifikasi mensyaratkan dimensi \textit{input} yang seragam.
+	Jika dataset terdiri dari berbagai rekaman audio dengan \textit{sampling rate} yang bervariasi (misalnya 16.000 Hz, 44.100 Hz, 48.000 Hz), model akan kesulitan memproses panjang \textit{array} yang berbeda-beda untuk durasi rekaman yang sama. 
+	Oleh karena itu, seluruh audio mentah tersebut harus diseragamkan ke satu nilai \textit{sampling rate} standar. \par
+	
+	Demi menjaga karakteristik suara, proses \textit{resampling} harus tetap mematuhi Teorema Nyquist-Shannon yang telah diuraikan sebelumnya. 
+	Hal ini bertujuan agar frekuensi tertinggi yang merepresentasikan karakteristik utama suara tidak hilang atau mengalami distorsi (\textit{aliasing}) \cite{oppenheim2010discrete}. \par
+	
+	\item \textbf{Penyeragaman Durasi (\textit{Zero-Padding} dan \textit{Truncating})} \\
+	Karakteristik model klasifikasi pada umumnya mensyaratkan dimensi \textit{input} yang bernilai tetap (\textit{fixed-length}) untuk dapat memproses data tersebut \cite{goodfellow2016deep}.
+	Panjang rekaman audio yang bervariasi menghasilkan panjang \textit{array} sinyal digital yang tidak seragam, sehingga model akan gagal melakukan komputasi jika data mentah tersebut dimasukkan. \par 
+	
+	Untuk mengatasi inkonsistensi durasi ini, diterapkan teknik \textit{zero-padding} pada sinyal yang berdurasi lebih pendek dari target durasi input, dan \textit{truncating} (pemotongan) pada sinyal yang melebihi target.
+	\textit{Zero-padding} adalah metode penambahan deret nilai amplitudo nol, yang berarti keheningan (\textit{silence}) pada bagian ujung akhir \textit{array} sinyal audio \cite{proakis2006digital}. 
+	Karena nilai nol merepresentasikan ketiadaan suara, penambahan ini memperpanjang durasi audio tanpa mengubah karakteristik frekuensi maupun informasi dari sinyal aslinya. \par
+
+	Secara matematis, operasi \textit{zero-padding} untuk memperpanjang sinyal audio dirumuskan sebagai berikut \cite{proakis2006digital}:
+
+	\begin{equationcaptioned}{
+      x_{pad}[n] = \left\{ 
+      \begin{array}{ll}
+          x[n], & \text{untuk } 0 \le n < L \\
+          0, & \text{untuk } L \le n < T 
+      \end{array} 
+      \right.
+  }{
+      Operasi \textit{Zero-Padding}
+  }
+  \end{equationcaptioned}
+
+  \noindent Keterangan:
+  \begin{itemize}
+      \item $x$ : Amplitudo Sinyal
+      \item $n$ : Indeks waktu diskret (sampel)
+      \item $x[n]$ : Nilai amplitudo pada sampel ke-$n$
+      \item $x_{pad}[n]$ : Nilai amplitudo target pada sampel ke-$n$
+      \item $L$ : Panjang sinyal awal (jumlah sampel)
+      \item $T$ : Panjang sinyal target (jumlah sampel)
+  \end{itemize}
+  \medskip
+
+	Melalui standarisasi ini, seluruh data audio memiliki dimensi ruang yang seragam sehingga kompatibel dengan persyaratan \textit{input} arsitektur model klasifikasi dan siap untuk diekstraksi fiturnya. \par 
+
+\end{enumerate}
 
 
-Selain file audio, dataset ini juga menyediakan file `.csv` sebagai informasi metadata untuk setiap file audionya. Terdapat format penamaan file audio didalam file metadata tersebut dengan format : `[fsID]-[classID]-[occurenceID]-[sliceID].wav`. Penomoran classID dimulai dari angka 0 sampai 9, sesuai dengan urutan yang tertera di atas.
 
-Semua file audio telah disusun ke dalam 10 fold, dengan format penamaan folder : `fold1` - `fold10`. Penyusunan ini dibuat sedemikian rupa karena ada beberapa file audio yang direkam di tempat dan kejadian yang sama, sehingga beberapa rekaman tersebut disatukan pada fold yang sama demi menghindari kebocoran data. Kebocoran data merupakan fenomena yang terjadi saat data yang seharusnya menjadi data uji, tercampur dengan data latih sehingga model mendapatkan karakteristik suara yang sama saat validasi pembelajaran (dan berlaku sebaliknya).
 
-Maka dari itu, pembuat dataset sangat tidak menganjurkan pengacakan data ulang karena berpotensi mengakibatkan model mengalami overfitting, yaitu model memiliki nilai akurasi tinggi hanya saat menebak data lokal. Ketika diberikan data baru yang belum pernah dipelajari sebelumnya, maka model akan menjadi bodoh.
 
-% \subsection{Korean Ballad} \label{II.Teori4}
-% Korean Ballad adalah genre musik asal Korea yang dikenal lembut, emosional, dan memiliki aransemen instrumental kuat.
+
