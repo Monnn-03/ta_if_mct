@@ -123,6 +123,7 @@ Sebelum melakukan proses augmentasi, durasi audio akan diperiksa terlebih dahulu
 Durasi 5 detik ini dipilih karena dataset UrbanSound8K memiliki data audio yang berdurasi rata-rata 4 detik, sehingga 5 detik merupakan durasi yang cukup aman untuk dijadikan standar dalam penelitian ini.
 Jika audio asli berdurasi kurang dari 5 detik, maka audio akan ditambahkan \textit{padding} hingga durasinya mencapai 5 detik.
 Jika audio asli berdurasi lebih dari 5 detik, maka audio akan dipotong hingga berdurasi 5 detik.
+Penetapan standar 5 detik durasi audio merupakan antisipasi terhadap inkonsitensi durasi dan memberikan ruang jelajah yang luas pada algoritma augmentasi. 
 Setelah standarisasi durasi selesai, maka data siap untuk diproses menggunakan teknik augmentasi. \par
 
 Teknik augmentasi yang diterapkan adalah \textit{Random Cropping}, yaitu pemotongan acak pada segmen audio sepanjang durasi tertentu.

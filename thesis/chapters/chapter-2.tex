@@ -221,8 +221,60 @@ Adapun tahapan prapemrosesan data yang diterapkan pada sinyal suara digital dije
 
 \end{enumerate}
 
+\subsection{Representasi Input Suara} \label{II.Teori5}
+Setelah menjalani seluruh tahap prapemrosesan, dilakukan pembentukan representasi \textit{input} untuk model yang dikenal sebagai ekstraksi fitur.
+Sinyal audio digital dalam bentuk mentah, yang disebut \textit{Raw Waveform}, merupakan deretan nilai amplitudo satu dimensi (1D) yang diurutkan berdasarkan indeks waktu.
+Meskipun kaya akan informasi, representasi mentah ini mengandung dimensi deretan nilai yang sangat besar dan dinamika amplitudo yang cukup kompleks sehingga dapat menyulitkan model klasifikasi dalam menemukan pola inti pada sinyal \cite{virtanen2018computational}.
+Untuk menonjolkan inti karakteristik suara, serangkaian proses transformasi matematis buatan (\textit{hand-crafted features}) diterapkan pada \textit{Raw Waveform} untuk diubah ke dalam representasi berdomain frekuensi, yaitu \textit{Log-mel Spectrogram} \cite{virtanen2018computational}.
+Representasi ini memproyeksikan sinyal ke dalam bentuk dua dimensi (2D) dengan pemetaan nilai frekuensi pada setiap indeks waktu, sehingga informasi sinyal audio lebih mudah untuk dipelajari. 
+Meski memudahkan pemrosesan, representasi ini tidak menyajikan informasi yang lengkap akibat tahapan reduksi informasi melalui transformasi matematis buatan tersebut.
+Dimensi representasi input yang berbeda ini dapat memengaruhi cara arsitektur model klasifikasi mengekstraksi pola serta beban komputasinya. \par
 
+\subsubsection{\textit{Raw Waveform}} \label{II.Teori5.1}
+Raw Waveform merupakan representasi digital satu dimensi (1D) yang berisikan deretan nilai diskrit amplitudo pada audio, yang jika divisualisasikan akan membentuk sebuah gelombang audio tersebut.
+Audio dengan representasi tersebut umumnya memiliki format ekstensi berupa \texttt{.wav}, yang berisikan data PCM (\textit{Pulse-Code Modulation}) berupa representasi sinyal digital yang belum terkompresi (\textit{lossless}).
+Format tersebut menandakan kualitas serta informasi pada audio tersebut masih murni dan lengkap. 
+Semua file audio pada UrbanSound8K memiliki format \texttt{.wav}, sehingga keutuhan informasi akustik terjaga pada dataset ini.
 
+% [GAMBAR_RAW_WAVEFORM]
+
+Gelombang sinyal suara yang sudah mengalami konversi digital, direpresentasikan ke dalam bentuk \textit{array} dengan dimensi berdasarkan indeks durasinya.
+Total dimensi panjang \textit{array} ($N$) pada \textit{Raw Waveform} merupakan hasil kali antara durasi rekaman dalam detik ($T$) dengan \textit{sampling rate} ($f_s$).
+Nilai amplitudo dapat berupa nilai positif bahkan negatif yang umumnya berada pada rentang -1 sampai 1 \cite{proakis2006digital}.
+Semakin jauh nilai tersebut dari titik nol, maka intensitas suara yang dihasilkan semakin tinggi (kencang).
+
+\subsubsection{\textit{Log-mel Spectrogram}} \label{II.Teori5.2}
+\textit{Spectrogram} merupakan representasi grafis fitur suara dalam bentuk domain frekuensi dan waktu.
+Proses pembentukan \textit{spectrogram} diawali dengan bentuk \textit{raw waveform} yang diproses dengan metode \textit{Short-Time Fourier Transform} (STFT).
+Metode tersebut dilatarbelakangi oleh masalah mengenai cara dekomposisi setiap frekuensi yang ada pada sebuah gelombang suara.
+Cara kerja metode STFT adalah dengan memotong audio menjadi bingkai-bingkai waktu yang sangat pendek (milidetik), lalu menerapkan transformasi Fourier pada setiap bingkai secara berurutan untuk mengekstraksi spektrum frekuensinya \cite{muller2015fundamentals}.
+Rangkaian spektrum dari setiap bingkai ini kemudian disusun secara temporal membentuk representasi visual dua dimensi. \par
+
+Setelah mendapatkan gabungan spektrum frekuensi tersebut, skala frekuensi yang digunakan masih berupa skala linear (teratur) dan tidak sesuai dengan pendengaran manusia.
+Pada kenyataannya, telinga manusia sangat sensitif membedakan nada rendah (misal membedakan 100 Hz dan 200 Hz), tetapi sangat susah membedakan nada tinggi (10.000 Hz dan 10.100 Hz terdengar sama saja).
+Maka dari itu, Skala Mel (\textit{Mel-Scale}) digunakan untuk mengubah resolusi pembacaan frekuensi suara agar menyerupai persepsi pendengaran manusia, sehingga membuat representasi fitur suara menjadi lebih realistis \cite{muller2015fundamentals}.
+\textit{Spectrogram} yang telah diproses dengan \textit{Mel-Scale} disebut \textit{Mel-Spectrogram}. \par
+
+Namun, proyeksi pada \textit{Mel-Spectrogram} masih memberikan rentang intensitas suara yang cukup jauh, sehingga grafik hanya menampilkan warna terang pada titik intensitas suara yang cukup tinggi.
+Ini mengakibatkan nilai warna pada detail minor suara yang ingin dipelajari tidak terproyeksi dengan maksimal, sehingga sulit untuk mengklasifikasi dengan detail yang seharusnya penting pada pendengaran manusia.
+Maka dari itu, operasi logaritmik menjadi solusi dengan mengompresi rentang dinamis (\textit{dynamic range compression}) nilai amplitudo pada \textit{Mel-Spectrogram}.
+Seluruh nilai amplitudo pada grafik tersebut dikonversi menggunakan operasi logaritmik ke dalam satuan Desibel (dB) \cite{muller2015fundamentals}.
+Proyeksi \textit{Mel-Spectrogram} yang telah diberikan transformasi logaritmik (dapat disebut \textit{Log-mel Spectrogram}) sangat menyerupai pendengaran manusia sehingga mesin dapat mempelajari suara tersebut layaknya manusia mempelajarinya. \par
+
+\subsection{Augmentasi Data} \label{II.Teori6}
+Augmentasi data merupakan salah satu teknik yang efektif dalam memperbanyak variasi data dalam ranah pembelajaran mesin (\textit{Machine Learning}).
+Variasi tersebut dilakukan dengan cara memanipulasi bagian data, seperti menambahkan gangguan (\textit{noise}) atau melakukan pemotongan durasi secara acak.
+Proses augmentasi dilakukan secara dinamis pada setiap iterasi pelatihan, sehingga model mendapatkan variasi data yang selalu baru.
+Teknik ini berguna untuk mencegah model menghafal data latih (\textit{overfitting}).
+Dengan demikian, model memiliki tingkat generalisasi yang tinggi, yakni kemampuan model untuk memprediksi dengan benar pada data yang belum pernah didapatkan saat pelatihan sebelumnya. \par
+
+Pada penelitian ini, teknik augmentasi yang digunakan berfokus pada ranah temporal, yaitu pemotongan durasi audio secara acak (\textit{Random Cropping}). \par
+
+\subsubsection{\textit{Random Cropping}} \label{II.Teori6.1}
+\textit{Random Cropping} pada audio adalah teknik memperluas variasi data yang beroperasi pada domain waktu (temporal) dengan cara mengambil potongan data audio dengan durasi yang lebih pendek dari durasi keseluruhan sinyal \textit{input}.
+Teknik ini diterapkan pada setiap iterasi pelatihan, diawali dengan memilih titik awal pemotongan secara acak ($t_0$), dengan $t_c$ sebagai panjang durasi pemotongan. 
+Penempatan titik awal pemotongan diperbolehkan pada rentang durasi $0 \le f_0(n) \le T-n$ di mana $T$ merupakan total keseluruhan durasi audio.
+Pengambilan cuplikan secara acak ini memaksa model klasifikasi untuk tidak terpaku pada posisi absolut suatu fitur suara, melainkan belajar mengenali pola suara tersebut terlepas dari waktu kemunculannya \cite{salamon2014dataset}. \par
 
 
 

@@ -1,6 +1,11 @@
 # Research Logbook
 
 ## February
+
+### 2026-02-28
+- Membuat draft Dasar Teori pada subbab Representasi Input Suara dan Augmentasi Data.
+
+### 2026-02-27
 - Membuat draft Dasar Teori pada subbab Dataset UrbanSound8K dan Prapemrosesan Data.
 
 ### 2026-02-26

@@ -69,7 +69,7 @@ Pada gelombang sinyal suara yang sudah mengalami konversi digital, direpresentas
 Semua data pada dataset UrbanSound8K memiliki format `.wav`, sehingga membuktikan keaslian kualitas dataset pada penelitian ini.
 
 ## Log-mel Spectrogram
-Jika Raw Waveform merupakan representasi suara dalam bentuk domain amplitudo dan waktu, maka Spectrogram merupakan representasi grafis fitur suara dalam bentuk domain frekuensi dan waktu.
+Spectrogram merupakan representasi grafis fitur suara dalam bentuk domain frekuensi dan waktu.
 Proses pembentukan spectrogram diawali dengan bentuk Raw Waveform yang diproses dengan metode Fast-Fourier Transform.
 Metode tersebut dilatarbelakangi dengan masalah mengenai cara dekomposisi setiap frekuensi yang ada pada sebuah gelombang suara.
 Cara kerja metode FFT ini adalah dengan mengambil bentuk awal potongan 1 detik gelombang suara dan menghitung kemunculan gelombang suara dengan panjang gelombang yang diberi variasi setiap saat.
@@ -272,11 +272,11 @@ c. Format Saluran Suara
 4. Preprocessing Data
 a. Down-mixing
 b. Resampling
-c. Augmentasi Data
 5. Representasi Input Suara
 5.1. Raw Waveform
 5.2. Log-mel Spectrogram
-6. Convolutional Neural Network (CNN)
+6. Augmentasi Data
+7. Convolutional Neural Network (CNN)
 a. Kernel
 b. Stride
 c. Batch Normalization (BN)
@@ -284,29 +284,29 @@ d. Retrified Linear Unit (ReLU)
 e. Max Pooling
 f. Fully Connected Layer
 g. Sigmoid
-7. Pre-trained Audio Neural Networks (PANNs)
-7.1. Res1dNet31
-7.2. ResNet38
-7.3. Wavegram_Logmel_Cnn14
-8. Transfer Learning
+8. Pre-trained Audio Neural Networks (PANNs)
+8.1. Res1dNet31
+8.2. ResNet38
+8.3. Wavegram_Logmel_Cnn14
+9. Transfer Learning
 a. Freeze Base
 b. Fine Tuning
-9. Strategi Optimasi dan Skenario Pelatihan
-9.1. Hyperparameter Pelatihan
+10. Strategi Optimasi dan Skenario Pelatihan
+10.1. Hyperparameter Pelatihan
 a. Epoch
 b. Batch Size
 c. Num Workers
 d. Learning Rate
-9.2. Fungsi Kerugian dan Cost Sensitive Learning
+10.2. Fungsi Kerugian dan Cost Sensitive Learning
 a. Cross Entropy Loss
 b. Cost Sensitive Learning
-9.3. Optimizer (Adam & AdamW) dan Scheduler
+10.3. Optimizer (Adam & AdamW) dan Scheduler
 a. Optimizer
 . Adam
 . AdamW
 b. Scheduler
 . ReduceLROnPlateau
-10. Mitigasi Overfitting (Early Stopping dan Checkpointing)
+10.4. Mitigasi Overfitting (Early Stopping dan Checkpointing)
 a. Early Stopping
 b. Checkpointing
 11. Metrik Evaluasi
