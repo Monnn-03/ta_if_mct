@@ -37,7 +37,7 @@
 
 \section{Dasar Teori} \label{II.Teori}
 Dasar teori ini akan menjadi fondasi utama dalam menyusun metode dalam penelitian ini.
-Pemaparan diawali dengan membahas mengenai konsep fisika suara, pemrosesan audio digital, serta teknik ekstraksi fitur suara masukan (\textit{input}) yang digunakan untuk menerjemahkan sinyal audio ke dalam format yang dapat diproses oleh mesin.
+Pemaparan diawali dengan membahas mengenai konsep fisika suara, pemrosesan audio digital, serta teknik ekstraksi fitur suara masukan (input) yang digunakan untuk menerjemahkan sinyal audio ke dalam format yang dapat diproses oleh mesin.
 Selanjutnya, pembahasan akan diarahkan pada inti dari penelitian ini, yaitu arsitektur \textit{Deep Learning} yang digunakan, mekanisme \textit{Transfer Learning}, hingga berbagai strategi optimasi dan regulasi pelatihan model.
 Sebagai penutup, metrik evaluasi akan diuraikan pada bab ini sebagai bahan analisis untuk menyimpulkan hasil dari penelitian ini.
 
@@ -177,7 +177,7 @@ Adapun tahapan prapemrosesan data yang diterapkan pada sinyal suara digital dije
 	
 	\item \textbf{\textit{Resampling}} \\
 	\textit{Resampling} adalah proses transformasi digital untuk mengubah \textit{sampling rate} dari suatu sinyal audio \cite{oppenheim2010discrete}.
-	Dalam konteks tugas klasifikasi, proses ini sangat krusial karena arsitektur model klasifikasi mensyaratkan dimensi \textit{input} yang seragam.
+	Dalam konteks tugas klasifikasi, proses ini sangat krusial karena arsitektur model klasifikasi mensyaratkan dimensi input yang seragam.
 	Jika dataset terdiri dari berbagai rekaman audio dengan \textit{sampling rate} yang bervariasi (misalnya 16.000 Hz, 44.100 Hz, 48.000 Hz), model akan kesulitan memproses panjang \textit{array} yang berbeda-beda untuk durasi rekaman yang sama. 
 	Oleh karena itu, seluruh audio mentah tersebut harus diseragamkan ke satu nilai \textit{sampling rate} standar. \par
 	
@@ -185,7 +185,7 @@ Adapun tahapan prapemrosesan data yang diterapkan pada sinyal suara digital dije
 	Hal ini bertujuan agar frekuensi tertinggi yang merepresentasikan karakteristik utama suara tidak hilang atau mengalami distorsi (\textit{aliasing}) \cite{oppenheim2010discrete}. \par
 	
 	\item \textbf{Penyeragaman Durasi (\textit{Zero-Padding} dan \textit{Truncating})} \\
-	Karakteristik model klasifikasi pada umumnya mensyaratkan dimensi \textit{input} yang bernilai tetap (\textit{fixed-length}) untuk dapat memproses data tersebut \cite{goodfellow2016deep}.
+	Karakteristik model klasifikasi pada umumnya mensyaratkan dimensi input yang bernilai tetap (\textit{fixed-length}) untuk dapat memproses data tersebut \cite{goodfellow2016deep}.
 	Panjang rekaman audio yang bervariasi menghasilkan panjang \textit{array} sinyal digital yang tidak seragam, sehingga model akan gagal melakukan komputasi jika data mentah tersebut dimasukkan. \par 
 	
 	Untuk mengatasi inkonsistensi durasi ini, diterapkan teknik \textit{zero-padding} pada sinyal yang berdurasi lebih pendek dari target durasi input, dan \textit{truncating} (pemotongan) pada sinyal yang melebihi target.
@@ -217,12 +217,12 @@ Adapun tahapan prapemrosesan data yang diterapkan pada sinyal suara digital dije
   \end{itemize}
   \medskip
 
-	Melalui standarisasi ini, seluruh data audio memiliki dimensi ruang yang seragam sehingga kompatibel dengan persyaratan \textit{input} arsitektur model klasifikasi dan siap untuk diekstraksi fiturnya. \par 
+	Melalui standarisasi ini, seluruh data audio memiliki dimensi ruang yang seragam sehingga kompatibel dengan persyaratan input arsitektur model klasifikasi dan siap untuk diekstraksi fiturnya. \par 
 
 \end{enumerate}
 
 \subsection{Representasi Input Suara} \label{II.Teori5}
-Setelah menjalani seluruh tahap prapemrosesan, dilakukan pembentukan representasi \textit{input} untuk model yang dikenal sebagai ekstraksi fitur.
+Setelah menjalani seluruh tahap prapemrosesan, dilakukan pembentukan representasi input untuk model yang dikenal sebagai ekstraksi fitur.
 Sinyal audio digital dalam bentuk mentah, yang disebut \textit{Raw Waveform}, merupakan deretan nilai amplitudo satu dimensi (1D) yang diurutkan berdasarkan indeks waktu.
 Meskipun kaya akan informasi, representasi mentah ini mengandung dimensi deretan nilai yang sangat besar dan dinamika amplitudo yang cukup kompleks sehingga dapat menyulitkan model klasifikasi dalam menemukan pola inti pada sinyal \cite{virtanen2018computational}.
 Untuk menonjolkan inti karakteristik suara, serangkaian proses transformasi matematis buatan (\textit{hand-crafted features}) diterapkan pada \textit{Raw Waveform} untuk diubah ke dalam representasi berdomain frekuensi, yaitu \textit{Log-mel Spectrogram} \cite{virtanen2018computational}.
@@ -271,10 +271,42 @@ Dengan demikian, model memiliki tingkat generalisasi yang tinggi, yakni kemampua
 Pada penelitian ini, teknik augmentasi yang digunakan berfokus pada ranah temporal, yaitu pemotongan durasi audio secara acak (\textit{Random Cropping}). \par
 
 \subsubsection{\textit{Random Cropping}} \label{II.Teori6.1}
-\textit{Random Cropping} pada audio adalah teknik memperluas variasi data yang beroperasi pada domain waktu (temporal) dengan cara mengambil potongan data audio dengan durasi yang lebih pendek dari durasi keseluruhan sinyal \textit{input}.
+\textit{Random Cropping} pada audio adalah teknik memperluas variasi data yang beroperasi pada domain waktu (temporal) dengan cara mengambil potongan data audio dengan durasi yang lebih pendek dari durasi keseluruhan sinyal input.
 Teknik ini diterapkan pada setiap iterasi pelatihan, diawali dengan memilih titik awal pemotongan secara acak ($t_0$), dengan $t_c$ sebagai panjang durasi pemotongan. 
 Penempatan titik awal pemotongan diperbolehkan pada rentang durasi $0 \le f_0(n) \le T-n$ di mana $T$ merupakan total keseluruhan durasi audio.
 Pengambilan cuplikan secara acak ini memaksa model klasifikasi untuk tidak terpaku pada posisi absolut suatu fitur suara, melainkan belajar mengenali pola suara tersebut terlepas dari waktu kemunculannya \cite{salamon2014dataset}. \par
 
+\subsection{\textit{Convolutional Neural Network} (CNN)} \label{II.Teori7}
+\textit{Convolutional Neural Network} (CNN) adalah arsitektur model \textit{Deep Learning} berupa jaringan saraf yang bekerja dengan cara mengenali pola pada data dan meringkas informasi penting yang didapatkan melalui setiap lapisannya.
+CNN dikenal karena keunggulannya dalam mempelajari dan mengenali gambar (2D). 
+Arsitektur ini bekerja dengan memanfaatkan operasi matematika (konvolusi) dengan menggerakkan sebuah kernel konvolusi (filter) berukuran tertentu ke sebuah gambar, sehingga didapatkan representasi fitur baru yang dikenal sebagai peta fitur (\textit{feature map}). \par
 
+Arsitektur CNN dibagi menjadi dua bagian besar, yaitu lapisan ekstraksi fitur (\textit{Feature Extraction Layer}) dan lapisan klasifikasi (\textit{Classification Layer}).
+\textit{Feature Extraction Layer} merupakan lapisan yang menerima dan mengekstraksi fitur input yang telah diberikan ke dalam peta fitur (\textit{Feature Map}) multidimensi.
+Pada tahap akhir ekstraksi, peta fitur tersebut diratakan (\textit{flatten}) menjadi vektor satu dimensi (1D).  
+\textit{Classification Layer} akan memproses hasil vektor dari lapisan sebelumnya dan melakukan klasifikasi terhadap fitur-fitur tersebut ke dalam kelas yang telah dipetakan. \par
 
+\subsubsection{\textit{Kernel} dan \textit{Stride}} \label{II.Teori7.1}
+\textit{Kernel} (filter) adalah komponen berupa matriks 2 dimensi yang berisi nilai-nilai bobot (\textit{weights}).
+Umumnya ukuran \textit{kernel} yang digunakan berupa persegi $3 \times 3$, $5 \times 5$, dan $7 \times 7$. 
+Saat lapisan ekstraksi bekerja, komponen ini terus bergeser menimpa gambar dan mengkalkulasikan nilai di dalam kernel dengan nilai \textit{pixel} gambar di bawahnya dengan operasi perkalian titik (\textit{dot product}). 
+Hasil operasi tersebut dijumlahkan menjadi satu nilai baru pada \textit{feature map}.
+Melalui banyaknya iterasi pelatihan, nilai bobot awal terus diperbarui dari evaluasi pelatihan.
+Kemampuan ini yang membuat model dapat mengekstraksi pola fitur penting pada gambar. \par
+
+\textit{Stride} merupakan mekanisme yang mendukung \textit{kernel} dalam pengaturan langkah pergeseran dengan nilai tertentu.
+Jika \textit{stride} bernilai 2, maka \textit{kernel} akan bergeser dengan jarak sebesar 2 \textit{pixel}.
+Semakin besar nilai \textit{stride} yang ditetapkan, maka ukuran dimensi spasial pada \textit{feature map} semakin menyusut.
+Mekanisme ini penting dalam menjaga beban komputasi dan memori yang tidak berlebihan pada lapisan berikutnya. \par
+
+\subsubsection{\textit{Batch Normalization} (BN)} \label{II.Teori7.2}
+Nilai-nilai yang telah dipetakan ke dalam \textit{feature map} pada setiap lapisannya memiliki rentang dinamika nilai yang tidak teratur pada kumpulan representasi fiturnya (\textit{batch}).
+Hal tersebut menyebabkan arah pembelajaran model menjadi tidak stabil dan memperlambat proses pencapaian nilai optimal, sehingga diperlukan proses normalisasi pada kumpulan nilai tersebut. \par
+
+\textit{Batch Normalization} (BN) merupakan mekanisme normalisasi rentang nilai yang diperoleh dari setiap \textit{feature map} sebelum diproses oleh lapisan selanjutnya.
+Normalisasi tersebut dilakukan dengan mengurangkan setiap nilai fitur dengan rata-rata (\textit{mean}) dari \textit{batch} tersebut, kemudian membaginya dengan standar deviasi.
+Tujuan dari operasi ini adalah untuk memetakan rata-rata nilai \textit{batch} menjadi nol dan variansi nilai menjadi satu. 
+Mekanisme ini menghasilkan nilai fitur yang lebih mudah untuk diproses menuju lapisan berikutnya. \par
+
+Setelah nilai dinormalisasikan, BN memiliki dua parameter yang dapat dipelajari, yaitu skala ($\gamma$) dan pergeseran ($\beta$).
+Kedua parameter tersebut berfungsi untuk memanipulasi ulang rentang nilai tersebut jika dibutuhkan oleh lapisan selanjutnya. \par

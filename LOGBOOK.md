@@ -1,5 +1,10 @@
 # Research Logbook
 
+## March
+
+### 2026-03-01
+- Membuat draft Dasar Teori pada subbab CNN, Kernel, BN.
+
 ## February
 
 ### 2026-02-28
