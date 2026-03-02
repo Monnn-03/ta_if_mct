@@ -310,3 +310,12 @@ Mekanisme ini menghasilkan nilai fitur yang lebih mudah untuk diproses menuju la
 
 Setelah nilai dinormalisasikan, BN memiliki dua parameter yang dapat dipelajari, yaitu skala ($\gamma$) dan pergeseran ($\beta$).
 Kedua parameter tersebut berfungsi untuk memanipulasi ulang rentang nilai tersebut jika dibutuhkan oleh lapisan selanjutnya. \par
+
+\subsubsection{\textit{Rectified Linear Unit} (ReLU)} \label{II.Teori7.3}
+\textit{Rectified Linear Unit} (ReLU) merupakan fungsi aktivasi non-linear yang mengubah nilai negatif pada peta fitur menjadi nol.
+Fungsi tersebut berisikan persamaan matematis sederhana berupa $f(x)=\max(0, x)$, di mana $x$ adalah nilai awal yang dibandingkan dengan nilai nol.
+Jika nilai $x$ bernilai positif ($x > 0$), maka nilai tersebut dipertahankan ($f(x) = x$). Sebaliknya, jika $x$ bernilai negatif atau batas nol ($x \le 0$), maka nilainya diubah menjadi nol. \par 
+
+Operasi pada lapisan konvolusi dengan komponen \textit{Kernel} dan \textit{Stride} bersifat linear, yang hanya mengandung operasi perkalian dan penjumlahan.
+Jika proses ekstraksi tersebut tidak diberi fungsi aktivasi, maka model tersebut hanya bersifat satu model regresi linear besar yang tidak mampu memahami pola-pola kompleks dan non-linear pada data. 
+Dengan adanya fungsi ReLU, proses ekstraksi fitur menghasilkan nilai spesifik dan memudahkan komputasi pada lapisan model. \par

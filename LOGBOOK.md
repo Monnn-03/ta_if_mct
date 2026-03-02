@@ -2,6 +2,9 @@
 
 ## March
 
+### 2026-03-02
+- Membuat draft Dasar Teori pada subbab ReLU .
+
 ### 2026-03-01
 - Membuat draft Dasar Teori pada subbab CNN, Kernel, BN.
 
