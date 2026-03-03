@@ -2,6 +2,9 @@
 
 ## March
 
+### 2026-03-03
+- Membuat draft Dasar Teori pada subbab Max Pooling, FC Layer.
+
 ### 2026-03-02
 - Membuat draft Dasar Teori pada subbab ReLU .
 

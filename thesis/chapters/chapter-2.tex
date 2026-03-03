@@ -319,3 +319,23 @@ Jika nilai $x$ bernilai positif ($x > 0$), maka nilai tersebut dipertahankan ($f
 Operasi pada lapisan konvolusi dengan komponen \textit{Kernel} dan \textit{Stride} bersifat linear, yang hanya mengandung operasi perkalian dan penjumlahan.
 Jika proses ekstraksi tersebut tidak diberi fungsi aktivasi, maka model tersebut hanya bersifat satu model regresi linear besar yang tidak mampu memahami pola-pola kompleks dan non-linear pada data. 
 Dengan adanya fungsi ReLU, proses ekstraksi fitur menghasilkan nilai spesifik dan memudahkan komputasi pada lapisan model. \par
+
+\subsubsection{\textit{Max Pooling}} \label{II.Teori7.4}
+\textit{Max Pooling} merupakan salah satu teknik \textit{Pooling} yang mengurangi dimensi data dengan memangkas ukuran spasial peta fitur (\textit{feature map}). 
+Pengurangan dimensi tersebut membuat model benar-benar mempelajari inti fitur, sehingga menghindari model mengalami \textit{overfitting} serta mengurangi beban komputasi memori.
+Mekanisme \textit{Max Pooling} bekerja menggunakan sebuah jendela berukuran tertentu yang bergeser di atas \textit{feature map}.
+Pada setiap area yang disorot oleh jendela tersebut, mekanisme ini hanya mengambil satu nilai terbesar dan membuang nilai di sekitarnya. \par
+
+Pada data gambar atau \textit{spectrogram} suara, nilai piksel yang besar merepresentasikan fitur yang paling tajam, di mana dalam \textit{spectrogram} berarti sinyal suara yang paling dominan.
+Penggunaan \textit{Max Pooling} akan mempertahankan fitur penting tersebut, sehingga karakteristik sinyal suara yang kuat tidak akan hilang walaupun dimensi data semakin mengecil. 
+Selain itu, mekanisme pengambilan nilai maksimal ini membuat model memiliki sifat kebal terhadap pergeseran posisi fitur (\textit{Translation Invariance}) pada data \textit{spectrogram}. \par
+
+\subsubsection{\textit{Fully Connected Layer}} \label{II.Teori7.5}
+\textit{Fully Connected} (FC) \textit{Layer} merupakan lapisan pada bagian \textit{Classification Layer} yang berperan dalam pengambilan keputusan klasifikasi akhir.
+Syarat utama input pada lapisan ini adalah data harus berbentuk vektor satu dimensi (1D).
+Oleh karena itu, \textit{feature map} pada lapisan konvolusi sebelumnya yang berbentuk multidimensi diratakan menjadi satu deret baris data melalui proses \textit{flattening}. 
+Proses \textit{flattening} ini dilakukan karena lapisan FC tidak melihat posisi titik fitur secara spasial, melainkan hanya perlu melihat keberadaan kumpulan titik fitur yang menjadi ciri karakteristiknya. \par
+
+Berbeda dengan lapisan konvolusi yang hanya melihat sebagian kecil area, lapisan FC menghubungkan setiap titik neuron dari lapisan sebelumnya dengan seluruh neuron pada lapisan berikutnya secara penuh (\textit{fully connected}).
+Cara kerja dari lapisan ini adalah menggabungkan seluruh inti fitur pada lapisan-lapisan sebelumnya untuk mempelajari kombinasi non-linear untuk keputusan akhir.
+Hasil dari lapisan ini merupakan nilai setiap kelas karakteristik yang ditentukan dengan representasi angka mentah (\textit{logits}). \par
