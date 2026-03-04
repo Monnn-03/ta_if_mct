@@ -391,3 +391,52 @@ Cara kerja \textit{Softmax} direpresentasikan ke dalam operasi matematis berikut
 
 Dengan mekanisme tersebut, fungsi \textit{Softmax} menjadi standar mutlak untuk kasus klasifikasi \textit{single-label} dengan multikelas. \par
 
+\subsection{\textit{Pre-trained Audio Neural Networks} (PANNs)} \label{II.Teori8}
+Dalam dunia pre-trained model, \textit{Pre-trained Audio Neural Networks} (PANNs) menjadi salah satu pilihan yang menyediakan model klasifikasi suara dengan bobot terlatih dari dataset suara berskala besar (AudioSet).
+Arsitektur ini dikembangkan dan dilatih oleh Kong \textit{et al.} (2020) yang menghasilkan keluaran klasifikasinya berupa \textit{multi-label} (\textit{Multi-label Classification}) ke dalam 527 kelas suara \cite{kong2020panns}. 
+Oleh karena itu, diperlukan penyesuaian pada lapisan akhir model agar dapat menghasilkan \textit{output} yang sesuai dengan target kelas suara pada penelitian ini. \par
+
+Penelitian Kong \textit{et al.} mengenai PANNs juga telah mengevalusi performa setiap arsitektur menggunakan tiga metrik utama, yaitu \textit{mean Average Precision} (mAP), \textit{Area Under the Curve} (AUC), dan \textit{d-prime}.
+Semua arsitektur yang tergabung dalam PANNs memiliki representasi input yang berbeda-beda.
+Arsitektur PANNs dengan representasi input satu dimensi (1D) meliputi DaiNet, LeeNet, Res1dNet, dan Wavegram-CNN. 
+Selanjutnya, arsitektur dengan representasi input dua dimensi (2D) meliputi CNN, ResNet, dan MobileNet.
+Terakhir, satu-satunya arsitektur dengan pendekatan input hibrida (\textit{hybrid}) adalah Wavegram-Logmel-CNN.
+Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi inputnya masing-masing, yaitu Res1dNet31, ResNet38, dan Wavegram-Logmel-CNN14. \par
+
+\subsubsection{Res1dNet31} \label{II.Teori8.1}
+Res1dNet31 merupakan arsitektur ResNet (\textit{Residual Network}) 1 dimensi milik PANNs yang paling unggul dalam menangani representasi input domain waktu dibandingkan model lainnya dengan jenis input yang sama.
+Arsitektur ini menerima \textit{input} berupa sinyal digital 1 dimensi (\textit{Raw Waveform}) dengan \textit{sampling rate} 32 kHz.
+Keunggulan arsitektur ini adalah kemampuannya dalam mempelajari fitur data suara mentah yang diperoleh secara alami dibandingkan fitur \textit{Logmel-Spectrogram} yang sudah diproses dengan metode buatan manusia (STFT dan Logmel). \par
+
+Proses komputasinya diawali dengan mengekstrak fitur \textit{Raw Waveform} menggunakan lapisan konvolusi awal dengan \textit{kernel} berukuran 3 dan \textit{stride} bernilai 5.
+Informasi diproses lebih dalam melalui \textit{backbone} (jaringan pengekstraksi fitur utama) ResNet dengan 14 blok residu (blok dengan fitur jalur pintas, atau \textit{skip connection}), di mana setiap blok terdiri dari 2 lapisan konvolusi residu yang masing-masing mengandung dilatasi (perluasan jangkauan \textit{kernel}) 1 dan 2.
+Akhirnya, hasil dari \textit{backbone} dilanjutkan ke 2 lapisan terakhir untuk mendapatkan kesimpulan klasifikasi final.
+Seluruh lapisan pada arsitektur ini berjumlah 31 lapisan. \par
+
+\subsubsection{ResNet38} \label{II.Teori8.2}
+ResNet38 merupakan salah satu arsitektur ResNet 2 dimensi milik PANNs dengan nilai mAP tertinggi dalam menangani jenis input dengan dimensi tersebut.
+Berbeda dengan Res1dNet31, arsitektur ini menerima input berupa \textit{Raw Waveform} yang nantinya akan diekstrak dan diproses menjadi \textit{Log-mel Spectrogram} (2D) dengan 1000 \textit{frames} dan 64 \textit{mel bins}.
+
+Arsitektur model diawali dengan dua blok konvolusi 64 \textit{filter}\footnote{Pada tabel arsitektur di naskah publikasi asli PANNs, terdapat kesalahan penulisan (\textit{typographical error}) yang mencantumkan angka 512 \textit{filter} pada lapisan awal. Berdasarkan urutan kelogisan arsitektur ResNet serta repositori kode sumber resmi PANNs, jumlah \textit{filter} awal yang akurat adalah 64.} berukuran $3 \times 3$ dan mengandung \textit{Batch Normalization} (BN) serta ReLU.
+Kemudian, \textit{Max Pooling} berukuran $2 \times 2$ diterapkan setelah dua blok tersebut.
+Selanjutnya, fitur dimasukkan ke dalam \textit{backbone} yang berisikan 16 \textit{Basic Blocks}, yang masing-masing berisikan \textit{kernel}, BN, dan ReLU.
+Kumpulan 16 blok tersebut terdiri dari beberapa kelompok blok berurutan, yaitu 3 \textit{Basic Blocks} 64 \textit{filter}, 4 \textit{Basic Blocks} 128 \textit{filter}, 6 \textit{Basic Blocks} 256 \textit{filter}, dan 3 \textit{Basic Blocks} 512 \textit{filter}.
+Setiap akhir kelompok blok tersebut akan diterapkan lapisan \textit{Max Pooling} berukuran $2 \times 2$. 
+Pada akhir \textit{backbone}, diterapkan dua blok berisikan 2048 \textit{filter} berukuran $3 \times 3$, BN, dan ReLU, serta diakhiri dengan penerapan lapisan \textit{Global Pooling}.  
+Sebagai lapisan klasifikasi, \textit{Fully Connected Layer} (FC) 2048 \textit{neuron} dengan ReLU diterapkan, dilanjutkan dengan lapisan FC terakhir berisi 527 \textit{neuron} berserta fungsi aktivasi \textit{Sigmoid} sebagai penentu kesimpulan akhir. \par
+
+Keunggulan arsitektur ini terletak pada kemampuannya dalam menangani \textit{input} domain frekuensi yang sudah tergambar dalam grafis multidimensi.
+Hal ini dapat memudahkan arsitektur mengenali pola yang sudah diproses sedemikian rupa sehingga menyerupai pendengaran manusia. \par
+
+\subsubsection{Wavegram-Logmel-CNN14} \label{II.Teori8.3}
+Wavegram-Logmel-CNN14 merupakan arsitektur dengan pendekatan hibrida (\textit{hybrid}) pada keluarga PANNs yang diperkenalkan oleh Kong \textit{et al.} dalam penelitiannya.
+Arsitektur ini menerima input \textit{Raw Waveform} yang diproses dalam dua pendekatan secara bersamaan, yaitu pembentukan \textit{Wavegram} dan \textit{Log-mel Spectrogram}. \par
+
+Untuk membentuk \textit{Wavegram}, lapisan awal memproses \textit{input} menggunakan lapisan konvolusi CNN 1 dimensi dengan panjang \textit{kernel} 11 dan \textit{stride} 5.
+Lalu diikuti dengan 3 blok konvolusi 1 dimensi, di mana setiap blok mengandung 2 lapisan konvolusi residu dengan dilatasi bernilai 1 dan 2.
+Fitur yang dihasilkan kemudian dibentuk ulang (\textit{reshape}) menjadi sebuah \textit{Wavegram}, bersamaan dengan ekstraksi fitur \textit{Log-mel Spectrogram}.
+Kedua representasi fitur dua dimensi ini nantinya akan digabungkan dan diproses melalui \textit{backbone} arsitektur CNN14. \par
+
+Penggabungan kedua pendekatan ini berfungsi untuk menutupi kekurangan masing-masing metode.
+Sinyal \textit{Raw Waveform} murni yang kaya akan informasi namun lebih sulit dipelajari oleh model, dikombinasikan dengan \textit{Log-mel Spectrogram} yang proyeksi polanya lebih mudah dipelajari, meskipun rentan kehilangan sebagian detail informasi akibat proses transformasi matematis. \par
+
