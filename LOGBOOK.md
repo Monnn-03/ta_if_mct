@@ -2,6 +2,9 @@
 
 ## March
 
+### 2026-03-04
+- Membuat draft Dasar Teori pada subbab Sigmoid, Softmax.
+
 ### 2026-03-03
 - Membuat draft Dasar Teori pada subbab Max Pooling, FC Layer.
 

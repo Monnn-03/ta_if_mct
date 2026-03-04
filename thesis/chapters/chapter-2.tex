@@ -339,3 +339,55 @@ Proses \textit{flattening} ini dilakukan karena lapisan FC tidak melihat posisi 
 Berbeda dengan lapisan konvolusi yang hanya melihat sebagian kecil area, lapisan FC menghubungkan setiap titik neuron dari lapisan sebelumnya dengan seluruh neuron pada lapisan berikutnya secara penuh (\textit{fully connected}).
 Cara kerja dari lapisan ini adalah menggabungkan seluruh inti fitur pada lapisan-lapisan sebelumnya untuk mempelajari kombinasi non-linear untuk keputusan akhir.
 Hasil dari lapisan ini merupakan nilai setiap kelas karakteristik yang ditentukan dengan representasi angka mentah (\textit{logits}). \par
+
+\subsubsection{\textit{Sigmoid}} \label{II.Teori7.6}
+\textit{Logits} yang dihasilkan oleh lapisan FC masih memiliki nilai ekstrem, di mana angka ini tidak memiliki batasan rentang nilai.
+Oleh karena itu, digunakan fungsi aktivasi \textit{Sigmoid} yang memetakan hasil angka mentah tersebut ke dalam rentang probabilitas yang ketat, yaitu $0$ hingga $1$. 
+Mekanisme \textit{Sigmoid} digambarkan melalui operasi matematis berikut:
+
+  \begin{equationcaptioned}{
+      \sigma(x) = \frac{1}{1 + e^{-x}}
+      \label{eq:sigmoid}
+  }{
+      Rumus Fungsi Aktivasi \textit{Sigmoid}
+  }
+  \end{equationcaptioned}
+
+  \noindent Keterangan:
+  \begin{itemize}
+      \item $x$ : Nilai \textit{logits} dari lapisan FC
+      \item $e$ : Bilangan Euler ($2.718$)
+      \item $\sigma(x)$ : Keluaran nilai \textit{sigmoid} dari \textit{logits} $x$.
+  \end{itemize}
+  \medskip
+
+Operasi yang dilakukan oleh fungsi ini menghitung probabilitas setiap kelas secara independen, sehingga memungkinkan suatu masukan data memiliki probabilitas tinggi pada lebih dari satu label kelas secara bersamaan. 
+Maka dari itu, fungsi ini umumnya digunakan dalam kasus klasifikasi \textit{multi-label}. \par
+
+\subsubsection{\textit{Softmax}} \label{II.Teori7.7}
+\textit{Softmax} adalah fungsi aktivasi yang mengubah nilai \textit{logits} dari lapisan FC menjadi distribusi probabilitas.
+Berbeda dengan \textit{Sigmoid} yang memproses setiap kelas secara independen, \textit{Softmax} mengevaluasi nilai satu kelas dengan membandingkannya terhadap seluruh kelas yang ada.
+Oleh karena itu, total keseluruhan probabilitas dari semua kelas ditetapkan berjumlah $1$ ($100\%$).
+Jika nilai probabilitas pada satu kelas bernilai tinggi, maka secara otomatis nilai probabilitas pada kelas lainnya akan menurun menyesuaikan sisa dari total keseluruhan probabilitas. \par
+
+Cara kerja \textit{Softmax} direpresentasikan ke dalam operasi matematis berikut:
+
+\begin{equationcaptioned}{
+      f(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{K} e^{x_j}}
+      \label{eq:softmax}
+  }{
+      Rumus Fungsi Aktivasi \textit{Softmax}
+  }
+  \end{equationcaptioned}
+
+  \noindent Keterangan:
+  \begin{itemize}
+      \item $x_i$ : Nilai \textit{logits} untuk kelas ke-$i$.
+      \item $e$ : Bilangan Euler ($2.718$)
+      \item $K$ : Total jumlah kelas
+      \item $\sum$ : Simbol penjumlahan dari seluruh nilai eksponensial \textit{logits} kelas yang ada.
+  \end{itemize}
+  \medskip
+
+Dengan mekanisme tersebut, fungsi \textit{Softmax} menjadi standar mutlak untuk kasus klasifikasi \textit{single-label} dengan multikelas. \par
+
