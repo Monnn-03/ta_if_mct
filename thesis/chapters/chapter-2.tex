@@ -440,3 +440,23 @@ Kedua representasi fitur dua dimensi ini nantinya akan digabungkan dan diproses 
 Penggabungan kedua pendekatan ini berfungsi untuk menutupi kekurangan masing-masing metode.
 Sinyal \textit{Raw Waveform} murni yang kaya akan informasi namun lebih sulit dipelajari oleh model, dikombinasikan dengan \textit{Log-mel Spectrogram} yang proyeksi polanya lebih mudah dipelajari, meskipun rentan kehilangan sebagian detail informasi akibat proses transformasi matematis. \par
 
+\subsection{\textit{Transfer Learning}} \label{II.Teori9}
+\textit{Transfer Learning} merupakan metode pembelajaran yang bekerja dengan cara mengadaptasi model yang sudah dilatih (\textit{pre-trained}) dengan konteks umum untuk mempelajari data dengan domain yang lebih spesifik.
+Metode ini memanfaatkan bobot parameter yang sudah matang dari model sebelumnya, sehingga model tidak perlu dilatih dari nol dengan bobot awal yang masih acak.
+Pelatihan model dari nol (\textit{training from scratch}) membutuhkan dataset berskala besar untuk menyetel jutaan bobot parameter agar dapat memahami fitur secara tepat.
+Keterbatasan dataset dapat menyebabkan \textit{overfitting} akibat model yang menghafal sedikit data, sehingga penerapan teknik ini cukup krusial dalam mengatasi masalah tersebut dengan adanya pengaturan bobot parameter yang hanya perlu sedikit penyesuaian. \par 
+
+Dalam kasus penelitian ini, model PANNs yang telah paham mengenali suara lingkungan secara umum diarahkan untuk lebih spesifik mengenali suara kedaruratan di perkotaan.
+Dalam penerapannya, terdapat dua jenis pendekatan utama dalam melakukan \textit{Transfer Learning} pada model \textit{pre-trained}, yaitu \textit{freeze base} dan \textit{fine-tuning}. \par
+
+\subsubsection{\textit{Freeze Base}} \label{II.Teori9.1}
+\textit{Freeze Base} adalah teknik \textit{transfer learning} yang dilakukan dengan membekukan seluruh bobot parameter pada bagian \textit{backbone} arsitektur model \textit{pre-trained}.
+Penyesuaian parameter hanya dilakukan pada bagian \textit{head} atau lapisan klasifikasi (\textit{classification layer}) untuk menghubungkan hasil analisis fitur pada kelas target.
+Pembekuan bobot ini melarang model untuk menyetel bobot parameter saat ekstraksi fitur dengan konteks yang lebih spesifik. 
+Hal tersebut membatasi kemampuan model untuk mempelajari pola fitur yang sangat spesifik dari data baru, namun memberikan efisiensi komputasi yang sangat tinggi. \par
+
+Dalam kasus dataset target yang berjumlah sangat minim, teknik pembekuan bobot ini mempertahankan keandalan bobot parameter yang sudah matang sebelumnya.
+Jika mekanisme tidak diterapkan, dataset minim tersebut dapat merusak setelan parameter bobot sebelumnya dan mengakibatkan fenomena \textit{catastrophic forgetting}, di mana model kehilangan pengetahuan awalnya dan gagal mempelajari konteks data yang baru. \par
+
+
+
