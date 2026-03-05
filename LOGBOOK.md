@@ -4,6 +4,7 @@
 
 ### 2026-03-05
 - Membuat draft Dasar Teori pada subbab Fine-tuning.
+- Membuat draft Dasar Teori pada subbab Strategi Optimasi dan Skenario Pelatihan, Hyperparameter Pelatihan.
 
 ### 2026-03-04
 - Membuat draft Dasar Teori pada subbab Sigmoid, Softmax.

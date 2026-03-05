@@ -113,7 +113,7 @@ Adapun tiga komponen utama yang membentuk karakteristik dari suara digital adala
 
 \subsection{Dataset UrbanSound8K} \label{II.Teori3}
 Dataset UrbanSound8K merupakan kumpulan data yang mengandung 8732 suara kejadian di lingkungan perkotaan.
-Semua file audio di dalam UrbanSound8K berdurasi maksimal 4 detik dan berekstensi \texttt{.wav} \cite{salamon2014dataset}. 
+Semua \textit{file} audio di dalam UrbanSound8K berdurasi maksimal 4 detik dan berekstensi \texttt{.wav} \cite{salamon2014dataset}. 
 UrbanSound8K mengelompokkan label datanya ke dalam 10 kelas, di mana kategori tersebut mencakup :
 
 \begin{enumerate}
@@ -129,17 +129,17 @@ UrbanSound8K mengelompokkan label datanya ke dalam 10 kelas, di mana kategori te
 	\item street music (musik jalanan)
 \end{enumerate}
  
-Selain file audio, dataset ini juga menyediakan file \texttt{.csv} sebagai informasi metadata untuk setiap file audionya.
-Terdapat format penamaan file audio di dalam file metadata tersebut dengan format : \texttt{[fsID]-[classID]-[occurrenceID]-[sliceID].wav}.
+Selain \textit{file} audio, dataset ini juga menyediakan \textit{file} \texttt{.csv} sebagai informasi metadata untuk setiap \textit{file} audionya.
+Terdapat format penamaan \textit{file} audio di dalam \textit{file} metadata tersebut dengan format : \texttt{[fsID]-[classID]-[occurrenceID]-[sliceID].wav}.
 Penomoran \texttt{classID} dimulai dari angka 0 sampai 9, sesuai dengan urutan yang tertera di atas \cite{salamon2014dataset}. \par
 
 Semua file audio telah disusun ke dalam 10 fold, dengan format penamaan folder : `fold1` - `fold10`.
-Penyusunan ini dibuat sedemikian rupa karena ada beberapa file audio yang direkam di tempat dan kejadian yang sama, sehingga beberapa rekaman tersebut disatukan pada fold yang sama demi menghindari kebocoran data.
+Penyusunan ini dibuat sedemikian rupa karena ada beberapa \textit{file} audio yang direkam di tempat dan kejadian yang sama, sehingga beberapa rekaman tersebut disatukan pada fold yang sama demi menghindari kebocoran data.
 Kebocoran data merupakan fenomena yang terjadi saat data yang seharusnya menjadi data uji, tercampur dengan data latih sehingga model mendapatkan karakteristik suara yang sama saat validasi pembelajaran (dan berlaku sebaliknya).
 Maka dari itu, pembuat dataset sangat tidak menganjurkan pengacakan data ulang karena berpotensi mengakibatkan model mengalami overfitting, yaitu model memiliki nilai akurasi tinggi hanya saat memprediksi data latihnya saja \cite{salamon2014dataset}.
 Ketika diberikan data baru yang belum pernah dipelajari sebelumnya, maka model akan gagal memahami data dan mengalami penurunan performa ketika dihadapkan pada suara baru dengan label yang sama. \par
 
-Dalam dataset UrbanSound8K, file audionya merupakan hasil kompilasi rekaman dari berbagai kontributor di situs repositori Freesound, sehingga \textit{sampling rate}, \textit{bit depth}, dan format saluran suara tidak seragam \cite{salamon2014dataset}.
+Dalam dataset UrbanSound8K, \textit{file} audionya merupakan hasil kompilasi rekaman dari berbagai kontributor di situs repositori Freesound, sehingga \textit{sampling rate}, \textit{bit depth}, dan format saluran suara tidak seragam \cite{salamon2014dataset}.
 Agar model memiliki dimensi input yang sesuai dan seragam, diperlukan tahap prapemrosesan data untuk menyamaratakan dimensi data pada UrbanSound8K.
 
 \subsection{Prapemrosesan Data} \label{II.Teori4}
@@ -234,7 +234,7 @@ Dimensi representasi input yang berbeda ini dapat memengaruhi cara arsitektur mo
 Raw Waveform merupakan representasi digital satu dimensi (1D) yang berisikan deretan nilai diskrit amplitudo pada audio, yang jika divisualisasikan akan membentuk sebuah gelombang audio tersebut.
 Audio dengan representasi tersebut umumnya memiliki format ekstensi berupa \texttt{.wav}, yang berisikan data PCM (\textit{Pulse-Code Modulation}) berupa representasi sinyal digital yang belum terkompresi (\textit{lossless}).
 Format tersebut menandakan kualitas serta informasi pada audio tersebut masih murni dan lengkap. 
-Semua file audio pada UrbanSound8K memiliki format \texttt{.wav}, sehingga keutuhan informasi akustik terjaga pada dataset ini.
+Semua \textit{file} audio pada UrbanSound8K memiliki format \texttt{.wav}, sehingga keutuhan informasi akustik terjaga pada dataset ini.
 
 % [GAMBAR_RAW_WAVEFORM]
 
@@ -467,3 +467,54 @@ Selain itu, efektivitas tersebut wajib didukung dengan laju pembelajaran (\texti
 Dalam penerapannya, \textit{fine-tuning} tidak harus dilakukan pada seluruh lapisan \textit{backbone} karena membutuhkan memori yang cukup besar dan rentan mengalami \textit{overfitting}.
 \textit{Fine-tuning} sering kali dilakukan hanya dengan membuka pembekuan (\textit{unfrozen}) pada beberapa blok konvolusi terakhir saja yang posisinya dekat dengan lapisan klasifikasi. \par
 
+\subsection{Strategi Optimasi dan Skenario Pelatihan} \label{II.Teori10}
+Dalam dunia pelatihan model, baik dari nol (\textit{training from scratch}) ataupun \textit{transfer learning}, perlu adanya beberapa skenario untuk memastikan model memiliki metode pelatihan yang tepat.
+Skenario tersebut mengatur mekanisme jalannya pelatihan. 
+Demi menghasilkan performa model yang optimal, strategi optimasi juga diterapkan dalam proses pelatihan model.
+Oleh karena itu, tahapan ini mencakup penentuan \textit{hyperparameter}, penerapan fungsi kerugian (\textit{loss function}), penggunaan \textit{optimizer}, hingga teknik mitigasi \textit{overfitting}. \par
+
+\subsubsection{\textit{Hyperparameter} Pelatihan} \label{II.Teori10.1}
+\textit{Hyperparameter} pelatihan adalah variabel yang nilainya diatur oleh peneliti sebelum pelatihan model dimulai.
+Pengaturan nilai bertujuan untuk mendapatkan parameter yang paling optimal sehingga menghasilkan performa model terbaik. 
+Terdapat dua \textit{hyperparameter} pelatihan yang paling penting dan mendasar untuk mengatur durasi dan beban komputasi pelatihan, yaitu \textit{epoch} dan \textit{batch size}. \par
+
+\textit{Epoch} merupakan satuan pengukuran untuk keseluruhan proses pelatihan model yang menandakan bahwa model telah melihat dan mempelajari keseluruhan dataset pelatihan sebanyak satu kali (1 \textit{epoch}). 
+Penentuan jumlah \textit{epoch} merujuk pada proses model yang tidak dapat menghasilkan performa optimal hanya dalam 1 \textit{epoch} akibat bobot model awal yang masih acak.
+Maka dari itu, model membutuhkan pengulangan \textit{epoch} yang banyak agar fitur inti berhasil disesuaikan dengan bobot parameter. 
+Jumlah \textit{epoch} yang terlalu sedikit menyebabkan model mengalami \textit{underfitting}, yaitu model belum cukup mempelajari data latih. 
+Begitu juga dengan jumlah \textit{epoch} yang terlalu banyak menyebabkan model menghafal data latih (\textit{overfitting}). \par
+
+Jika \textit{epoch} mengatur durasi pelatihan, maka \textit{batch size} menetapkan banyaknya data (\textit{file}) yang diproses oleh model setiap iterasinya (\textit{step}) dalam 1 \textit{epoch} sebelum bobotnya diperbarui.
+Penetapan batas jumlah \textit{file} ini diterapkan karena jumlah memori GPU RAM (VRAM) yang bekerja saat pelatihan model terbatas.
+Memasukkan terlalu banyak \textit{file} pada satu \textit{step} dapat mengakibatkan komputer kehabisan memori (\textit{Out of Memory}) sehingga pelatihan model dinyatakan gagal.
+Oleh karena itu, penting untuk mengatur nilai \textit{batch size} yang tidak hanya mempengaruhi beban komputasi, tetapi sekaligus menetapkan banyak \textit{step} yang dijalankan dalam 1 \textit{epoch}. \par
+
+\subsubsection{Fungsi Kerugian dan \textit{Cost-Sensitive Learning}} \label{II.Teori10.2}
+Nilai kerugian (\textit{loss}) merupakan nilai yang cukup penting dalam evaluasi performa model. 
+Jika nilai akurasi mengukur seberapa banyak model memprediksi label data dengan benar, maka nilai \textit{loss} menunjukkan probabilitas label yang salah diprediksi oleh model.
+Nilai \textit{loss} dapat diukur ketika model memprediksi data latih maupun data uji.
+Maka dari itu, fenomena seperti \textit{overfitting} dapat dideteksi ketika nilai \textit{loss} model saat prediksi data latih (\textit{train loss}) menurun, tetapi nilai \textit{loss} saat prediksi data uji (\textit{validation loss}) meningkat.
+
+Untuk mendapatkan nilai \textit{loss}, diperlukan sebuah fungsi yang dapat menghasilkan nilai tersebut (\textit{loss function}).
+\textit{Cross-Entropy Loss} adalah salah satu \textit{loss function} yang wajib digunakan dalam kasus klasifikasi data, khususnya klasifikasi \textit{multi-label}. 
+Fungsi ini menggunakan nilai probabilitas pada keluaran prediksi model yang dirumuskan ke dalam operasi berikut:
+ 
+\begin{equationcaptioned}{
+      L = - \sum_{i=1}^{K} y_i \log{(p_i)}
+      \label{eq:cross_entropy}
+  }{
+      \textit{Cross-Entropy Loss}
+  }
+  \end{equationcaptioned}
+
+  \noindent Keterangan:
+  \begin{itemize}
+      \item $L$ : Nilai \textit{loss} yang dihasilkan
+      \item $K$ : Total jumlah kelas
+      \item $\sum$ : Penjumlahan denda dari semua kelas.
+      \item $y_i$ : Kunci jawaban (Nilai $1$ untuk kelas yang benar, dan $0$ untuk kelas yang salah).
+      \item $\log{(p_i)}$ : Nilai logaritma dari probabilitas tebakan pada kelas benar.
+  \end{itemize}
+  \medskip
+
+Perhitungan ini berlaku sama rata untuk semua kelas yang ditentukan.

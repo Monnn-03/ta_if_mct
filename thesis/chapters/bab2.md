@@ -295,13 +295,12 @@ b. Fine Tuning
 10.1. Hyperparameter Pelatihan
 a. Epoch
 b. Batch Size
-c. Num Workers
-d. Learning Rate
 10.2. Fungsi Kerugian dan Cost Sensitive Learning
 a. Cross Entropy Loss
 b. Cost Sensitive Learning
 10.3. Optimizer (Adam & AdamW) dan Scheduler
 a. Optimizer
+- Learning Rate
 . Adam
 . AdamW
 b. Scheduler
