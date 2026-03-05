@@ -458,5 +458,12 @@ Hal tersebut membatasi kemampuan model untuk mempelajari pola fitur yang sangat 
 Dalam kasus dataset target yang berjumlah sangat minim, teknik pembekuan bobot ini mempertahankan keandalan bobot parameter yang sudah matang sebelumnya.
 Jika mekanisme tidak diterapkan, dataset minim tersebut dapat merusak setelan parameter bobot sebelumnya dan mengakibatkan fenomena \textit{catastrophic forgetting}, di mana model kehilangan pengetahuan awalnya dan gagal mempelajari konteks data yang baru. \par
 
+\subsubsection{\textit{Fine-tuning}} \label{II.Teori9.2}
+\textit{Fine-tuning} merupakan tahap lanjutan dari \textit{freeze base}, yang mengizinkan penyesuaian bobot parameter pada lapisan \textit{backbone}.
+Mekanisme ini dapat memperluas kemampuan model untuk mempelajari data baru yang lebih spesifik, namun beban komputasi meningkat akibat penyesuaian per lapisannya.
+Untuk mendapatkan hasil yang efektif, diperlukan data dengan jumlah yang cukup agar model memiliki referensi yang memadai dalam memperbarui bobotnya.
+Selain itu, efektivitas tersebut wajib didukung dengan laju pembelajaran (\textit{learning rate}) model yang sangat kecil untuk penyesuaian bobot yang tidak ekstrem, sehingga pengetahuan awal model tidak rusak. \par
 
+Dalam penerapannya, \textit{fine-tuning} tidak harus dilakukan pada seluruh lapisan \textit{backbone} karena membutuhkan memori yang cukup besar dan rentan mengalami \textit{overfitting}.
+\textit{Fine-tuning} sering kali dilakukan hanya dengan membuka pembekuan (\textit{unfrozen}) pada beberapa blok konvolusi terakhir saja yang posisinya dekat dengan lapisan klasifikasi. \par
 
