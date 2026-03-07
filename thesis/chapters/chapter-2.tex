@@ -491,12 +491,12 @@ Oleh karena itu, penting untuk mengatur nilai \textit{batch size} yang tidak han
 
 \subsubsection{Fungsi Kerugian dan \textit{Cost-Sensitive Learning}} \label{II.Teori10.2}
 Nilai kerugian (\textit{loss}) merupakan nilai yang cukup penting dalam evaluasi performa model. 
-Jika nilai akurasi mengukur seberapa banyak model memprediksi label data dengan benar, maka nilai \textit{loss} menunjukkan probabilitas label yang salah diprediksi oleh model.
+Jika nilai akurasi mengukur seberapa banyak model memprediksi label data dengan benar, maka nilai \textit{loss} menunjukkan nilai penyimpangan antara prediksi model dengan label kebenarannya.
 Nilai \textit{loss} dapat diukur ketika model memprediksi data latih maupun data uji.
 Maka dari itu, fenomena seperti \textit{overfitting} dapat dideteksi ketika nilai \textit{loss} model saat prediksi data latih (\textit{train loss}) menurun, tetapi nilai \textit{loss} saat prediksi data uji (\textit{validation loss}) meningkat.
 
 Untuk mendapatkan nilai \textit{loss}, diperlukan sebuah fungsi yang dapat menghasilkan nilai tersebut (\textit{loss function}).
-\textit{Cross-Entropy Loss} adalah salah satu \textit{loss function} yang wajib digunakan dalam kasus klasifikasi data, khususnya klasifikasi \textit{multi-label}. 
+\textit{Cross-Entropy Loss} adalah salah satu \textit{loss function} yang wajib digunakan dalam kasus klasifikasi data. 
 Fungsi ini menggunakan nilai probabilitas pada keluaran prediksi model yang dirumuskan ke dalam operasi berikut:
  
 \begin{equationcaptioned}{
@@ -512,9 +512,68 @@ Fungsi ini menggunakan nilai probabilitas pada keluaran prediksi model yang diru
       \item $L$ : Nilai \textit{loss} yang dihasilkan
       \item $K$ : Total jumlah kelas
       \item $\sum$ : Penjumlahan denda dari semua kelas.
-      \item $y_i$ : Kunci jawaban (Nilai $1$ untuk kelas yang benar, dan $0$ untuk kelas yang salah).
-      \item $\log{(p_i)}$ : Nilai logaritma dari probabilitas tebakan pada kelas benar.
+      \item $y_i$ : Kunci jawaban kelas ke-$i$ (Nilai $1$ untuk kelas yang benar, dan $0$ untuk kelas yang salah).
+      \item $\log{(p_i)}$ : Nilai logaritma dari probabilitas tebakan pada kelas ke-$i$.
   \end{itemize}
   \medskip
 
-Perhitungan ini berlaku sama rata untuk semua kelas yang ditentukan.
+Dalam klasifikasi \textit{single-label}, probabilitas seluruh kelas dihasilkan oleh fungsi \textit{softmax}.
+Pustaka \textit{deep learning} \textit{PyTorch} memiliki sebuah fungsi \texttt{nn.CrossEntropyLoss()} yang menggabungkan \texttt{nn.LogSoftmax()} dan \texttt{nn.NLLLoss()} di dalamnya.
+Penggabungan kedua fungsi tersebut dilakukan demi menjaga stabilitas numerik agar tidak terjadi \textit{error} saat menghitung logaritma dari angka yang sangat kecil.
+Oleh karena itu, penerapan fungsi \textit{softmax} pada arsitektur model asli diganti dengan lapisan \textit{Fully Connected} (FC) biasa, sehingga keluaran dari arsitektur model dibiarkan berupa nilai mentah (\textit{raw logits}) yang akan diproses secara langsung oleh \texttt{nn.CrossEntropyLoss()}. \par
+
+Meski begitu, penggunaan fungsi \textit{loss} dapat menghasilkan performa yang kurang valid jika distribusi data setiap kelasnya tidak seimbang.
+Nilai \textit{loss} yang dihasilkan akan mengatur jalannya pembelajaran model, sehingga model berusaha meminimalkan nilai \textit{loss} pada satu \textit{batch}.
+Model cenderung berusaha mempelajari kelas dengan jumlah data yang banyak (mayoritas) dibandingkan dengan kelas dengan sedikit data (minoritas) demi nilai \textit{loss} seminimal mungkin.
+Oleh karena itu, diperlukan sebuah skenario yang menyeimbangkan nilai \textit{loss} pada setiap kelas sesuai kepentingannya. \par
+
+\textit{Cost-Sensitive Learning} merupakan modifikasi fungsi \textit{cross-entropy loss} yang menerapkan skenario keseimbangan nilai \textit{loss} dari seluruh kelas. 
+Setiap kelas diberikan sebuah parameter tambahan berupa bobot penalti yang akan dikalikan dengan nilai \textit{loss} dari kelas yang bersangkutan. 
+Dengan begitu, kesalahan prediksi pada kelas minoritas menyebabkan nilai \textit{loss} yang berpotensi lebih tinggi daripada kelas mayoritas, sehingga keseimbangan pembelajaran setiap kelas terjaga. 
+Untuk operasi matematis yang digunakan hanya mengadaptasi penggunaan rumus \ref{eq:cross_entropy} dengan tambahan bobot pengali ($w$).
+Penentuan jumlah bobot pada kelas ke-$i$ ($w_i$) dirumuskan dalam operasi berikut: \par
+
+\begin{equationcaptioned}{
+      w_i = \frac{N_\text{total}}{K \times N_i}
+      \label{eq:bobot_cost_sensitive}
+  }{
+      \textit{Penentuan Bobot \textit{Cost-Sensitive Learning}}
+  }
+  \end{equationcaptioned}
+
+  \noindent Keterangan:
+  \begin{itemize}
+      \item $N_\text{total}$ : Total seluruh data yang digunakan
+      \item $K$ : Total seluruh kelas
+      \item $N_i$ : Jumlah seluruh data pada kelas $i$.
+  \end{itemize}
+  \medskip
+
+\subsubsection{\textit{Optimizer} dan \textit{Scheduler}} \label{II.Teori 10.3}
+\textit{Optimizer} adalah algoritma yang bertugas memperbarui bobot dan bias pada model berdasarkan nilai \textit{loss} yang didapat.
+Dalam pengerjaannya, algoritma ini juga memiliki elemen wajib dalam penyesuaian bobot model, yaitu \textit{learning rate}.
+\textit{Learning Rate} (laju pembelajaran) mengatur besar bobot yang diubah dalam satu waktu.
+Jika pengaturan \textit{learning rate} terlalu besar, maka penyesuaian nilai bobot menjadi ekstrem. 
+Sebaliknya, \textit{learning rate} yang rendah berdampak pada penyesuaian nilai bobot yang pelan, sehingga pelatihan model ikut melambat. \par
+
+Salah satu \textit{optimizer} yang menjadi standar industri \textit{deep learning} saat ini adalah Adam (\textit{Adaptive Moment Estimation}).
+\textit{Optimizer} ini menggabungkan konsep optimasi dari \textit{optimizer} SGD + Momentum dan RMSProp.
+SGD + Momentum memiliki pengetahuan pada langkah yang diambil sebelumnya, sehingga model yang bertemu dengan titik minimum lokal (\textit{local minima}) dapat memanfaatkan akumulasi kecepatan dari langkah sebelumnya untuk keluar dari titik tersebut. 
+Selain itu, Adam juga mengadopsi keunggulan RMSProp dalam mengatur \textit{learning rate} sesuai dengan kondisi gradien, yaitu dengan menurunkan \textit{learning rate} jika nilai gradien tinggi. 
+Penggabungan kedua konsep tersebut yang menjadikan Adam sebagai \textit{optimizer} yang unggul dan adaptif. \par
+
+Di balik keunggulannya tersebut, Adam memiliki kekurangan dalam penempatan penalti bobot (\textit{weight decay}) yang masih terikat (\textit{coupled}) dengan perhitungan gradien.
+Penalti tersebut diterapkan agar angka bobot model tidak terlalu besar akibat pengaruh gradien yang terlalu curam, sehingga menghindari \textit{overfitting}.
+Pada penerapan Adam, penalti ini ditempatkan pada perhitungan langkah bersamaan dengan gradien dan tingkat kecuraman dari RMSProp, yang berdampak pada pengaruh penalti bobot yang sedikit. \par
+
+Oleh karena itu, \textit{optimizer} AdamW (\textit{Adam with Decoupled Weight Decay}) diciptakan sebagai bentuk adaptasi dan pembaruan dari Adam sebelumnya. 
+Adaptasi dilakukan dengan perhitungan penalti bobot yang dilakukan setelah perhitungan nilai langkah dari Adam, sehingga penalti bobot menjadi sangat berpengaruh pada penyesuaian bobot model. \par
+
+\textit{Learning rate} akhir yang ditentukan oleh \textit{optimizer} seperti AdamW tetap bergantung pada nilai inisialisasi awalnya.
+Jika model hanya memerlukan sedikit langkah untuk mencapai \textit{global minima} dan nilai \textit{learning rate} awal cukup tinggi, mekanisme \textit{optimizer} tetap berpusat pada nilai \textit{learning rate} awal sehingga membuat konvergensi menjadi tidak stabil.
+Oleh karena itu, diperlukan sebuah algoritma yang dapat mengatur \textit{learning rate} awal sesuai dengan kondisi tertentu, lebih dikenal dengan \textit{Learning Rate Scheduler}. 
+\textit{Scheduler} memiliki pemenuhan kondisi yang berbeda-beda dalam menyesuaikan \textit{learning rate}. \par
+
+ReduceLROnPlateau merupakan \textit{learning rate scheduler} yang bertugas mereduksi \textit{learning rate} ketika suatu metrik tertentu tidak mencapai titik optimal dalam waktu tertentu.
+Jika kondisi metrik tidak mencapai titik optimal dalam jumlah \textit{epoch} tertentu (\textit{patience}), maka \textit{learning rate} awal akan dikurangi dengan nilai pengali yang ditentukan. 
+Penerapan tersebut menghasilkan model yang adaptif terhadap hasil performanya. \par

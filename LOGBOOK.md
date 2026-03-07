@@ -2,6 +2,12 @@
 
 ## March
 
+### 2026-03-07
+- Membuat draft Dasar Teori pada subbab Optimizer dan Scheduler.
+
+### 2026-03-06
+- Membuat draft Dasar Teori pada subbab Fungsi Kerugian dan Cost-Sensitive.
+
 ### 2026-03-05
 - Membuat draft Dasar Teori pada subbab Fine-tuning.
 - Membuat draft Dasar Teori pada subbab Strategi Optimasi dan Skenario Pelatihan, Hyperparameter Pelatihan.
