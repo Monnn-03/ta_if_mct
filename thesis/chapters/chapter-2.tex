@@ -577,3 +577,99 @@ Oleh karena itu, diperlukan sebuah algoritma yang dapat mengatur \textit{learnin
 ReduceLROnPlateau merupakan \textit{learning rate scheduler} yang bertugas mereduksi \textit{learning rate} ketika suatu metrik tertentu tidak mencapai titik optimal dalam waktu tertentu.
 Jika kondisi metrik tidak mencapai titik optimal dalam jumlah \textit{epoch} tertentu (\textit{patience}), maka \textit{learning rate} awal akan dikurangi dengan nilai pengali yang ditentukan. 
 Penerapan tersebut menghasilkan model yang adaptif terhadap hasil performanya. \par
+
+\subsubsection{Mitigasi \textit{Overfitting} (\textit{Early Stopping} dan \textit{Checkpointing})} \label{II.Teori10.4}
+\textit{Overfitting} merupakan kondisi ketika model menghafal data latih, sehingga model gagal mempelajari inti fitur dan gagal diterapkan pada data di luar pelatihan. 
+Fenomena ini disebabkan oleh beberapa faktor, salah satunya adalah penetapan jumlah \textit{epoch} yang berlebihan sehingga model yang seharusnya telah berhasil menangkap inti fitur pada \textit{epoch} tertentu malah mempelajari data yang sama berulang kali.
+Akan tetapi, jumlah \textit{epoch} yang terlalu sedikit dapat menyebabkan model gagal mencapai performa terbaiknya akibat kurangnya waktu belajar (\textit{underfitting}).
+Oleh karena itu, algoritma pemberhentian pelatihan pada \textit{epoch} tertentu diperlukan untuk menjaga performa optimalnya. \par
+
+\textit{Early stopping} merupakan teknik mitigasi yang menghentikan pelatihan lebih awal daripada \textit{epoch} maksimal yang ditetapkan. 
+Teknik ini mengambil sebuah metrik tertentu dan menetapkan batas toleransi (\textit{patience}) ketika metrik tersebut tidak melampaui titik optimal sebelumnya. 
+Jika \textit{patience} telah tercapai, pelatihan model akan diberhentikan secara otomatis sehingga titik optimal sebelumnya dijadikan nilai performa terbaiknya. \par
+
+Untuk menyimpan bobot model dengan performa terbaik, penerapan \textit{early stopping} juga didukung dengan sistem \textit{checkpointing}. 
+\textit{Checkpointing} adalah sistem yang menyimpan bobot parameter model saat mencapai nilai metrik performa tertingginya. 
+Jika performa terbaik model pada \textit{epoch-epoch} sebelumnya terlampaui, maka sistem akan menyimpan kembali bobot model terkini. \par
+
+\subsection{Metrik Evaluasi} \label{II.Teori11}
+Metrik evaluasi merupakan komponen tolok ukur yang menjadi nilai performa model dalam menjalankan tugasnya.
+Dalam model klasifikasi, metrik tersebut mengukur banyak aspek, yakni jumlah kebenaran hasil prediksi model, akurasi model, hingga dinamika pergerakan grafik \textit{loss} selama proses pelatihan. \par
+
+\subsubsection{\textit{Confusion Matrix}} \label{II.Teori11.1}
+\textit{Confusion Matrix} adalah metrik yang memproyeksikan pemetaan jumlah prediksi kelas benar dan salah model pada data uji.
+Pemetaan tersebut disusun ke dalam tabel dengan jumlah baris dan kolom yang sesuai dengan jumlah kelas data.
+Metrik ini membandingkan hasil kelas prediksi model pada data dengan kelas kebenaran pada data tersebut.
+Elemen-elemen hasil evaluasi pada metrik ini dikategorikan ke dalam empat komponen utama, yaitu:
+
+\begin{enumerate}
+    \item True Positive (TP) \\
+    Model dengan tepat memprediksi data kelas aktual X sebagai kelas X.
+    \item True Negative (TN) \\
+    Model dengan tepat memprediksi data kelas lain (Y) bukanlah kelas X. 
+    \item False Positive (FP) \\
+    Model keliru memprediksi data dari kelas lain (Y) sebagai kelas X.
+    \item False Negative (FN) \\
+    Model keliru memprediksi data kelas aktual X sebagai kelas lain (Y).
+\end{enumerate}
+
+\subsubsection{Metrik Klasifikasi (\textit{Accuracy, Precision, Recall} dan \textit{F1-Score})} \label{II.Teori11.2}
+Evaluasi model klasifikasi umumnya menggunakan sebuah kelompok metrik klasifikasi.
+Kelompok metrik tersebut menggunakan nilai keempat kategori yang digunakan pada \textit{Confusion Matrix} sebelumnya, yakni \textit{True Positive} (TP), \textit{True Negative} (TN), \textit{False Positive} (FP), dan \textit{False Negative} (FN).
+Keempat metrik tersebut terdiri dari \textit{Accuracy}, \textit{Precision}, \textit{Recall}, serta \textit{F1-Score}. \par 
+
+\textit{Accuracy} merupakan metrik yang mengukur rasio prediksi model yang benar (baik TP maupun TN) dari seluruh prediksi tersebut.
+Perhitungan metrik tersebut dirumuskan ke dalam operasi berikut:
+
+\begin{equationcaptioned}{
+      \textit{Accuracy} = \frac{\text{TP} + \text{TN}}{\text{TP} + \text{TN} + \text{FP} + \text{FN}}
+      \label{eq:accuracy}
+  }{
+      \textit{Perhitungan Metrik \textit{Accuracy}}
+  }
+  \end{equationcaptioned}
+  \medskip
+
+\textit{Precision} mengkalkulasikan rasio prediksi benar model pada suatu kelas dari seluruh data yang diprediksi model dengan kelas tersebut.
+Pengukuran dirumuskan ke dalam rumus berikut:
+
+\begin{equationcaptioned}{
+      \textit{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}
+      \label{eq:precision}
+  }{
+      \textit{Perhitungan Metrik \textit{Precision}}
+  }
+  \end{equationcaptioned}
+  \medskip
+
+\textit{Recall} mengukur kemampuan model dalam memprediksi seluruh data yang secara aktual benar pada kelas tersebut. 
+Pengukuran dirumuskan ke dalam rumus berikut:
+
+\begin{equationcaptioned}{
+      \textit{Recall} = \frac{\text{TP}}{\text{TP} + \text{FN}}
+      \label{eq:recall}
+  }{
+      \textit{Perhitungan Metrik \textit{Recall}}
+  }
+  \end{equationcaptioned}
+  \medskip
+
+\textit{F1-Score} adalah nilai rata-rata harmonis dari kedua metrik sebelumnya, yaitu \textit{Precision} dan \textit{Recall}.
+\textit{Precision} yang berfokus pada banyaknya prediksi model kelas tertentu bertolak belakang dengan \textit{Recall} yang berfokus pada seberapa benar model saat data dengan kelas tersebut dipanggil.
+Oleh karena itu, \textit{F1-score} menjadi nilai keseimbangan antara kedua metrik ini, sehingga tingginya \textit{F1-score} menandakan keunggulan model dalam tugas klasifikasinya.
+Perhitungan rata-rata harmonis dalam \textit{F1-score} dirumuskan sebagai berikut:
+
+\begin{equationcaptioned}{
+      \textit{F1-Score} = 2 \times \frac{\textit{Precision} \times \textit{Recall}}{\textit{Precision} + \textit{Recall}}
+      \label{eq:f1-score}
+  }{
+      \textit{Perhitungan Metrik \textit{F1-Score}}
+  }
+  \end{equationcaptioned}
+  \medskip
+
+\subsubsection{Kurva Evaluasi (\textit{Loss Curve})} \label{II.Teori11.3}
+Kurva evaluasi \textit{loss} merupakan metrik pengukur tingkat kesalahan model dalam memprediksi data latih (\textit{train loss}) maupun data uji (\textit{validation loss}).
+Pembacaan kerdua kurva (train dan validation) loss tersebut penting dalam menganalisis apakah model tersebut mempelajari atau sekedar menghafal data.
+Fenomena \textit{overfitting} digambarkan dengan kurva \textit{train loss} yang menurun, tetapi kurva \textit{validation loss} yang meningkat.
+Sedangkan \textit{underfitting} digambarkan dengan kurva \textit{loss} keduanya yang cukup tinggi dan sulit untuk turun. \par

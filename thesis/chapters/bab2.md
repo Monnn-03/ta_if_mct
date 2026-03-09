@@ -1,3 +1,44 @@
+# TINJAUAN PUSTAKA
+Lakukan pembahasan secara sistematis dengan menjelaskan masalah apa yang diangkat di penelitian terdahulu, metode yang digunakan, kontribusi yang diberikan, serta analisis penulis terkait dengan keunggulan atau keterbatasannya. Tuangkan perbandingan penelitian terdahulu dengan penelitian yang akan dikerjakan, minimal 5 jurnal pembanding (3 -4 tahun terakhir).
+
+1. A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification (2025) [Shen Yu] 
+a. Masalah : Sumber daya akustik perkotaan mengalami kekurangan skenario, keragaman akustik, metode augmentasi umum yang rentan merusak karakteristik suara, serta jaringan saraf tiruan yang tidak interpretabilitas dan robust.
+b. Metode : Melatih model ResNet-TF dari nol
+c. Kontribusi : Menciptakan standar pra-pemrosesan data, pemodelan dalam domain waktu-frekuensi (grafis), serta augmentasi screening (upaya menangani ketidakseimbangan pada kelas minoritas)
+d. Keunggulan : Domain dataset yang sama, penggunaan model ResNet untuk input domain waktu-frekuensi. 
+e. Keterbatasan : Membutuhkan waktu lebih untuk melakukan augmentasi dan screening data buatan untuk kelas minoritas.
+
+2. A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification (2025) [Shen Yu] 
+a. Masalah : 
+b. Metode : Melatih Model ResNet-TF dari Nol
+c. Kontribusi : 
+d. Keunggulan :
+e. Keterbatasan :
+
+3. A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification (2025) [Shen Yu] 
+a. Masalah : 
+b. Metode : Melatih Model ResNet-TF dari Nol
+c. Kontribusi : 
+d. Keunggulan :
+e. Keterbatasan :
+
+4. A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification (2025) [Shen Yu] 
+a. Masalah : 
+b. Metode : Melatih Model ResNet-TF dari Nol
+c. Kontribusi : 
+d. Keunggulan :
+e. Keterbatasan :
+
+5. A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification (2025) [Shen Yu] 
+a. Masalah : 
+b. Metode : Melatih Model ResNet-TF dari Nol
+c. Kontribusi : 
+d. Keunggulan :
+e. Keterbatasan :
+
+
+
+
 # Environmental Sound Classification (ESC)
 Environmental Sound Classification (ESC) merupakan jenis klasifikasi suara yang lebih merujuk kepada suara-suara akustik pada lingkungan sekitar kita.
 Suara-suara tersebut dibedakan menjadi dua jenis, yaitu suara alami yang berasal dari aktivitas alam, dan suara lingkungan buatan yang berasal dari aktivitas manusia atau perkotaan. ESC memiliki berbagai manfaat, mulai dari lingkup pengetahuan hingga digunakan sebagai alat bantu bagi penyandang tunarungu.

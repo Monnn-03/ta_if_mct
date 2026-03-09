@@ -2,6 +2,13 @@
 
 ## March
 
+### 2026-03-09
+- Membuat draft Dasar Teori pada subbab Metrik Evaluasi.
+- Mencari jurnal penelitian terdahulu pertama.
+
+### 2026-03-08
+- Sakit :'(
+
 ### 2026-03-07
 - Membuat draft Dasar Teori pada subbab Optimizer dan Scheduler.
 
