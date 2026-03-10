@@ -3,38 +3,39 @@ Lakukan pembahasan secara sistematis dengan menjelaskan masalah apa yang diangka
 
 1. A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification (2025) [Shen Yu] 
 a. Masalah : Sumber daya akustik perkotaan mengalami kekurangan skenario, keragaman akustik, metode augmentasi umum yang rentan merusak karakteristik suara, serta jaringan saraf tiruan yang tidak interpretabilitas dan robust.
-b. Metode : Melatih model ResNet-TF dari nol
+b. Metode : Melatih model ResNet-TF dari nol, Dataset : UN15 
 c. Kontribusi : Menciptakan standar pra-pemrosesan data, pemodelan dalam domain waktu-frekuensi (grafis), serta augmentasi screening (upaya menangani ketidakseimbangan pada kelas minoritas)
-d. Keunggulan : Domain dataset yang sama, penggunaan model ResNet untuk input domain waktu-frekuensi. 
+d. Keunggulan : Berhasil mengintegrasikan pemodelan domain waktu-frekuensi secara grafis yang mampu menangkap detail suara dengan lebih baik pada domain dataset suara perkotaan. 
 e. Keterbatasan : Membutuhkan waktu lebih untuk melakukan augmentasi dan screening data buatan untuk kelas minoritas.
 
-2. A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification (2025) [Shen Yu] 
-a. Masalah : 
-b. Metode : Melatih Model ResNet-TF dari Nol
-c. Kontribusi : 
-d. Keunggulan :
-e. Keterbatasan :
+2. Multi-Class Urban Sound Classification with Deep
+Learning Architectures (2024) [Avadhani et al.] 
+a. Masalah : Tantangan dalam mengkategorikan suara di perkotaan dengan tepat.
+b. Metode : Melakukan ekstraksi fitur manual menggunakan MFCC dan Melatih Model ANN, CNN, RNN, dan LSTM dari Nol.
+c. Kontribusi : Memberikan kelebihan dan pertimbangan dari setiap model yang digunakan untuk aplikasi di dunia perkotaan.
+d. Keunggulan : Mendapatkan hasil akurasi ANN sebesar 94.79%, CNN sebesar 93,64%, dan LSTM sebesar 86,09% pada dataset UrbanSound8K. 
+e. Keterbatasan : Tidak ada penanganan ketidakseimbangan antar kelas dataset (akurasi dipertanyakan), serta masih sangat bergantung pada MFCC yang melewati proses kompresi lagi sehingga informasi penting audio dapat hilang.
 
-3. A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification (2025) [Shen Yu] 
-a. Masalah : 
-b. Metode : Melatih Model ResNet-TF dari Nol
-c. Kontribusi : 
-d. Keunggulan :
-e. Keterbatasan :
+3. Robust Forest Sound Classification Using  Pareto-Mordukhovich Optimized MFCC in Environmental Monitoring (2025) [Qurthobi et al.] 
+a. Masalah : Membuat sistem deteksi ancaman dini berbasis klasifikasi audio pada lingkungan dengan ketersediaan dataset yang terbatas.
+b. Metode : Menggunakan ekstraksi fitur manual berupa MFCC dan melatih model hybrid gabungan secara manual (CNN-BiLSTM) dari nol.
+c. Kontribusi : Membuktikan bahwa performa model hibrida dibandingkan dengan pre-trained model mandiri.
+d. Keunggulan : Berhasil menciptakan arsitektur hibrida dari gabungan kedua arsitektur yang berbeda jenis.
+e. Keterbatasan : Memiliki nilai loss yang cukup tinggi (0.7209) dan akurasi rendah (78.52%) akibat penggunaan MFCC dan arsitektur gabungan yang berat. Metode hibrida arsitektur dan augmentasi yang digunakan tidak cukup efisien dibandingkan pendekatan hibrida pada level input.
 
-4. A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification (2025) [Shen Yu] 
-a. Masalah : 
-b. Metode : Melatih Model ResNet-TF dari Nol
-c. Kontribusi : 
-d. Keunggulan :
-e. Keterbatasan :
+4. Graph-Based Audio Classification Using Pre-Trained Models and Graph Neural Networks (2024) [Castro-Ospina et al.] 
+a. Masalah : Tantangan mencari representasi data klasifikasi suara lingkungan yang optimal menggunakan pendekatan non-konvensional. 
+b. Metode : Menggunakan model pre-trained sebagai pengekstraksi fitur awal, lalu distrukturisasi ulang menjadi simpul-simpul graf untuk dilatih ke dalam Graph Neural Networks.
+c. Kontribusi : Mengusulkan metode baru yang memetakan fitur audio spasial-temporal ke dalam bentuk graf dalam tugas klasifikasi multi-kelas.
+d. Keunggulan : Membuktikan bahwa arsitektur GAT (\textit{Graph Attention Networks}) mampu memberikan performa paling kompetitif dibandingkan varian GNN lainnya dalam mengenali struktur graf audio.
+e. Keterbatasan : Transformasi audio menjadi struktur graf menambah lapisan kompleksitas komputasi yang tinggi, namun hanya menghasilkan akurasi yang moderat (83%) untuk suara lingkungan. Selain itu, model ini belum menguji secara komparatif format input mentah (\textit{raw waveform} vs spektral) serta tidak memiliki mitigasi terhadap ketidakseimbangan data kelas.
 
-5. A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification (2025) [Shen Yu] 
-a. Masalah : 
-b. Metode : Melatih Model ResNet-TF dari Nol
-c. Kontribusi : 
-d. Keunggulan :
-e. Keterbatasan :
+5. A Comparative Study of Deep Audio Models for Spectrogram- and Waveform-Based SingFake Detection (2025) [Nguyen-Duc et al.]
+a. Masalah : Tantangan dalam mendeteksi suara sintesis (nyanyian deepfake) akibat tingginya kompleksitas variasi nada, warna suara, dan iringan latar. 
+b. Metode : Melakukan analisis komparatif performa antara model deep learning yang menggunakan input Spektrogram Log-Mel (AST, Whisper) dengan model yang memproses Raw Waveform (UniSpeech-SAT, HuBERT).
+c. Kontribusi : Memberikan tolok ukur komparatif yang komprehensif mengenai efektivitas berbagai format representasi input audio terhadap model AI modern untuk tujuan autentikasi media.
+d. Keunggulan : Membuktikan secara empiris bahwa format representasi visual (spektrogram Log-Mel) memiliki kemampuan generalisasi yang lebih superior dibandingkan bentuk gelombang mentah, khususnya pada data pengujian yang belum pernah dilihat sebelumnya.
+e. Keterbatasan : Penelitian ini hanya membandingkan kedua format input secara terpisah tanpa mengeksplorasi potensi penggabungan (Hybrid Input). Selain itu, pengujian dilakukan pada domain suara vokal yang teratur, sehingga belum teruji ketahanannya pada suara kebisingan perkotaan yang acak dan memiliki distribusi kelas yang sangat timpang (highly imbalanced).
 
 
 

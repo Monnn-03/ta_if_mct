@@ -2,6 +2,9 @@
 
 ## March
 
+### 2026-03-10
+- Berhasil mencari jurnal penelitian terdahulu (Draft awal).
+
 ### 2026-03-09
 - Membuat draft Dasar Teori pada subbab Metrik Evaluasi.
 - Mencari jurnal penelitian terdahulu pertama.
