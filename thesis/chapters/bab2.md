@@ -16,7 +16,7 @@ c. Kontribusi : Memberikan kelebihan dan pertimbangan dari setiap model yang dig
 d. Keunggulan : Mendapatkan hasil akurasi ANN sebesar 94.79%, CNN sebesar 93,64%, dan LSTM sebesar 86,09% pada dataset UrbanSound8K. 
 e. Keterbatasan : Tidak ada penanganan ketidakseimbangan antar kelas dataset (akurasi dipertanyakan), serta masih sangat bergantung pada MFCC yang melewati proses kompresi lagi sehingga informasi penting audio dapat hilang.
 
-3. Robust Forest Sound Classification Using  Pareto-Mordukhovich Optimized MFCC in Environmental Monitoring (2025) [Qurthobi et al.] 
+3. Robust Forest Sound Classification Using Pareto-Mordukhovich Optimized MFCC in Environmental Monitoring (2025) [Qurthobi et al.] 
 a. Masalah : Membuat sistem deteksi ancaman dini berbasis klasifikasi audio pada lingkungan dengan ketersediaan dataset yang terbatas.
 b. Metode : Menggunakan ekstraksi fitur manual berupa MFCC dan melatih model hybrid gabungan secara manual (CNN-BiLSTM) dari nol.
 c. Kontribusi : Membuktikan bahwa performa model hibrida dibandingkan dengan pre-trained model mandiri.
@@ -37,8 +37,15 @@ c. Kontribusi : Memberikan tolok ukur komparatif yang komprehensif mengenai efek
 d. Keunggulan : Membuktikan secara empiris bahwa format representasi visual (spektrogram Log-Mel) memiliki kemampuan generalisasi yang lebih superior dibandingkan bentuk gelombang mentah, khususnya pada data pengujian yang belum pernah dilihat sebelumnya.
 e. Keterbatasan : Penelitian ini hanya membandingkan kedua format input secara terpisah tanpa mengeksplorasi potensi penggabungan (Hybrid Input). Selain itu, pengujian dilakukan pada domain suara vokal yang teratur, sehingga belum teruji ketahanannya pada suara kebisingan perkotaan yang acak dan memiliki distribusi kelas yang sangat timpang (highly imbalanced).
 
+## Alternatif Monoton
+1. Concatenation-based pre-trained convolutional neural networks using attention mechanism for environmental sound classification (2024) [Ashurov et al.]
+a. Masalah : Tantangan dalam ekstraksi fitur akibat struktur suara lingkungan yang lebih abstrak dan variabilitas pada fitur yang dihasilkan.
+b. Metode : Ekstraksi fitur Spectrogram menggunakan gabungan beberapa model CNN (concatenation) dengan mekanisme perhatian dan augmentasi data.
+c. Kontribusi : Menghasilkan ekstraksi fitur secara paralel yang meningkatkan performa klasifikasi serta eksperimen komparatif.
+d. Keunggulan : Berhasil menunjukkan performa klasifikasi yang baik.
+e. Keterbatasan : Sumber daya komputasi sangatlah berat dikarenakan penggunaan beberapa model CNN untuk ekstraksi fitur serta augmentasi.
 
-
+2.
 
 # Environmental Sound Classification (ESC)
 Environmental Sound Classification (ESC) merupakan jenis klasifikasi suara yang lebih merujuk kepada suara-suara akustik pada lingkungan sekitar kita.

@@ -2,38 +2,68 @@
 \chapter{TINJAUAN PUSTAKA} \label{Bab II}
 
 \section{Tinjauan Pustaka} \label{II.Tinjauan}
-% Tinjauan pustaka dijelaskan dalam Tabel \ref{table:2.literasi} dan digunakan sebagai referensi berdasarkan penelitian yang berkaitan dengan penelitian ini.
+Penelitian ini dibangun dengan fondasi beberapa penelitian terdahulu yang berfokus pada klasifikasi suara lingkungan dan arsitektur \textit{Deep Learning}.
+Berikut merupakan lima penelitian dalam empat tahun terakhir yang memiliki relevansi dengan topik yang diangkat. \par
 
-% % \begin{longtable}{| b{0.05\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.25\textwidth}|} % Longtable berguna agar tabel dapat terpotong di halaman baru
-% % 	\caption{Literasi Penelitian Terdahulu}
-% % 	\label{table:2.literasi}\\
-% % 	\hline
-% % 	\textbf{No.} & \textbf{Judul [Tahun]} & \textbf{Masalah} & \textbf{Metode} & \textbf{Hasil} \\
-% % 	\hline
-% % 	\endfirsthead % Header tabel untuk halaman pertama
-% % 	\hline
-% % 	\textbf{No.} & \textbf{Judul [Tahun]} & \textbf{Masalah} & \textbf{Metode} & \textbf{Hasil} \\
-% % 	\hline
-% % 	\endhead % Header tabel untuk halaman selanjutnya (repeat header row)
-% % 	1. & 
-% % 	Deep Spectrogram Learning for Gunshot Classification: A Comparative Study of CNN Architectures and Time-Frequency Representations [2025] & 
-% % 	Metode tradisional sering gagal membedakan jenis senjata api berdasarkan suara tembakan secara seakurat karena perbedaan fisik yang halus pada senjata api. & 
-% % 	CNN dengan input Mel-Spectrogram; preprocessing menggunakan Librosa, pelatihan model dilakukan dengan Keras & 
-% % 	Sistem dapat mengklasifikasikan 6 jenis alat musik secara akurat dengan nilai akurasi tertinggi mencapai 94\%\\ 
-% % 	\hline
-% % 	2. & 
-% % 	Deteksi Suara Chord Piano Menggunakan Metode Convolutional Neural Network (2022)	& Sulitnya mendeteksi akor piano secara otomatis dalam format suara	& CNN + Mel-spectrogram & Model CNN mampu mendeteksi akor mayor dan minor piano dengan akurasi >85\% \\ 
-% % 	\hline
-% % 	3. & 
-% % 	Pengembangan Aplikasi Klasifikasi Suara Alat Musik Kalimba (2024) & Belum ada sistem klasifikasi otomatis suara alat musik kalimba & CNN + Mel-spectrogram & Aplikasi berhasil mengklasifikasi suara kalimba ke beberapa jenis nada dengan performa tinggi\\ 
-% % 	\hline
-% % 	4. & 
-% % 	Recognising Bonang Barung Gamelan Instrument Playing Technique Using CNN (2025) & Kurangnya metode otomatis untuk mengenali teknik permainan bonang barung & CNN + Mel-spectrogram & Sistem mampu membedakan teknik pukulan bonang dengan akurasi yang cukup baik\\
-% % 	\hline
-% % 	5. & 
-% % 	Klasifikasi Suara Instrumen Musik Tiup Menggunakan Metode CNN (2024) & Sulitnya mengidentifikasi jenis instrumen musik tiup dari file audio & CNN + Mel-spectrogram & Model berhasil mengklasifikasi berbagai instrumen tiup (saxophone, flute, trumpet) secara akurat\\
-% % 	\hline
-% % \end{longtable}
+Penelitian kedua dilakukan oleh Castro-Ospina \textit{et al.} (2024) yang berlandaskan tantangan dalam mencari representasi data klasifikasi suara lingkungan optimal menggunakan pendekatan non-konvensional. 
+Uniknya, penelitian ini menggunakan model \textit{pre-trained} sebagai pengekstraksi fitur awal pada data, kemudian data tersebut distrukturisasi ulang menjadi simpul-simpul graf untuk dilatih ke dalam \textit{Graph Neural Networks} (GNN).
+Kontribusi dari penelitian ini mengusulkan metode terbaru yang memetakan fitur audio spasial-temporal ke dalam bentuk graf dalam tugas klasifikasi multi-kelas.
+Keunggulannya dibuktikan dengan arsitektur GAT (\textit{Graph Attention Networks}) yang mampu memberikan performa tertinggi dibandingkan dengan varian GNN lainnya dalam mengenali struktur graf audio.
+Meski begitu, proses transformasi audio menjadi struktur graf menambah lapisan kompleksitas komputasi yang tinggi, yang sayangnya hanya menghasilkan akurasi yang moderat (83\%) untuk suara lingkungan.
+Selain itu, model ini belum menguji secara komparatif format input mentah (\textit{raw waveform} vs spektral) serta tidak memiliki mitigasi terhadap ketidakseimbangan data kelas. \par
+
+Penelitian ketiga dilakukan oleh Qurthobi \textit{et al.} (2025) yang berfokus membuat sistem deteksi ancaman dini berbasis klasifikasi audio pada lingkungan hutan dengan ketersediaan dataset yang terbatas.
+Sama seperti sebelumnya, ekstraksi fitur dilakukan secara manual yang menghasilkan MFCC, tetapi arsitektur yang digunakan merupakan gabungan antara CNN dengan BiLSTM (CNN-BiLSTM) yang dilatih dari awal.
+Hasil penelitian ini membandingkan performa pada arsitektur hibrida tersebut dengan performa pre-trained model mandiri pada umumnya.
+Penelitian ini berhasil menciptakan arsitektur hibrida dari gabungan kedua arsitektur yang berbeda jenis.
+Tetapi, arsitektur hibrida tersebut memiliki nilai \textit{loss} yang cukup tinggi (0.7209) dan akurasi rendah (78.52\%) yang diduga akibat penggunaan fitur MFCC dan komputasi arsitektur tersebut yang terlalu berat.
+Metode hibrida arsitektur dan augmentasi yang digunakan tidak cukup efisien dibandingkan pendekatan hibrida pada level input. \par
+
+Penelitian keempat dilakukan oleh Avadhani \textit{et al.} (2024), dilatarbelakangi oleh tantangan dalam mengkategorikan suara di perkotaan dengan tepat.
+Dalam pengerjaannya, penelitian ini melakukan ekstraksi fitur manual pada data suara menggunakan \textit{Mel-Frequency Cepstral Coefficients} (MFCC) dan menggunakan arsitektur \textit{Artificial Neural Network} (ANN), \textit{Convolutional Neural Network} (CNN), \textit{Recurrent Neural Network} (RNN), dan \textit{Long-Short Term Memory} (LSTM) yang dilatih dari awal dengan dataset UrbanSound8K.
+Penelitian ini berkontribusi memberikan kelebihan serta pertimbangan dari setiap model yang digunakan bertujuan sebagai wujud aplikatif di perkotaan.
+Hasil akurasi yang didapat pada arsitektur ANN sebesar 94.79\%, CNN sebesar 93,64\%, dan LSTM sebesar 86,09\% pada dataset UrbanSound8K. 
+Namun, celah daripada penelitian ini adalah tidak adanya mekanisme penanganan ketidakseimbangan antar kelas dataset yang dapat merujuk kepada hasil akurasi yang tidak adil, serta penggunaan ekstraksi fitur manual MFCC yang telah melewati proses transformasi yang berpotensi menghilangkan detail pada karakteristik suara.\par
+
+Penelitian terakhir dilakukan oleh oleh Shen Yu (2025) yang mengangkat masalah terkait kurangnya keragaman skenario pada sumber daya akustik di perkotaan dan penggunaan metode augmentasi umum yang rentan merusak karakteristik suara. 
+Hal ini disertai dengan pemilihan jaringan saraf tiruan yang tidak interpretabilitas dan robust.
+Oleh karena itu, metodologi penelitian ini melatih model ResNet-TF dari awal dengan dataset yang berisikan kumpulan akustik di perkotaan, yaitu UN15. 
+Dalam kontribusinya, penelitian ini telah menciptakan standar pra-pemrosesan data, pemodelan dalam domain waktu-frekuensi (grafis), serta augmentasi yang ditambah dengan screening sebagai mekanisme penanganan ketidakseimbangan data pada kelas minoritas.
+Hasil dari penelitian ini berhasil mengintegrasikan pemodelan domain waktu-frekuensi secara grafis yang mampu menangkap detail suara dengan lebih baik pada domain dataset suara perkotaan. 
+Akan tetapi, terdapat keterbatasan saat melakukan augmentasi dan screening data buatan untuk kelas minoritas yang memakan waktu pemrosesan yang cukup lama. \par
+
+Tinjauan pustaka dijelaskan dalam Tabel \ref{table:2.literasi} dan digunakan sebagai referensi berdasarkan penelitian yang berkaitan dengan penelitian ini.
+
+\begin{longtable}{| b{0.05\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.25\textwidth}} % Longtable berguna agar tabel dapat terpotong di halaman baru
+	\caption{Literasi Penelitian Terdahulu}
+	\label{table:2.literasi}\\
+	\hline
+	\textbf{No.} & \textbf{Judul [Tahun]} & \textbf{Masalah \& Metode} & \textbf{Kontribusi \& Keunggulan} & \textbf{Keterbatasan} \\
+	\hline
+	\endfirsthead % Header tabel untuk halaman pertama
+	\hline
+	\textbf{No.} & \textbf{Judul [Tahun]} & \textbf{Masalah \& Metode} & \textbf{Kontribusi \& Keunggulan} & \textbf{Keterbatasan} \\
+	\hline
+	\endhead % Header tabel untuk halaman selanjutnya (repeat header row)
+	1. & 
+	A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification [2025] & 
+	Sumber daya akustik perkotaan mengalami kekurangan skenario, keragaman akustik, metode augmentasi umum yang rentan merusak karakteristik suara, serta jaringan saraf tiruan yang tidak interpretabilitas dan robust. & 
+	Melatih model ResNet-TF dari nol dengan dataset UN15 & 
+	Sistem dapat mengklasifikasikan 6 jenis alat musik secara akurat dengan nilai akurasi tertinggi mencapai 94\%\\ 
+	\hline
+	2. & 
+	Deteksi Suara Chord Piano Menggunakan Metode Convolutional Neural Network (2022)	& Sulitnya mendeteksi akor piano secara otomatis dalam format suara	& CNN + Mel-spectrogram & Model CNN mampu mendeteksi akor mayor dan minor piano dengan akurasi >85\% \\ 
+	\hline
+	3. & 
+	Pengembangan Aplikasi Klasifikasi Suara Alat Musik Kalimba (2024) & Belum ada sistem klasifikasi otomatis suara alat musik kalimba & CNN + Mel-spectrogram & Aplikasi berhasil mengklasifikasi suara kalimba ke beberapa jenis nada dengan performa tinggi\\ 
+	\hline
+	4. & 
+	Recognising Bonang Barung Gamelan Instrument Playing Technique Using CNN (2025) & Kurangnya metode otomatis untuk mengenali teknik permainan bonang barung & CNN + Mel-spectrogram & Sistem mampu membedakan teknik pukulan bonang dengan akurasi yang cukup baik\\
+	\hline
+	5. & 
+	Klasifikasi Suara Instrumen Musik Tiup Menggunakan Metode CNN (2024) & Sulitnya mengidentifikasi jenis instrumen musik tiup dari file audio & CNN + Mel-spectrogram & Model berhasil mengklasifikasi berbagai instrumen tiup (saxophone, flute, trumpet) secara akurat\\
+	\hline
+\end{longtable}
 
 \section{Dasar Teori} \label{II.Teori}
 Dasar teori ini akan menjadi fondasi utama dalam menyusun metode dalam penelitian ini.
