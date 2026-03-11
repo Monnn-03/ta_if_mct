@@ -8,9 +8,9 @@ Keselamatan berlalu lintas di lingkungan perkotaan merupakan tantangan krusial y
 Dalam aktivitas tersebut, indra pendengaran berperan sebagai mekanisme deteksi alami yang penting untuk mengetahui kondisi lingkungan di sekitar. 
 Namun, fungsi indra tersebut tidak dimiliki oleh penyandang tunarungu, yang hanya bisa mengandalkan penglihatan mereka untuk memantau keadaan. 
 Ketergantungan penuh pada aspek visual ini dapat menjadi kerentanan serius, mengingat mereka memiliki keterbatasan sudut pandang dan tidak dapat memantau kondisi di luar jangkauan penglihatan. 
-Akibatnya, ancaman yang muncul dari titik buta (\textit{blind spot}), seperti gonggongan dari anjing yang mengejar atau klakson kendaraan yang melaju kencang dari arah belakang, seringkali terlambat disadari akibat tidak adanya peringatan suara.
+Akibatnya, ancaman yang muncul dari titik buta (\textit{blind spot}), seperti gonggongan dari anjing yang mengejar atau klakson kendaraan yang melaju kencang dari arah belakang, seringkali terlambat disadari akibat tidak terdengarnya peringatan suara.
 Keterlambatan respon inilah yang secara signifikan meningkatkan risiko terjadinya kecelakaan fatal \cite{thorslund2013effects}.
-Maka dari itu, diperlukan mekanisme bantu yang dapat menggantikan peran indra pendengaran dalam mendeteksi ancaman yang muncul dari luar jangkauan visual. \par
+Maka dari itu, diperlukan mekanisme alat bantu yang dapat menggantikan peran indra pendengaran dalam mendeteksi ancaman yang muncul dari luar jangkauan visual. \par
 
 % PARAGRAF 2: KELEMAHAN SOLUSI EKSISTING (ABD)
 Saat ini, Alat Bantu Dengar (ABD) merupakan perangkat yang umum digunakan untuk menunjang komunikasi verbal penyandang tunarungu. 
@@ -24,8 +24,8 @@ Keterbatasan perangkat keras dalam memilah sinyal suara ini memunculkan kebutuha
 Guna mengatasi keterbatasan ini, dikembangkanlah metode cerdas yang dikenal sebagai Klasifikasi Suara Lingkungan atau \textit{Environmental Sound Classification} (ESC).
 Integrasi teknologi ini pada alat bantu dengar telah lama diteliti sebagai upaya meningkatkan kesadaran situasi pengguna \cite{buchler2005sound}.
 Pada tahap awal pengembangannya, sistem ESC umumnya dibangun menggunakan metode \textit{Machine Learning} konvensional seperti \textit{Support Vector Machine} (SVM) atau \textit{Random Forest} \cite{salamon2014dataset}.
-Namun, metode-metode klasik tersebut sangat bergantung pada proses ekstraksi fitur secara manual (\textit{hand-crafted features}) yang kaku, sehingga performanya cenderung menurun drastis ketika dihadapkan dengan variasi kebisingan lingkungan yang dinamis.
-Kelemahan metode tersebut memicu pergeseran tren penelitian menuju pendekatan \textit{Deep Learning}, khususnya \textit{Convolutional Neural Networks} (CNN) yang menawarkan kemampuan untuk mempelajari fitur suara secara otomatis dan hirarkis langsung dari data \cite{piczak2015environmental}. 
+Namun, metode-metode tersebut sangat bergantung pada proses ekstraksi fitur secara manual (\textit{hand-crafted features}) yang kaku, sehingga performanya cenderung menurun drastis ketika dihadapkan dengan kebisingan lingkungan yang bervariatif.
+Kelemahan metode tersebut memicu pergeseran tren penelitian menuju pendekatan \textit{Deep Learning}, khususnya \textit{Convolutional Neural Networks} (CNN) yang menawarkan kemampuan untuk mempelajari fitur suara dalam bentuk grafis secara otomatis dan hirarkis langsung dari data \cite{piczak2015environmental}. 
 Kemampuan adaptasi fitur inilah yang menjadikannya sebagai solusi yang jauh lebih andal dibandingkan metode konvensional. 
 Walaupun menjanjikan akurasi yang lebih tinggi, metode \textit{Deep Learning} membutuhkan dataset berskala masif untuk melatih fitur-fitur tersebut secara efektif.
 Ketergantungan ini menjadi kendala signifikan pada kasus dengan ketersediaan data yang terbatas, sehingga diperlukan strategi pembelajaran khusus agar model tetap memiliki performa yang \textit{robust}. \par
@@ -42,8 +42,8 @@ Ketersediaan variasi ini memunculkan urgensi untuk mengevaluasi arsitektur mana 
 % PARAGRAF 5: RESEARCH GAP (ARGUMEN ILMIAH UTAMA) -> INI YANG DIPECAH
 Meskipun Kong et al. \cite{kong2020panns} telah memaparkan tolak ukur kinerja model-model tersebut pada dataset masif AudioSet \cite{gemmeke2017audioset}, performa tersebut belum tentu sebanding ketika diterapkan pada kasus penerapan spesifik dengan ketersediaan data yang terbatas (\textit{data scarcity}) seperti pada kasus klasifikasi suara lingkungan perkotaan.
 Perbedaan karakteristik data ini memunculkan dugaan bahwa kompleksitas arsitektur model \textit{Hybrid} dan \textit{Log-mel Spectrogram} justru memiliki risiko \textit{overfitting} yang lebih tinggi dibandingkan model \textit{Raw Waveform} ketika dilatih pada dataset yang kecil.
-Selain itu, terdapat juga perbedaan mendasar pada jenis keluaran klasifikasi, di mana PANNs dilatih untuk mendeteksi banyak label sekaligus (\textit{Multi-Label}), sedangkan penelitian ini dirancang untuk memprioritaskan identifikasi sumber bahaya paling dominan (\textit{Single-Label}).
-Pendekatan \textit{Single-Label} ini dipilih untuk menyelaraskan karakteristik dataset UrbanSound8K yang memiliki anotasi satu sumber suara dominan (\textit{salient event}), serta guna menghindari ambiguitas peringatan agar pengguna dapat mengambil keputusan responsif.
+Selain itu, terdapat juga perbedaan mendasar pada jenis keluaran klasifikasi, di mana PANNs dilatih untuk mendeteksi banyak label sekaligus (\textit{multi-label}), sedangkan penelitian ini dirancang untuk memprioritaskan identifikasi sumber bahaya paling dominan (\textit{single-label}).
+Pendekatan \textit{single-label} ini dipilih untuk menyelaraskan karakteristik dataset UrbanSound8K yang memiliki anotasi satu sumber suara dominan (\textit{salient event}), serta guna menghindari ambiguitas peringatan agar pengguna dapat mengambil keputusan responsif.
 Ketidakpastian inilah yang menjadi celah penelitian (\textit{research gap}) yang belum terjamah.
 Oleh karena itu, penelitian ini menjadi krusial untuk mengevaluasi ulang adaptabilitas dan melakukan analisis komparasi ketiga arsitektur tersebut secara spesifik pada dataset UrbanSound8K. \par
 
@@ -57,7 +57,7 @@ Berdasarkan latar belakang yang telah diuraikan, maka rumusan masalah dalam pene
 
 \begin{enumerate}[noitemsep]
   \item Bagaimana pengaruh perbedaan representasi input (\textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid}) terhadap performa model \textit{Pre-trained Audio Neural Networks} (PANNs) dalam mengklasifikasikan suara bahaya pada kondisi ketersediaan data yang terbatas?
-  \item Representasi input manakah yang menghasilkan model paling optimal berdasarkan metrik \textit{F1-Score}, nilai \textit{Loss}, dan analisis \textit{Confusion Matrix} untuk meminimalisir kesalahan deteksi pada sistem keselamatan penyandang tunarungu?
+  \item Representasi input manakah yang menghasilkan performa model paling optimal berdasarkan analisis \textit{Confusion Matrix}, metrik \textit{F1-Score}, dan kurva \textit{loss} untuk meminimalisir kesalahan deteksi pada sistem keselamatan penyandang tunarungu?
 \end{enumerate}
 
 \newpage
@@ -67,7 +67,7 @@ Tujuan dari penelitian ini adalah : \par
 
 \begin{enumerate}[noitemsep]
   \item Menganalisis pengaruh perbedaan representasi input (\textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid}) terhadap performa model \textit{Pre-trained Audio Neural Networks} (PANNs) dalam mengklasifikasikan suara bahaya pada kondisi ketersediaan data yang terbatas.
-  \item Mengevaluasi pendekatan representasi input yang menghasilkan model paling optimal berdasarkan metrik \textit{F1-Score}, nilai \textit{Loss}, dan analisis \textit{Confusion Matrix} untuk meminimalisir kesalahan deteksi pada sistem keselamatan penyandang tunarungu.
+  \item Mengevaluasi pendekatan representasi input yang menghasilkan performa model paling optimal berdasarkan analisis \textit{Confusion Matrix}, metrik \textit{F1-Score}, dan kurva \textit{loss} untuk meminimalisir kesalahan deteksi pada sistem keselamatan penyandang tunarungu.
 \end{enumerate}
 
 \section{Batasan Masalah} \label{I.Batasan}

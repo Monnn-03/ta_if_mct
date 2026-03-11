@@ -16,34 +16,30 @@ c. Kontribusi : Memberikan kelebihan dan pertimbangan dari setiap model yang dig
 d. Keunggulan : Mendapatkan hasil akurasi ANN sebesar 94.79%, CNN sebesar 93,64%, dan LSTM sebesar 86,09% pada dataset UrbanSound8K. 
 e. Keterbatasan : Tidak ada penanganan ketidakseimbangan antar kelas dataset (akurasi dipertanyakan), serta masih sangat bergantung pada MFCC yang melewati proses kompresi lagi sehingga informasi penting audio dapat hilang.
 
-3. Robust Forest Sound Classification Using Pareto-Mordukhovich Optimized MFCC in Environmental Monitoring (2025) [Qurthobi et al.] 
-a. Masalah : Membuat sistem deteksi ancaman dini berbasis klasifikasi audio pada lingkungan dengan ketersediaan dataset yang terbatas.
-b. Metode : Menggunakan ekstraksi fitur manual berupa MFCC dan melatih model hybrid gabungan secara manual (CNN-BiLSTM) dari nol.
-c. Kontribusi : Membuktikan bahwa performa model hibrida dibandingkan dengan pre-trained model mandiri.
-d. Keunggulan : Berhasil menciptakan arsitektur hibrida dari gabungan kedua arsitektur yang berbeda jenis.
-e. Keterbatasan : Memiliki nilai loss yang cukup tinggi (0.7209) dan akurasi rendah (78.52%) akibat penggunaan MFCC dan arsitektur gabungan yang berat. Metode hibrida arsitektur dan augmentasi yang digunakan tidak cukup efisien dibandingkan pendekatan hibrida pada level input.
+3. Urban Noise Classification Using Machine Learning
+Techniques: Comparative Analysis and Future (2025) [Tasmiya Mujawar] 
+a. Masalah : Tantangan mengetahui model machine learning mana yang menawarkan akurasi dan performa tertinggi dalam klasifikasi kebisingan di perkotaan.
+b. Metode : Melatih model dengan berbagai format input, yaitu CNN, DNN, LSTM dan Random Forest dari nol. Dataset yang digunakan adalah UrbanSound8K.
+c. Kontribusi : Memberikan literatur pada tahapan pelatihan model, serta menyarankan arah penelitian kedepan.
+d. Keunggulan : Hasilnya mengungkapkan bahwa model DNN mencapai akurasi tertinggi sebesar 94.5%, diikuti oleh CNN sebesar 90%, RF sebesar 87%, dan LSTM sebesar 79%.
+e. Keterbatasan : Keterbatasan Komputasi, kualitas data.
 
-4. Graph-Based Audio Classification Using Pre-Trained Models and Graph Neural Networks (2024) [Castro-Ospina et al.] 
-a. Masalah : Tantangan mencari representasi data klasifikasi suara lingkungan yang optimal menggunakan pendekatan non-konvensional. 
-b. Metode : Menggunakan model pre-trained sebagai pengekstraksi fitur awal, lalu distrukturisasi ulang menjadi simpul-simpul graf untuk dilatih ke dalam Graph Neural Networks.
-c. Kontribusi : Mengusulkan metode baru yang memetakan fitur audio spasial-temporal ke dalam bentuk graf dalam tugas klasifikasi multi-kelas.
-d. Keunggulan : Membuktikan bahwa arsitektur GAT (\textit{Graph Attention Networks}) mampu memberikan performa paling kompetitif dibandingkan varian GNN lainnya dalam mengenali struktur graf audio.
-e. Keterbatasan : Transformasi audio menjadi struktur graf menambah lapisan kompleksitas komputasi yang tinggi, namun hanya menghasilkan akurasi yang moderat (83%) untuk suara lingkungan. Selain itu, model ini belum menguji secara komparatif format input mentah (\textit{raw waveform} vs spektral) serta tidak memiliki mitigasi terhadap ketidakseimbangan data kelas.
+4. Deep Learning for Urban Sound Classification: Using CNN and YAMNet Model Integration (2025) [Trivedi et al.]
+a. Masalah : Otak manusia dalam mengidentifikasi suara perkotaan dan bagaimana representasinya dalam penerapan Deep Learning.
+b. Metode : Ekstraksi fitur Spectrogram menggunakan spektrogram, Mel-frequency Cepstral coefficients (MFCC), linear predictive coding, dan dekomposisi wavelet. Beberapa model CNN dilatih dengan dataset UrbanSound8K.
+c. Kontribusi : Membuktikan efektivitas integrasi model prapelatihan (Pre-trained) YAMNet dengan CNN untuk tugas kategorisasi suara perkotaan dibandingkan dengan arsitektur hibrida konvensional (CNN-LSTM).
+d. Keunggulan : Model CNN-YAMNet berhasil mencapai tingkat akurasi yang sangat mengesankan, yaitu sebesar 98%, membuktikan keunggulan Transfer Learning dalam memproses dataset audio yang kompleks.
+e. Keterbatasan : Penelitian ini belum mengeksplorasi potensi penggabungan representasi sinyal secara langsung (\textit{Hybrid Input Raw Waveform} dan Spektrogram). Selain itu, meskipun akurasi globalnya tinggi, model ini belum mengimplementasikan mekanisme intervensi matematis seperti \textit{Cost-Sensitive Learning} untuk memastikan performa yang adil pada kelas minoritas akibat distribusi data yang tidak seimbang di UrbanSound8K.
 
-5. A Comparative Study of Deep Audio Models for Spectrogram- and Waveform-Based SingFake Detection (2025) [Nguyen-Duc et al.]
-a. Masalah : Tantangan dalam mendeteksi suara sintesis (nyanyian deepfake) akibat tingginya kompleksitas variasi nada, warna suara, dan iringan latar. 
-b. Metode : Melakukan analisis komparatif performa antara model deep learning yang menggunakan input Spektrogram Log-Mel (AST, Whisper) dengan model yang memproses Raw Waveform (UniSpeech-SAT, HuBERT).
-c. Kontribusi : Memberikan tolok ukur komparatif yang komprehensif mengenai efektivitas berbagai format representasi input audio terhadap model AI modern untuk tujuan autentikasi media.
-d. Keunggulan : Membuktikan secara empiris bahwa format representasi visual (spektrogram Log-Mel) memiliki kemampuan generalisasi yang lebih superior dibandingkan bentuk gelombang mentah, khususnya pada data pengujian yang belum pernah dilihat sebelumnya.
-e. Keterbatasan : Penelitian ini hanya membandingkan kedua format input secara terpisah tanpa mengeksplorasi potensi penggabungan (Hybrid Input). Selain itu, pengujian dilakukan pada domain suara vokal yang teratur, sehingga belum teruji ketahanannya pada suara kebisingan perkotaan yang acak dan memiliki distribusi kelas yang sangat timpang (highly imbalanced).
+5. Transformers for Urban Sound Classification—A Comprehensive Performance Evaluation (2022) [Nogueira et al.]
+a. Masalah : Keperluan untuk mengidentifikasi suara suara abnormal dan relevan di lingkungan perkotaan.
+b. Metode : Ekstraksi fitur mentah dan dalam bentuk gambar (spectrogram) dan melakukan transfer learning menggunakan arsitektur model pre-trained Transformer dengan bobot pre-trained dari AudioSet, serta penerapan augmentasi data. Dataset yang digunakan merupakan dataset publik (UrbanSound8K, ESC-50, ESC-10)
+c. Kontribusi : Memberikan evaluasi pada performa model Transformer dibandingkan dengan model CNN konvensional, serta mengusulkan penggunaan optimizer Adam dengan Weight Decay untuk optimalisasi klasifikasi suara lingkungan.
+d. Keunggulan : Berhasil menunjukkan performa akurasi klasifikasi yang baik masing-masing, yaitu 89,8% untuk dataset UrbanSound8K, 95,8% untuk dataset ESC-50, dan 99% untuk dataset ESC-10.
+e. Keterbatasan : Sumber daya komputasi pada Transformer yang cukup berat, penggunaan augmentasi spasial audio dalam menangani ketidakseimbangan kelas pada dataset yang berisiko merusak data.
 
 ## Alternatif Monoton
-1. Concatenation-based pre-trained convolutional neural networks using attention mechanism for environmental sound classification (2024) [Ashurov et al.]
-a. Masalah : Tantangan dalam ekstraksi fitur akibat struktur suara lingkungan yang lebih abstrak dan variabilitas pada fitur yang dihasilkan.
-b. Metode : Ekstraksi fitur Spectrogram menggunakan gabungan beberapa model CNN (concatenation) dengan mekanisme perhatian dan augmentasi data.
-c. Kontribusi : Menghasilkan ekstraksi fitur secara paralel yang meningkatkan performa klasifikasi serta eksperimen komparatif.
-d. Keunggulan : Berhasil menunjukkan performa klasifikasi yang baik.
-e. Keterbatasan : Sumber daya komputasi sangatlah berat dikarenakan penggunaan beberapa model CNN untuk ekstraksi fitur serta augmentasi.
+1. 
 
 2.
 

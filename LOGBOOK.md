@@ -2,6 +2,10 @@
 
 ## March
 
+### 2026-03-11
+- Review Terakhir Bab I Done
+- Fiksasi Daftar Jurnal Penelitian Terdahulu.
+
 ### 2026-03-10
 - Berhasil mencari jurnal penelitian terdahulu (Draft awal).
 - Mereview kembali jurnal yang lebih relevan dengan variabel penelitian.
