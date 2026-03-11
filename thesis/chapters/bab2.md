@@ -22,7 +22,7 @@ a. Masalah : Tantangan mengetahui model machine learning mana yang menawarkan ak
 b. Metode : Melatih model dengan berbagai format input, yaitu CNN, DNN, LSTM dan Random Forest dari nol. Dataset yang digunakan adalah UrbanSound8K.
 c. Kontribusi : Memberikan literatur pada tahapan pelatihan model, serta menyarankan arah penelitian kedepan.
 d. Keunggulan : Hasilnya mengungkapkan bahwa model DNN mencapai akurasi tertinggi sebesar 94.5%, diikuti oleh CNN sebesar 90%, RF sebesar 87%, dan LSTM sebesar 79%.
-e. Keterbatasan : Keterbatasan Komputasi, kualitas data.
+e. Keterbatasan : Penelitian ini masih mengandalkan arsitektur dasar yang dilatih dari nol sehingga menguras komputasi. Selain itu, meskipun penulis menyoroti masalah kualitas data, mereka tidak memberikan intervensi algoritmik (seperti \textit{Cost-Sensitive Learning}) untuk menyelesaikan akar masalah ketidakseimbangan kelas pada dataset UrbanSound8K, melainkan hanya menyarankannya sebagai riset masa depan.
 
 4. Deep Learning for Urban Sound Classification: Using CNN and YAMNet Model Integration (2025) [Trivedi et al.]
 a. Masalah : Otak manusia dalam mengidentifikasi suara perkotaan dan bagaimana representasinya dalam penerapan Deep Learning.
@@ -37,11 +37,6 @@ b. Metode : Ekstraksi fitur mentah dan dalam bentuk gambar (spectrogram) dan mel
 c. Kontribusi : Memberikan evaluasi pada performa model Transformer dibandingkan dengan model CNN konvensional, serta mengusulkan penggunaan optimizer Adam dengan Weight Decay untuk optimalisasi klasifikasi suara lingkungan.
 d. Keunggulan : Berhasil menunjukkan performa akurasi klasifikasi yang baik masing-masing, yaitu 89,8% untuk dataset UrbanSound8K, 95,8% untuk dataset ESC-50, dan 99% untuk dataset ESC-10.
 e. Keterbatasan : Sumber daya komputasi pada Transformer yang cukup berat, penggunaan augmentasi spasial audio dalam menangani ketidakseimbangan kelas pada dataset yang berisiko merusak data.
-
-## Alternatif Monoton
-1. 
-
-2.
 
 # Environmental Sound Classification (ESC)
 Environmental Sound Classification (ESC) merupakan jenis klasifikasi suara yang lebih merujuk kepada suara-suara akustik pada lingkungan sekitar kita.

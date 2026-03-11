@@ -3,66 +3,96 @@
 
 \section{Tinjauan Pustaka} \label{II.Tinjauan}
 Penelitian ini dibangun dengan fondasi beberapa penelitian terdahulu yang berfokus pada klasifikasi suara lingkungan dan arsitektur \textit{Deep Learning}.
-Berikut merupakan lima penelitian dalam empat tahun terakhir yang memiliki relevansi dengan topik yang diangkat. \par
+Berikut merupakan lima penelitian dalam empat tahun terakhir yang memiliki relevansi dengan topik yang diangkat. 
+Ringkasan dari tinjauan pustaka ini juga disajikan pada Tabel \ref{table:2.literasi}. \par
 
-Penelitian kedua dilakukan oleh Castro-Ospina \textit{et al.} (2024) yang berlandaskan tantangan dalam mencari representasi data klasifikasi suara lingkungan optimal menggunakan pendekatan non-konvensional. 
-Uniknya, penelitian ini menggunakan model \textit{pre-trained} sebagai pengekstraksi fitur awal pada data, kemudian data tersebut distrukturisasi ulang menjadi simpul-simpul graf untuk dilatih ke dalam \textit{Graph Neural Networks} (GNN).
-Kontribusi dari penelitian ini mengusulkan metode terbaru yang memetakan fitur audio spasial-temporal ke dalam bentuk graf dalam tugas klasifikasi multi-kelas.
-Keunggulannya dibuktikan dengan arsitektur GAT (\textit{Graph Attention Networks}) yang mampu memberikan performa tertinggi dibandingkan dengan varian GNN lainnya dalam mengenali struktur graf audio.
-Meski begitu, proses transformasi audio menjadi struktur graf menambah lapisan kompleksitas komputasi yang tinggi, yang sayangnya hanya menghasilkan akurasi yang moderat (83\%) untuk suara lingkungan.
-Selain itu, model ini belum menguji secara komparatif format input mentah (\textit{raw waveform} vs spektral) serta tidak memiliki mitigasi terhadap ketidakseimbangan data kelas. \par
-
-Penelitian ketiga dilakukan oleh Qurthobi \textit{et al.} (2025) yang berfokus membuat sistem deteksi ancaman dini berbasis klasifikasi audio pada lingkungan hutan dengan ketersediaan dataset yang terbatas.
-Sama seperti sebelumnya, ekstraksi fitur dilakukan secara manual yang menghasilkan MFCC, tetapi arsitektur yang digunakan merupakan gabungan antara CNN dengan BiLSTM (CNN-BiLSTM) yang dilatih dari awal.
-Hasil penelitian ini membandingkan performa pada arsitektur hibrida tersebut dengan performa pre-trained model mandiri pada umumnya.
-Penelitian ini berhasil menciptakan arsitektur hibrida dari gabungan kedua arsitektur yang berbeda jenis.
-Tetapi, arsitektur hibrida tersebut memiliki nilai \textit{loss} yang cukup tinggi (0.7209) dan akurasi rendah (78.52\%) yang diduga akibat penggunaan fitur MFCC dan komputasi arsitektur tersebut yang terlalu berat.
-Metode hibrida arsitektur dan augmentasi yang digunakan tidak cukup efisien dibandingkan pendekatan hibrida pada level input. \par
-
-Penelitian keempat dilakukan oleh Avadhani \textit{et al.} (2024), dilatarbelakangi oleh tantangan dalam mengkategorikan suara di perkotaan dengan tepat.
+Penelitian yang dilakukan oleh Avadhani \textit{et al.} (2024) merupakan penelitian yang dilatarbelakangi oleh tantangan dalam klasifikasi suara di perkotaan dengan karakteristik yang beragam.
 Dalam pengerjaannya, penelitian ini melakukan ekstraksi fitur manual pada data suara menggunakan \textit{Mel-Frequency Cepstral Coefficients} (MFCC) dan menggunakan arsitektur \textit{Artificial Neural Network} (ANN), \textit{Convolutional Neural Network} (CNN), \textit{Recurrent Neural Network} (RNN), dan \textit{Long-Short Term Memory} (LSTM) yang dilatih dari awal dengan dataset UrbanSound8K.
-Penelitian ini berkontribusi memberikan kelebihan serta pertimbangan dari setiap model yang digunakan bertujuan sebagai wujud aplikatif di perkotaan.
-Hasil akurasi yang didapat pada arsitektur ANN sebesar 94.79\%, CNN sebesar 93,64\%, dan LSTM sebesar 86,09\% pada dataset UrbanSound8K. 
-Namun, celah daripada penelitian ini adalah tidak adanya mekanisme penanganan ketidakseimbangan antar kelas dataset yang dapat merujuk kepada hasil akurasi yang tidak adil, serta penggunaan ekstraksi fitur manual MFCC yang telah melewati proses transformasi yang berpotensi menghilangkan detail pada karakteristik suara.\par
+Penelitian ini berkontribusi memberikan evaluasi kelebihan serta pertimbangan dari setiap model untuk aplikasi nyata di perkotaan.
+Hasil akurasi yang didapat pada arsitektur ANN sebesar 94,79\%, CNN sebesar 93,64\%, dan LSTM sebesar 86,09\% pada dataset UrbanSound8K. 
+Namun, celah dari penelitian ini adalah tidak adanya mekanisme penanganan ketidakseimbangan antar kelas dataset yang dapat merujuk kepada hasil akurasi yang tidak adil, serta penggunaan ekstraksi fitur manual MFCC yang telah melewati proses transformasi yang berpotensi menghilangkan detail pada karakteristik suara \cite{avadhani2024multi}. \par
 
-Penelitian terakhir dilakukan oleh oleh Shen Yu (2025) yang mengangkat masalah terkait kurangnya keragaman skenario pada sumber daya akustik di perkotaan dan penggunaan metode augmentasi umum yang rentan merusak karakteristik suara. 
-Hal ini disertai dengan pemilihan jaringan saraf tiruan yang tidak interpretabilitas dan robust.
+Penelitian selanjutnya dilakukan oleh Mujawar (2025) dalam rangka menganalisis dan membandingkan model \textit{Machine Learning} yang menawarkan akurasi dan performa tertinggi dalam klasifikasi kebisingan di perkotaan. 
+Beberapa model yang digunakan dalam penelitian ini adalah CNN, \textit{Deep Neural Networks} (DNN), LSTM, dan Random Forest (RF) yang dilatih dari awal dengan dataset UrbanSound8K.
+Kontribusi dari penelitian ini memberikan literatur pada rincian tahapan dalam persiapan data dan pelatihan model, serta menyarankan arah penelitian klasifikasi suara perkotaan di masa depan.
+Keunggulannya dibuktikan dengan pencapaian akurasi yang memuaskan pada setiap modelnya, dimulai dengan model DNN yang mencapai akurasi sebesar 94,5\%, diikuti oleh CNN sebesar 90\%, RF sebesar 87\%, dan LSTM sebesar 79\%.
+Meski begitu, dataset yang digunakan memiliki ketidakseimbangan jumlah data pada setiap kelasnya dan belum ada mekanisme penanganan khusus terkait ketidakseimbangan data tersebut.
+Dibalik akurasi yang memuaskan, pelatihan model dari awal juga menyebabkan komputasi yang cukup berat sehingga membuka peluang penelitian dengan melakukan \textit{Transfer Learning}. 
+Peneliti juga menyarankan penelitian terhadap arsitektur model hibrida (\textit{Hybrid}) \cite{mujawar2025urban}. \par
+
+Menyadari perlunya penerapan \textit{Transfer Learning} dengan model \textit{pre-trained}, penelitian yang dilakukan oleh Nogueira \textit{et al.} (2022) menerapkan metode tersebut untuk mengidentifikasi suara-suara abnormal dan relevan di lingkungan perkotaan.
+Metodenya diawali dengan mengekstraksi fitur dalam bentuk \textit{Spectrogram}, kemudian dilakukan \textit{Transfer Learning} menggunakan arsitektur model pre-trained Transformer dengan bobot pre-trained dari AudioSet, serta penerapan augmentasi data.
+Dataset yang digunakan merupakan dataset publik seperti UrbanSound8K, ESC-50, dan ESC-10.
+Hasil penelitian ini memberikan perbandingan performa model Transformer dengan model CNN konvensional, serta mengusulkan penggunaan \textit{optimizer} Adam dengan \textit{Weight Decay} untuk optimalisasi klasifikasi suara lingkungan.
+Penelitian ini berhasil menunjukkan performa akurasi klasifikasi yang baik pada model Transformer, yaitu 89,8\% untuk dataset UrbanSound8K, 95,8\% untuk dataset ESC-50, dan 99\% untuk dataset ESC-10.
+Demi performa yang maksimal, sumber daya komputasi yang digunakan pada pelatihan Transformer cukup berat.
+Penggunaan teknik augmentasi data audio dalam menangani ketidakseimbangan kelas pada dataset juga berpotensi mengubah karakteristik suara \cite{nogueira2022transformers}. \par
+
+Metode pembelajaran yang sama diterapkan pada penelitian yang dilakukan oleh Trivedi \textit{et al.} (2025), yang melihat bagaimana otak manusia dapat mengidentifikasi suara di perkotaan sehingga ingin menerapkan \textit{Deep Learning} dengan representasi data yang tepat. 
+Ekstraksi fitur yang digunakan adalah \textit{Spectrogram}, Mel-Frequency Cepstral Coefficients (MFCC), \textit{linear predictive coding}, dan dekomposisi \textit{wavelet}. 
+Beberapa model CNN yang dilatih adalah CNN, CNN-LSTM, CNN-YAMnet dan CNN-Transfer Model dengan dataset UrbanSound8K.
+Penelitian ini membuktikan efektivitas integrasi model prapelatihan (\textit{pre-trained}) YAMNet dengan CNN untuk tugas kategorisasi suara perkotaan dibandingkan dengan arsitektur hibrida konvensional (CNN-LSTM).
+Model CNN-YAMNet berhasil mencapai tingkat akurasi yang sangat mengesankan, yaitu sebesar 98\%, membuktikan keunggulan \textit{Transfer Learning} dalam memproses dataset audio yang kompleks. 
+Penelitian ini belum mengeksplorasi potensi penggabungan representasi sinyal secara langsung (\textit{Raw Waveform}) dan \textit{Spectrogram}. 
+Selain itu, meskipun akurasi globalnya tinggi, model ini belum mengimplementasikan mekanisme intervensi matematis seperti \textit{Cost-Sensitive Learning} untuk memastikan performa yang adil pada kelas minoritas akibat distribusi data yang tidak seimbang di UrbanSound8K \cite{trivedi2025deep}. \par
+
+Sebagai penutup, penelitian terakhir yang dilakukan oleh Shen Yu (2025) mengangkat masalah terkait kurangnya keragaman skenario pada sumber daya akustik di perkotaan dan penggunaan metode augmentasi umum yang rentan merusak karakteristik suara. 
+Permasalahan tersebut juga didukung dengan pemilihan jaringan saraf tiruan yang tidak interpretabel dan tangguh.
 Oleh karena itu, metodologi penelitian ini melatih model ResNet-TF dari awal dengan dataset yang berisikan kumpulan akustik di perkotaan, yaitu UN15. 
 Dalam kontribusinya, penelitian ini telah menciptakan standar pra-pemrosesan data, pemodelan dalam domain waktu-frekuensi (grafis), serta augmentasi yang ditambah dengan screening sebagai mekanisme penanganan ketidakseimbangan data pada kelas minoritas.
 Hasil dari penelitian ini berhasil mengintegrasikan pemodelan domain waktu-frekuensi secara grafis yang mampu menangkap detail suara dengan lebih baik pada domain dataset suara perkotaan. 
-Akan tetapi, terdapat keterbatasan saat melakukan augmentasi dan screening data buatan untuk kelas minoritas yang memakan waktu pemrosesan yang cukup lama. \par
+Akan tetapi, penelitian ini masih bergantung pada pembuatan data buatan (sintetik) dengan melakukan augmentasi dan screening untuk kelas minoritas, yang rentan mengubah keaslian suara asli. 
+Pemrosesan tersebut juga memakan waktu yang cukup lama \cite{shen2025study}. \par
 
-Tinjauan pustaka dijelaskan dalam Tabel \ref{table:2.literasi} dan digunakan sebagai referensi berdasarkan penelitian yang berkaitan dengan penelitian ini.
+Berdasarkan kelima literatur di atas, celah penelitian (\textit{research gap}) terlihat dengan jelas. 
+Arsitektur model yang digunakan pada penelitian sebelumnya belum menerapkan pendekatan hibrida (\textit{Hybrid}) yang memanfaatkan fitur suara satu dan dua dimensi.  
+Mekanisme penanganan ketidakseimbangan distribusi data pada setiap kelas juga masih belum diterapkan, mengingat dataset seperti UrbanSound8K memiliki keterbatasan tersebut. 
+Tidak adanya mekanisme tersebut dapat memengaruhi performa model yang cenderung mendapatkan akurasi tinggi pada kelas yang dominan saja. 
+Adapun penelitian terakhir yang menggunakan augmentasi dalam penanganan ketidakseimbangan data juga berpotensi mengubah karakteristik suara, sehingga diperlukan sebuah algoritma yang menangani kendala tersebut tanpa mengubah karakteristiknya. 
+Oleh karena itu, penelitian ini menjawab tantangan beserta celah penelitian tersebut dengan \textit{Transfer Learning} menggunakan arsitektur PANNs, yang mengoptimalkan ekstraksi fitur dengan pendekatan hibrida (\textit{Raw Waveform} dan \textit{Log-mel Spectrogram}).
+Penelitian ini juga menerapkan \textit{Cost-Sensitive Learning} untuk menangani ketidakseimbangan kelas tanpa memanipulasi data asli. \par
 
-\begin{longtable}{| b{0.05\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.25\textwidth}} % Longtable berguna agar tabel dapat terpotong di halaman baru
-	\caption{Literasi Penelitian Terdahulu}
-	\label{table:2.literasi}\\
-	\hline
-	\textbf{No.} & \textbf{Judul [Tahun]} & \textbf{Masalah \& Metode} & \textbf{Kontribusi \& Keunggulan} & \textbf{Keterbatasan} \\
-	\hline
-	\endfirsthead % Header tabel untuk halaman pertama
-	\hline
-	\textbf{No.} & \textbf{Judul [Tahun]} & \textbf{Masalah \& Metode} & \textbf{Kontribusi \& Keunggulan} & \textbf{Keterbatasan} \\
-	\hline
-	\endhead % Header tabel untuk halaman selanjutnya (repeat header row)
-	1. & 
-	A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification [2025] & 
-	Sumber daya akustik perkotaan mengalami kekurangan skenario, keragaman akustik, metode augmentasi umum yang rentan merusak karakteristik suara, serta jaringan saraf tiruan yang tidak interpretabilitas dan robust. & 
-	Melatih model ResNet-TF dari nol dengan dataset UN15 & 
-	Sistem dapat mengklasifikasikan 6 jenis alat musik secara akurat dengan nilai akurasi tertinggi mencapai 94\%\\ 
-	\hline
-	2. & 
-	Deteksi Suara Chord Piano Menggunakan Metode Convolutional Neural Network (2022)	& Sulitnya mendeteksi akor piano secara otomatis dalam format suara	& CNN + Mel-spectrogram & Model CNN mampu mendeteksi akor mayor dan minor piano dengan akurasi >85\% \\ 
-	\hline
-	3. & 
-	Pengembangan Aplikasi Klasifikasi Suara Alat Musik Kalimba (2024) & Belum ada sistem klasifikasi otomatis suara alat musik kalimba & CNN + Mel-spectrogram & Aplikasi berhasil mengklasifikasi suara kalimba ke beberapa jenis nada dengan performa tinggi\\ 
-	\hline
-	4. & 
-	Recognising Bonang Barung Gamelan Instrument Playing Technique Using CNN (2025) & Kurangnya metode otomatis untuk mengenali teknik permainan bonang barung & CNN + Mel-spectrogram & Sistem mampu membedakan teknik pukulan bonang dengan akurasi yang cukup baik\\
-	\hline
-	5. & 
-	Klasifikasi Suara Instrumen Musik Tiup Menggunakan Metode CNN (2024) & Sulitnya mengidentifikasi jenis instrumen musik tiup dari file audio & CNN + Mel-spectrogram & Model berhasil mengklasifikasi berbagai instrumen tiup (saxophone, flute, trumpet) secara akurat\\
-	\hline
+\begin{longtable}{| >{\raggedright\arraybackslash}b{0.05\textwidth} | >{\raggedright\arraybackslash}p{0.2\textwidth} | >{\raggedright\arraybackslash}p{0.2\textwidth} | >{\raggedright\arraybackslash}p{0.2\textwidth} | >{\raggedright\arraybackslash}p{0.25\textwidth} |} % Ditambah garis vertikal penutup di akhir
+    \caption{Literatur Penelitian Terdahulu}
+    \label{table:2.literasi}\\
+    \hline
+    \textbf{No.} & \textbf{Judul [Tahun]} & \textbf{Masalah \& Metode} & \textbf{Kontribusi \& Keunggulan} & \textbf{Keterbatasan} \\
+    \hline
+    \endfirsthead % Header tabel untuk halaman pertama
+    \hline
+    \textbf{No.} & \textbf{Judul [Tahun]} & \textbf{Masalah \& Metode} & \textbf{Kontribusi \& Keunggulan} & \textbf{Keterbatasan} \\
+    \hline
+    \endhead % Header tabel untuk halaman selanjutnya
+    1. & 
+    Multi-Class Urban Sound Classification with Deep Learning Architectures [2024] & 
+    Tantangan keberagaman suara perkotaan. Ekstraksi fitur manual MFCC dengan melatih model dasar ANN, CNN, RNN, dan LSTM dari awal. & 
+    Mengevaluasi kelebihan model dasar untuk aplikasi perkotaan. Akurasi tertinggi pada ANN (94,79\%), CNN (93,64\%), dan LSTM (86,09\%). & 
+    Absennya penanganan ketidakseimbangan kelas (berisiko bias akurasi) dan fitur MFCC berpotensi menghilangkan detail karakteristik suara.\\ 
+    \hline
+    2. & 
+    Urban Noise Classification Using Machine Learning Techniques: Comparative Analysis and Future [2025] & 
+    Mencari model berakurasi tertinggi. Melatih CNN, DNN, LSTM, dan Random Forest dari awal dengan dataset UrbanSound8K. & 
+    Menjadi acuan persiapan pelatihan model. Model DNN unggul dengan akurasi 94,5\%, diikuti oleh CNN (90\%). & 
+    Pelatihan dari awal sangat membebani komputasi, serta belum ada intervensi algoritmik (\textit{Cost-Sensitive}) untuk menyelesaikan masalah data timpang.\\ 
+    \hline
+    3. & 
+    Transformers for Urban Sound Classification --- A Comprehensive Performance Evaluation [2022] & 
+    Identifikasi suara abnormal secara cepat. Menggunakan \textit{Transfer Learning} arsitektur Transformer (bobot AudioSet) pada ekstraksi \textit{Spectrogram} dan augmentasi data. & 
+    Memberikan komparasi performa Transformer. Mencapai akurasi 89,8\% untuk UrbanSound8K, 95,8\% untuk ESC-50, dan 99\% untuk ESC-10. & 
+    Sumber daya komputasi sangat berat, serta sangat bergantung pada augmentasi sintetik untuk menangani data timpang yang berisiko merusak suara asli.\\ 
+    \hline
+    4. & 
+    Deep Learning for Urban Sound Classification: Using CNN and YAMNet Model Integration [2025] & 
+    Representasi data untuk klasifikasi. Ekstraksi \textit{Spectrogram}, MFCC, dll., menggunakan integrasi \textit{pre-trained} YAMNet dengan CNN. & 
+    Membuktikan efektivitas YAMNet dibandingkan model hibrida konvensional (CNN-LSTM) dengan akurasi mengesankan sebesar 98\%. & 
+    Belum mengeksplorasi \textit{Hybrid Input} (\textit{Raw Waveform} dan spektral) serta absennya implementasi \textit{Cost-Sensitive Learning} untuk kelas minoritas.\\
+    \hline
+    5. & 
+    A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification [2025] & 
+    Kurangnya keragaman skenario dan augmentasi yang merusak suara. Melatih ResNet-TF pada domain waktu-frekuensi secara grafis. & 
+    Menciptakan standar pra-pemrosesan data dan augmentasi \textit{screening}. Mampu menangkap detail suara perkotaan secara lebih baik. & 
+    Sangat bergantung pada pembuatan data sintetik yang memakan waktu lama dan rentan mengubah keaslian suara asli (kelas minoritas).\\
+    \hline
 \end{longtable}
 
 \section{Dasar Teori} \label{II.Teori}

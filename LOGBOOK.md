@@ -5,6 +5,8 @@
 ### 2026-03-11
 - Review Terakhir Bab I Done
 - Fiksasi Daftar Jurnal Penelitian Terdahulu.
+- Tinjauan Pustaka Done
+
 
 ### 2026-03-10
 - Berhasil mencari jurnal penelitian terdahulu (Draft awal).
