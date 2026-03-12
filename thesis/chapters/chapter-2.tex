@@ -97,7 +97,7 @@ Penelitian ini juga menerapkan \textit{Cost-Sensitive Learning} untuk menangani 
 
 \section{Dasar Teori} \label{II.Teori}
 Dasar teori ini akan menjadi fondasi utama dalam menyusun metode dalam penelitian ini.
-Pemaparan diawali dengan membahas mengenai konsep fisika suara, pemrosesan audio digital, serta teknik ekstraksi fitur suara masukan (input) yang digunakan untuk menerjemahkan sinyal audio ke dalam format yang dapat diproses oleh mesin.
+Pemaparan diawali dengan membahas mengenai asal usul klasifikasi suara lingkungan (ESC), konsep dasar suara digital, pemrosesan audio digital, serta teknik ekstraksi fitur suara masukan (input) yang digunakan untuk menerjemahkan sinyal audio ke dalam format yang dapat diproses oleh mesin.
 Selanjutnya, pembahasan akan diarahkan pada inti dari penelitian ini, yaitu arsitektur \textit{Deep Learning} yang digunakan, mekanisme \textit{Transfer Learning}, hingga berbagai strategi optimasi dan regulasi pelatihan model.
 Sebagai penutup, metrik evaluasi akan diuraikan pada bab ini sebagai bahan analisis untuk menyimpulkan hasil dari penelitian ini.
 
@@ -158,6 +158,7 @@ Adapun tiga komponen utama yang membentuk karakteristik dari suara digital adala
 		\medskip
 		Perbedaan rentang antara batas atas dan batas bawah terjadi karena nilai 0 tergolong ke bagian dari nilai positif.
     Representasi perbedaan ini diatur dalam hukum \textit{Two's Complement} yang merupakan standar fundamental dalam arsitektur komputasi modern \cite{patterson2013computer}. \par
+    \newpage
 
     \item \textbf{Format Saluran Suara (\textit{Audio Channel})} \\
     Karakteristik spasial dari sebuah rekaman audio ditentukan oleh format saluran suaranya.
@@ -296,9 +297,14 @@ Audio dengan representasi tersebut umumnya memiliki format ekstensi berupa \text
 Format tersebut menandakan kualitas serta informasi pada audio tersebut masih murni dan lengkap. 
 Semua \textit{file} audio pada UrbanSound8K memiliki format \texttt{.wav}, sehingga keutuhan informasi akustik terjaga pada dataset ini.
 
-% [GAMBAR_RAW_WAVEFORM]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figure/Waveform.pdf} 
+    \caption{\textit{Raw Waveform}}
+    \label{fig:waveform}
+\end{figure}
 
-Gelombang sinyal suara yang sudah mengalami konversi digital, direpresentasikan ke dalam bentuk \textit{array} dengan dimensi berdasarkan indeks durasinya.
+Proses pembentukan \textit{Raw Waveform} seperti pada Gambar \ref{fig:waveform} berawal dari gelombang sinyal suara yang sudah mengalami konversi digital, yang kemudian direpresentasikan ke dalam bentuk \textit{array} dengan dimensi berdasarkan indeks durasinya.
 Total dimensi panjang \textit{array} ($N$) pada \textit{Raw Waveform} merupakan hasil kali antara durasi rekaman dalam detik ($T$) dengan \textit{sampling rate} ($f_s$).
 Nilai amplitudo dapat berupa nilai positif bahkan negatif yang umumnya berada pada rentang -1 sampai 1 \cite{proakis2006digital}.
 Semakin jauh nilai tersebut dari titik nol, maka intensitas suara yang dihasilkan semakin tinggi (kencang).
@@ -308,18 +314,39 @@ Semakin jauh nilai tersebut dari titik nol, maka intensitas suara yang dihasilka
 Proses pembentukan \textit{spectrogram} diawali dengan bentuk \textit{raw waveform} yang diproses dengan metode \textit{Short-Time Fourier Transform} (STFT).
 Metode tersebut dilatarbelakangi oleh masalah mengenai cara dekomposisi setiap frekuensi yang ada pada sebuah gelombang suara.
 Cara kerja metode STFT adalah dengan memotong audio menjadi bingkai-bingkai waktu yang sangat pendek (milidetik), lalu menerapkan transformasi Fourier pada setiap bingkai secara berurutan untuk mengekstraksi spektrum frekuensinya \cite{muller2015fundamentals}.
-Rangkaian spektrum dari setiap bingkai ini kemudian disusun secara temporal membentuk representasi visual dua dimensi. \par
+Rangkaian spektrum dari setiap bingkai ini kemudian disusun secara temporal membentuk representasi visual dua dimensi. Hasil dari proses STFT dapat dilihat pada Gambar \ref{fig:raw_spectro}. \par
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figure/Raw_Spectro.pdf} 
+    \caption{\textit{Raw Spectrogram} Hasil STFT}
+    \label{fig:raw_spectro}
+\end{figure}
 
 Setelah mendapatkan gabungan spektrum frekuensi tersebut, skala frekuensi yang digunakan masih berupa skala linear (teratur) dan tidak sesuai dengan pendengaran manusia.
 Pada kenyataannya, telinga manusia sangat sensitif membedakan nada rendah (misal membedakan 100 Hz dan 200 Hz), tetapi sangat susah membedakan nada tinggi (10.000 Hz dan 10.100 Hz terdengar sama saja).
 Maka dari itu, Skala Mel (\textit{Mel-Scale}) digunakan untuk mengubah resolusi pembacaan frekuensi suara agar menyerupai persepsi pendengaran manusia, sehingga membuat representasi fitur suara menjadi lebih realistis \cite{muller2015fundamentals}.
 \textit{Spectrogram} yang telah diproses dengan \textit{Mel-Scale} disebut \textit{Mel-Spectrogram}. \par
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figure/Mel_Spectro.pdf} 
+    \caption{\textit{Mel-Spectrogram}}
+    \label{fig:mel_spectro}
+\end{figure}
+
 Namun, proyeksi pada \textit{Mel-Spectrogram} masih memberikan rentang intensitas suara yang cukup jauh, sehingga grafik hanya menampilkan warna terang pada titik intensitas suara yang cukup tinggi.
 Ini mengakibatkan nilai warna pada detail minor suara yang ingin dipelajari tidak terproyeksi dengan maksimal, sehingga sulit untuk mengklasifikasi dengan detail yang seharusnya penting pada pendengaran manusia.
 Maka dari itu, operasi logaritmik menjadi solusi dengan mengompresi rentang dinamis (\textit{dynamic range compression}) nilai amplitudo pada \textit{Mel-Spectrogram}.
 Seluruh nilai amplitudo pada grafik tersebut dikonversi menggunakan operasi logaritmik ke dalam satuan Desibel (dB) \cite{muller2015fundamentals}.
 Proyeksi \textit{Mel-Spectrogram} yang telah diberikan transformasi logaritmik (dapat disebut \textit{Log-mel Spectrogram}) sangat menyerupai pendengaran manusia sehingga mesin dapat mempelajari suara tersebut layaknya manusia mempelajarinya. \par
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figure/Logmel_Spectro.pdf} 
+    \caption{\textit{Log-mel Spectrogram}}
+    \label{fig:logmel_spectro}
+\end{figure}
 
 \subsection{Augmentasi Data} \label{II.Teori6}
 Augmentasi data merupakan salah satu teknik yang efektif dalam memperbanyak variasi data dalam ranah pembelajaran mesin (\textit{Machine Learning}).
@@ -337,68 +364,70 @@ Penempatan titik awal pemotongan diperbolehkan pada rentang durasi $0 \le f_0(n)
 Pengambilan cuplikan secara acak ini memaksa model klasifikasi untuk tidak terpaku pada posisi absolut suatu fitur suara, melainkan belajar mengenali pola suara tersebut terlepas dari waktu kemunculannya \cite{salamon2014dataset}. \par
 
 \subsection{\textit{Convolutional Neural Network} (CNN)} \label{II.Teori7}
-\textit{Convolutional Neural Network} (CNN) adalah arsitektur model \textit{Deep Learning} berupa jaringan saraf yang bekerja dengan cara mengenali pola pada data dan meringkas informasi penting yang didapatkan melalui setiap lapisannya.
-CNN dikenal karena keunggulannya dalam mempelajari dan mengenali gambar (2D). 
-Arsitektur ini bekerja dengan memanfaatkan operasi matematika (konvolusi) dengan menggerakkan sebuah kernel konvolusi (filter) berukuran tertentu ke sebuah gambar, sehingga didapatkan representasi fitur baru yang dikenal sebagai peta fitur (\textit{feature map}). \par
+\textit{Convolutional Neural Network} (CNN) adalah arsitektur model \textit{Deep Learning} berupa jaringan saraf khusus yang bekerja dengan cara mengenali pola kisi (\textit{grid}) pada data dan meringkas informasi penting yang didapatkan melalui setiap lapisannya.
+Data yang dikenali oleh jaringan ini dapat berupa data dengan domain waktu (\textit{time-series}) yang bersifat satu dimensi (1D) atau dalam bentuk gambar yang berisikan \textit{grid} atau piksel (2D).
+Arsitektur ini bekerja dengan memanfaatkan operasi matematika (konvolusi) dengan menggerakkan sebuah kernel konvolusi (\textit{filter}) berukuran tertentu ke sebuah gambar, sehingga didapatkan representasi fitur baru yang dikenal sebagai peta fitur (\textit{feature map}) \cite{goodfellow2016deep}. \par
+
+% [GAMBAR STRUKTUR SEDERHANA]
 
 Arsitektur CNN dibagi menjadi dua bagian besar, yaitu lapisan ekstraksi fitur (\textit{Feature Extraction Layer}) dan lapisan klasifikasi (\textit{Classification Layer}).
 \textit{Feature Extraction Layer} merupakan lapisan yang menerima dan mengekstraksi fitur input yang telah diberikan ke dalam peta fitur (\textit{Feature Map}) multidimensi.
 Pada tahap akhir ekstraksi, peta fitur tersebut diratakan (\textit{flatten}) menjadi vektor satu dimensi (1D).  
-\textit{Classification Layer} akan memproses hasil vektor dari lapisan sebelumnya dan melakukan klasifikasi terhadap fitur-fitur tersebut ke dalam kelas yang telah dipetakan. \par
+\textit{Classification Layer} akan memproses hasil vektor dari lapisan sebelumnya dan melakukan klasifikasi terhadap fitur-fitur tersebut ke dalam kelas yang telah dipetakan \cite{goodfellow2016deep}. \par
 
 \subsubsection{\textit{Kernel} dan \textit{Stride}} \label{II.Teori7.1}
 \textit{Kernel} (filter) adalah komponen berupa matriks 2 dimensi yang berisi nilai-nilai bobot (\textit{weights}).
 Umumnya ukuran \textit{kernel} yang digunakan berupa persegi $3 \times 3$, $5 \times 5$, dan $7 \times 7$. 
 Saat lapisan ekstraksi bekerja, komponen ini terus bergeser menimpa gambar dan mengkalkulasikan nilai di dalam kernel dengan nilai \textit{pixel} gambar di bawahnya dengan operasi perkalian titik (\textit{dot product}). 
-Hasil operasi tersebut dijumlahkan menjadi satu nilai baru pada \textit{feature map}.
+Hasil operasi tersebut dijumlahkan menjadi satu nilai baru pada \textit{feature map} \cite{goodfellow2016deep}.
 Melalui banyaknya iterasi pelatihan, nilai bobot awal terus diperbarui dari evaluasi pelatihan.
 Kemampuan ini yang membuat model dapat mengekstraksi pola fitur penting pada gambar. \par
 
 \textit{Stride} merupakan mekanisme yang mendukung \textit{kernel} dalam pengaturan langkah pergeseran dengan nilai tertentu.
 Jika \textit{stride} bernilai 2, maka \textit{kernel} akan bergeser dengan jarak sebesar 2 \textit{pixel}.
-Semakin besar nilai \textit{stride} yang ditetapkan, maka ukuran dimensi spasial pada \textit{feature map} semakin menyusut.
+Semakin besar nilai \textit{stride} yang ditetapkan, maka ukuran dimensi spasial pada \textit{feature map} semakin menyusut \cite{dumoulin2016guide}.
 Mekanisme ini penting dalam menjaga beban komputasi dan memori yang tidak berlebihan pada lapisan berikutnya. \par
 
 \subsubsection{\textit{Batch Normalization} (BN)} \label{II.Teori7.2}
 Nilai-nilai yang telah dipetakan ke dalam \textit{feature map} pada setiap lapisannya memiliki rentang dinamika nilai yang tidak teratur pada kumpulan representasi fiturnya (\textit{batch}).
-Hal tersebut menyebabkan arah pembelajaran model menjadi tidak stabil dan memperlambat proses pencapaian nilai optimal, sehingga diperlukan proses normalisasi pada kumpulan nilai tersebut. \par
+Hal tersebut menyebabkan arah pembelajaran model menjadi tidak stabil dan memperlambat proses pencapaian nilai optimal, sehingga diperlukan proses normalisasi pada kumpulan nilai tersebut \cite{ioffe2015batch}. \par
 
 \textit{Batch Normalization} (BN) merupakan mekanisme normalisasi rentang nilai yang diperoleh dari setiap \textit{feature map} sebelum diproses oleh lapisan selanjutnya.
-Normalisasi tersebut dilakukan dengan mengurangkan setiap nilai fitur dengan rata-rata (\textit{mean}) dari \textit{batch} tersebut, kemudian membaginya dengan standar deviasi.
+Normalisasi tersebut dilakukan dengan mengurangkan setiap nilai fitur dengan rata-rata (\textit{mean}) dari \textit{batch} tersebut, kemudian membaginya dengan standar deviasi \cite{ioffe2015batch}.
 Tujuan dari operasi ini adalah untuk memetakan rata-rata nilai \textit{batch} menjadi nol dan variansi nilai menjadi satu. 
 Mekanisme ini menghasilkan nilai fitur yang lebih mudah untuk diproses menuju lapisan berikutnya. \par
 
 Setelah nilai dinormalisasikan, BN memiliki dua parameter yang dapat dipelajari, yaitu skala ($\gamma$) dan pergeseran ($\beta$).
-Kedua parameter tersebut berfungsi untuk memanipulasi ulang rentang nilai tersebut jika dibutuhkan oleh lapisan selanjutnya. \par
+Kedua parameter tersebut berfungsi untuk memanipulasi ulang rentang nilai tersebut jika dibutuhkan oleh lapisan selanjutnya \cite{ioffe2015batch}. \par
 
 \subsubsection{\textit{Rectified Linear Unit} (ReLU)} \label{II.Teori7.3}
 \textit{Rectified Linear Unit} (ReLU) merupakan fungsi aktivasi non-linear yang mengubah nilai negatif pada peta fitur menjadi nol.
 Fungsi tersebut berisikan persamaan matematis sederhana berupa $f(x)=\max(0, x)$, di mana $x$ adalah nilai awal yang dibandingkan dengan nilai nol.
-Jika nilai $x$ bernilai positif ($x > 0$), maka nilai tersebut dipertahankan ($f(x) = x$). Sebaliknya, jika $x$ bernilai negatif atau batas nol ($x \le 0$), maka nilainya diubah menjadi nol. \par 
+Jika nilai $x$ bernilai positif ($x > 0$), maka nilai tersebut dipertahankan ($f(x) = x$). Sebaliknya, jika $x$ bernilai negatif atau batas nol ($x \le 0$), maka nilainya diubah menjadi nol \cite{nair2010rectified}. \par 
 
 Operasi pada lapisan konvolusi dengan komponen \textit{Kernel} dan \textit{Stride} bersifat linear, yang hanya mengandung operasi perkalian dan penjumlahan.
-Jika proses ekstraksi tersebut tidak diberi fungsi aktivasi, maka model tersebut hanya bersifat satu model regresi linear besar yang tidak mampu memahami pola-pola kompleks dan non-linear pada data. 
+Jika proses ekstraksi tersebut tidak diberi fungsi aktivasi, maka model tersebut hanya bersifat satu model regresi linear besar yang tidak mampu memahami pola-pola kompleks dan non-linear pada data \cite{goodfellow2016deep}. 
 Dengan adanya fungsi ReLU, proses ekstraksi fitur menghasilkan nilai spesifik dan memudahkan komputasi pada lapisan model. \par
 
 \subsubsection{\textit{Max Pooling}} \label{II.Teori7.4}
 \textit{Max Pooling} merupakan salah satu teknik \textit{Pooling} yang mengurangi dimensi data dengan memangkas ukuran spasial peta fitur (\textit{feature map}). 
-Pengurangan dimensi tersebut membuat model benar-benar mempelajari inti fitur, sehingga menghindari model mengalami \textit{overfitting} serta mengurangi beban komputasi memori.
+Pengurangan dimensi tersebut membuat model benar-benar mempelajari inti fitur, sehingga menghindari model mengalami \textit{overfitting} serta mengurangi beban komputasi memori \cite{scherer2010evaluation}.
 Mekanisme \textit{Max Pooling} bekerja menggunakan sebuah jendela berukuran tertentu yang bergeser di atas \textit{feature map}.
 Pada setiap area yang disorot oleh jendela tersebut, mekanisme ini hanya mengambil satu nilai terbesar dan membuang nilai di sekitarnya. \par
 
-Pada data gambar atau \textit{spectrogram} suara, nilai piksel yang besar merepresentasikan fitur yang paling tajam, di mana dalam \textit{spectrogram} berarti sinyal suara yang paling dominan.
+Pada data gambar atau \textit{spectrogram} suara, nilai piksel yang besar merepresentasikan fitur yang paling tajam, di mana dalam \textit{spectrogram} berarti sinyal suara yang paling dominan \cite{scherer2010evaluation}.
 Penggunaan \textit{Max Pooling} akan mempertahankan fitur penting tersebut, sehingga karakteristik sinyal suara yang kuat tidak akan hilang walaupun dimensi data semakin mengecil. 
-Selain itu, mekanisme pengambilan nilai maksimal ini membuat model memiliki sifat kebal terhadap pergeseran posisi fitur (\textit{Translation Invariance}) pada data \textit{spectrogram}. \par
+Selain itu, mekanisme pengambilan nilai maksimal ini membuat model memiliki sifat kebal terhadap pergeseran posisi fitur (\textit{Translation Invariance}) pada data \textit{spectrogram} \cite{goodfellow2016deep}. \par
 
 \subsubsection{\textit{Fully Connected Layer}} \label{II.Teori7.5}
 \textit{Fully Connected} (FC) \textit{Layer} merupakan lapisan pada bagian \textit{Classification Layer} yang berperan dalam pengambilan keputusan klasifikasi akhir.
 Syarat utama input pada lapisan ini adalah data harus berbentuk vektor satu dimensi (1D).
 Oleh karena itu, \textit{feature map} pada lapisan konvolusi sebelumnya yang berbentuk multidimensi diratakan menjadi satu deret baris data melalui proses \textit{flattening}. 
-Proses \textit{flattening} ini dilakukan karena lapisan FC tidak melihat posisi titik fitur secara spasial, melainkan hanya perlu melihat keberadaan kumpulan titik fitur yang menjadi ciri karakteristiknya. \par
+Proses \textit{flattening} ini dilakukan karena lapisan FC tidak melihat posisi titik fitur secara spasial, melainkan hanya perlu melihat keberadaan kumpulan titik fitur yang menjadi ciri karakteristiknya \cite{goodfellow2016deep}. \par
 
 Berbeda dengan lapisan konvolusi yang hanya melihat sebagian kecil area, lapisan FC menghubungkan setiap titik neuron dari lapisan sebelumnya dengan seluruh neuron pada lapisan berikutnya secara penuh (\textit{fully connected}).
-Cara kerja dari lapisan ini adalah menggabungkan seluruh inti fitur pada lapisan-lapisan sebelumnya untuk mempelajari kombinasi non-linear untuk keputusan akhir.
-Hasil dari lapisan ini merupakan nilai setiap kelas karakteristik yang ditentukan dengan representasi angka mentah (\textit{logits}). \par
+Cara kerja dari lapisan ini adalah menggabungkan seluruh inti fitur pada lapisan-lapisan sebelumnya untuk mempelajari kombinasi non-linear untuk keputusan akhir \cite{lecun2015deep}.
+Hasil dari lapisan ini merupakan nilai setiap kelas karakteristik yang ditentukan dengan representasi angka mentah (\textit{logits}) \cite{goodfellow2016deep}. \par
 
 \subsubsection{\textit{Sigmoid}} \label{II.Teori7.6}
 \textit{Logits} yang dihasilkan oleh lapisan FC masih memiliki nilai ekstrem, di mana angka ini tidak memiliki batasan rentang nilai.

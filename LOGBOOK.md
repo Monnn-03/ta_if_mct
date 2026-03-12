@@ -2,6 +2,9 @@
 
 ## March
 
+### 2026-03-12
+- Fiksasi Dasar Teori
+
 ### 2026-03-11
 - Review Terakhir Bab I Done
 - Fiksasi Daftar Jurnal Penelitian Terdahulu.
