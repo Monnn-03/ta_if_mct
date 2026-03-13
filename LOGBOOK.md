@@ -2,6 +2,10 @@
 
 ## March
 
+### 2026-03-13
+- Dasar Teori Sementara Done
+
+
 ### 2026-03-12
 - Fiksasi Dasar Teori
 
