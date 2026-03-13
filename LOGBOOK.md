@@ -4,7 +4,7 @@
 
 ### 2026-03-13
 - Dasar Teori Sementara Done
-
+- Minta review Pak MCT dulu
 
 ### 2026-03-12
 - Fiksasi Dasar Teori
