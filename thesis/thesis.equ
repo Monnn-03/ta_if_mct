@@ -1,11 +1,11 @@
-\contentsline {myequations}{\numberline {Rumus~2.1} Konversi \textit {Stereo} ke \textit {Mono} }{20}{equation.2.1}%
-\contentsline {myequations}{\numberline {Rumus~2.2} Operasi \textit {Zero-Padding} }{22}{equation.2.2}%
-\contentsline {myequations}{\numberline {Rumus~2.3} Rumus Fungsi Aktivasi \textit {Sigmoid} }{31}{equation.2.3}%
-\contentsline {myequations}{\numberline {Rumus~2.4} Rumus Fungsi Aktivasi \textit {Softmax} }{32}{equation.2.4}%
-\contentsline {myequations}{\numberline {Rumus~2.5} \textit {Cross-Entropy Loss} }{39}{equation.2.5}%
-\contentsline {myequations}{\numberline {Rumus~2.6} \textit {Penentuan Bobot \textit {Cost-Sensitive Learning}} }{40}{equation.2.6}%
-\contentsline {myequations}{\numberline {Rumus~2.7} \textit {Perhitungan Metrik \textit {Accuracy}} }{45}{equation.2.7}%
-\contentsline {myequations}{\numberline {Rumus~2.8} \textit {Perhitungan Metrik \textit {Precision}} }{45}{equation.2.8}%
-\contentsline {myequations}{\numberline {Rumus~2.9} \textit {Perhitungan Metrik \textit {Recall}} }{45}{equation.2.9}%
-\contentsline {myequations}{\numberline {Rumus~2.10} \textit {Perhitungan Metrik \textit {F1-Score}} }{45}{equation.2.10}%
-\contentsline {myequations}{\numberline {Rumus~3.1} \textit {Cost Sensitive-Learning} }{60}{equation.3.1}%
+\contentsline {myequations}{\numberline {Rumus~2.1} Konversi \textit {Stereo} ke \textit {Mono} }{21}{equation.2.1}%
+\contentsline {myequations}{\numberline {Rumus~2.2} Operasi \textit {Zero-Padding} }{23}{equation.2.2}%
+\contentsline {myequations}{\numberline {Rumus~2.3} Rumus Fungsi Aktivasi \textit {Sigmoid} }{32}{equation.2.3}%
+\contentsline {myequations}{\numberline {Rumus~2.4} Rumus Fungsi Aktivasi \textit {Softmax} }{33}{equation.2.4}%
+\contentsline {myequations}{\numberline {Rumus~2.5} \textit {Cross-Entropy Loss} }{40}{equation.2.5}%
+\contentsline {myequations}{\numberline {Rumus~2.6} \textit {Penentuan Bobot \textit {Cost-Sensitive Learning}} }{41}{equation.2.6}%
+\contentsline {myequations}{\numberline {Rumus~2.7} \textit {Perhitungan Metrik \textit {Accuracy}} }{46}{equation.2.7}%
+\contentsline {myequations}{\numberline {Rumus~2.8} \textit {Perhitungan Metrik \textit {Precision}} }{46}{equation.2.8}%
+\contentsline {myequations}{\numberline {Rumus~2.9} \textit {Perhitungan Metrik \textit {Recall}} }{46}{equation.2.9}%
+\contentsline {myequations}{\numberline {Rumus~2.10} \textit {Perhitungan Metrik \textit {F1-Score}} }{46}{equation.2.10}%
+\contentsline {myequations}{\numberline {Rumus~3.1} \textit {Cost Sensitive-Learning} }{63}{equation.3.1}%

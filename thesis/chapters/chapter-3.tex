@@ -154,7 +154,7 @@ Oleh karena itu, dilakukan dua penyesuaian utama:
     \item \textbf{Penyesuaian Fungsi Aktivasi pada Lapisan Akhir} \newline
     Pada model asli PANNs, lapisan akhir menggunakan fungsi aktivasi \textit{sigmoid} yang mengeluarkan output berupa probabilitas tiap kelasnya sendiri (cocok untuk \textit{multi-label}).
     Namun, klasifikasi model yang ditentukan pada penelitian ini adalah klasifikasi \textit{Single-Label}, sehingga terjadi modifikasi pada lapisan akhir menjadi lapisan \textit{Linear} yang mengeluarkan angka mentah (\textit{logits}).
-    Nilai \textit{logits} ini nantinya akan dikonversi menjadi distribusi probabilitas tunggal oleh fungsi kerugian (\textit{Loss Function}) selama fase pelatihan.
+    Nilai \textit{logits} ini nantinya akan dikonversi menjadi distribusi probabilitas tunggal oleh fungsi \texttt{nn.CrossEntropyLoss()} yang telah mengandung fungsi \textit{softmax} selama fase pelatihan.
     Dengan perubahan ini, model akan memilih satu kelas pemenang dengan probabilitas tertinggi daripada kelas lainnya. \par
 \end{enumerate}
 
@@ -371,13 +371,20 @@ Target Metrik & Validation F1-Score \textless= Best Validation F1-Score \\ \hlin
 \end{table}
 
 \section{Analisis dan Evaluasi} \label{sec:evaluasi}
-Setelah proses pelatihan selesai, kinerja model diukur menggunakan empat indikator utama:
+Setelah proses pelatihan selesai, kinerja model diukur menggunakan tiga indikator evaluasi utama, yaitu:
 
 \begin{enumerate}
-    \item \textbf{\textit{F1-Score}} \\
-    Digunakan sebagai metrik utama untuk mengukur akurasi dan sensitivitas model secara harmonis, memastikan semua kelas bahaya terdeteksi dengan baik.
-    \item \textbf{Nilai \textit{Loss}} \\
-    Digunakan untuk memantau proses konvergensi model selama pelatihan dan mendeteksi indikasi \textit{overfitting} atau \textit{underfitting}.
+    \item \textbf{\textit{Macro F1-Score}} \\
+    Metrik ini menjadi tolok ukur utama untuk mengevaluasi akurasi dan sensitivitas model secara harmonis.
+    Penggunaan \textit{Macro F1-Score} memastikan setiap kelas diprioritaskan secara setara tanpa dipengaruhi oleh ketidakseimbangan jumlah data (\textit{imbalanced data}).
+    Dikarenakan mekanisme pengujian menggunakan \textit{5-fold cross validation}, maka hasil akhir \textit{Macro F1-Score} pada setiap model dengan representasi input tertentu akan dilaporkan dalam format rata-rata beserta rentang simpangannya (Rata-rata $\pm$ Standar Deviasi).
+    \item \textbf{Kurva \textit{Loss} (\textit{Loss Curve})} \\
+    Metrik ini digunakan untuk memantau dinamika proses pembelajaran model guna mendeteksi indikasi \textit{overfitting} atau \textit{underfitting} selama proses pelatihan berlangsung.
     \item \textbf{\textit{Confusion Matrix}} \\ 
-    Digunakan untuk melihat detail distribusi prediksi benar dan salah pada setiap kelas spesifik.
+    Matriks ini digunakan untuk memetakan detail distribusi prediksi kelas yang benar dan keliru secara spesifik pada masing-masing kelas target.
 \end{enumerate}
+\medskip
+
+Selain menggunakan ketiga indikator tersebut, penelitian ini juga menerapkan uji statistik formal untuk membandingkan performa akhir dari setiap model dengan ketiga representasi input (\textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid}).
+Uji statistik yang digunakan adalah \textit{Wilcoxon Signed-Rank Test}, yaitu sebuah uji non-parametrik yang beroperasi pada hasil evaluasi kelima (\textit{fold}) dari masing-masing model.
+Penerapan uji ini bertujuan untuk membuktikan secara matematis apakah selisih keunggulan performa antar model benar-benar signifikan secara ilmiah (dengan ambang batas probabilitas $p < 0.05$) atau hanya terjadi akibat variansi data acak. \par

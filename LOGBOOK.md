@@ -2,6 +2,11 @@
 
 ## March
 
+### 2026-03-14
+- Memahami Revisi Dari Pak MCT
+- Membuat pengakuan keterbatasan pendekatan pada Bab I : latar belakang (Single-label) dan Memperjelas Softmax pada Bab III : 3.3.1.
+- Memperjelas Macro F1-Score, Distribusi hasil mean dan STD, serta penambahan metode WSRT untuk uji signifikansi (Bab II dan Bab III).
+
 ### 2026-03-13
 - Dasar Teori Sementara Done
 - Minta review Pak MCT dulu

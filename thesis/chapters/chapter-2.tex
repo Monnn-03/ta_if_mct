@@ -795,6 +795,14 @@ Perhitungan rata-rata harmonis dalam \textit{F1-score} dirumuskan sebagai beriku
   \end{equationcaptioned}
   \medskip
 
+Dalam kasus klasifikasi multikelas (lebih dari dua kelas), perhitungan \textit{F1-Score} dapat diperluas menjadi tiga perhitungan utama untuk mengakomodasi distribusi data pada setiap kelasnya \cite{powers2011evaluation}. 
+Ketiga varian tersebut adalah \textit{Micro F1-Score}, \textit{Weighted F1-Score}, dan \textit{Macro F1-Score}. \par
+
+\textit{Micro F1-Score} menghitung metrik dengan menjumlahkan seluruh TP, FP, dan FN dari semua kelas, sehingga perhitungan ini rentan didominasi oleh kelas mayoritas. 
+Berbeda dengan \textit{Weighted F1-Score} yang menghitung \textit{F1-Score} untuk setiap kelas secara terpisah, lalu dikalikan dengan bobot persentase jumlah data pada masing-masing kelas tersebut dan dicari nilai rata-ratanya.
+Terakhir, \textit{Macro F1-Score} menghitung \textit{F1-Score} untuk setiap kelas secara terpisah, lalu mencari nilai rata-ratanya secara adil tanpa mempedulikan jumlah data pada kelas tersebut (\textit{unweighted mean}). 
+Varian ini memaksa model untuk mengevaluasi kelas minoritas sama pentingnya dengan kelas mayoritas, sehingga sangat ideal untuk mengukur performa model pada dataset yang tidak seimbang (\textit{imbalanced data}) \cite{powers2011evaluation}. \par
+
 \subsubsection{Kurva Evaluasi (\textit{Loss Curve})} \label{II.Teori11.3}
 Kurva evaluasi \textit{loss} merupakan metrik pengukur tingkat kesalahan model dalam memprediksi data latih (\textit{train loss}) maupun data uji (\textit{validation loss}).
 Pembacaan kedua kurva (train dan validation) loss tersebut penting dalam menganalisis apakah model tersebut mempelajari atau sekedar menghafal data \cite{goodfellow2016deep}.
@@ -807,3 +815,15 @@ Sedangkan \textit{underfitting} digambarkan dengan kurva \textit{loss} keduanya 
     \caption{Ilustrasi Dinamika Kurva \textit{Loss} pada Pelatihan Model}
     \label{fig:loss_curve}
 \end{figure}
+
+\subsubsection{Uji Signifikansi Statistik (\textit{Wilcoxon Signed-Rank Test})} \label{II.Teori11.4}
+Dalam evaluasi model \textit{Machine Learning}, perbedaan nilai rata-rata pada hasil akhir performa model tidak dapat secara langsung menyimpulkan bahwa satu model lebih unggul daripada model lainnya.
+Perbedaan nilai tersebut dapat terjadi secara kebetulan disebabkan oleh variansi pembagian data uji. 
+Oleh karena itu, diperlukan sebuah metode uji signifikansi statistik yang bertujuan untuk memvalidasi perbedaan signifikansi tersebut secara ilmiah \cite{demsar2006statistical}. \par
+
+\textit{Wilcoxon Signed-Rank Test} merupakan uji hipotesis statistik non-parametrik yang digunakan untuk membandingkan dua nilai sampel yang berpasangan (\textit{paired samples}) dalam menilai perbedaan rata-rata peringkat (\textit{mean ranks}) yang signifikan di antara keduanya.
+Dalam konteks perbandingan model klasifikasi dengan \textit{k-fold cross validation}, metode uji ini beroperasi pada selisih nilai performa (seperti \textit{F1-Score}) dari kedua model pada setiap lipatan (\textit{fold}) yang bersesuaian \cite{demsar2006statistical}. \par
+
+Penggunaan uji non-parametrik ini sangat direkomendasikan karena hasil performa algoritma \textit{machine learning} pada beberapa \textit{fold} data umumnya tidak terdistribusi secara normal, sehingga penggunaan uji parametrik standar seperti \textit{t-test} menjadi tidak valid \cite{demsar2006statistical}.
+Jika hasil pengujian menghasilkan nilai probabilitas (\textit{p-value}) di bawah ambang batas signifikansi yang ditetapkan (umumnya $\alpha = 0.05$), maka hipotesis nol (\textit{null hypothesis}) ditolak. 
+Penolakan tersebut menjadi bukti matematis bahwa perbedaan performa antara kedua model yang diuji diakui signifikan secara statistik, bukan karena faktor kebetulan \cite{demsar2006statistical}. \par
