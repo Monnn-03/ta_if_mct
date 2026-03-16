@@ -5,6 +5,8 @@
 % NB: Daftar Pustaka hanya akan memunculkan entry yang disitasi 
 % dalam badan dokumen. Jika tidak, maka tidak akan muncul
 %--------------------------------------------------------------------%
+
+// LATAR BELAKANG
 @book{who2023road,
   title={Global Status Report on Road Safety 2023},
   author={{World Health Organization}},
@@ -12,7 +14,7 @@
   publisher={World Health Organization},
   address={Geneva},
   isbn={9789240086517}
-}
+} // Data Keselamatan di Perkotaan
 
 @article{thorslund2013effects,
   title={Effects of hearing loss on traffic safety and mobility},
@@ -23,7 +25,8 @@
   year={2013},
   publisher={Springer},
   doi={10.1007/s12544-013-0096-9}
-}
+} // Dampak tuli pada lalu lintas
+
 @article{moore1996perceptual,
 	title={Perceptual Consequences of Cochlear Hearing Loss and their Implications for the Design of Hearing Aids},
 	author={Moore, Brian C. J.},
@@ -33,7 +36,7 @@
     pages={133-161},
 	year={1996},
 	publisher={LWW}
-}
+} // Penurunan Selektivitas Frekuensi pada Tuli Sensorineural
 
 @article{buchler2005sound,
   title={Sound classification in hearing aids inspired by auditory scene analysis},
@@ -44,7 +47,7 @@
   pages={2057--2057},
   year={2005},
   publisher={Acoustical Society of America}
-}
+} // ESC untuk tunarungu
 
 @inproceedings{salamon2014dataset,
   title={A Dataset and Taxonomy for Urban Sound Research},
@@ -54,16 +57,7 @@
   year={2014},
   organization={ACM},
   doi={10.1145/2647868.2655045}
-}
-
-@inproceedings{gemmeke2017audioset,
-  title={Audio set: An ontology and human-labeled dataset for audio events},
-  author={Gemmeke, Jort F and Ellis, Daniel PW and Freedman, Dylan and Jansen, Aren and Lawrence, Wade and Moore, R Channing and Plakal, Manoj and Ritter, Marvin},
-  booktitle={2017 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
-  pages={776--780},
-  year={2017},
-  organization={IEEE}
-}
+} // Dataset, Penggunaan SVM dan RF.
 
 @inproceedings{piczak2015environmental,
   title={Environmental sound classification with convolutional neural networks},
@@ -73,7 +67,7 @@
   year={2015},
   organization={IEEE},
   doi={10.1109/MLSP.2015.7324337}
-}
+} // Penggunaan CNN untuk ESC
 
 @article{kong2020panns,
     title={PANNs: Large-Scale Pretrained Audio Neural Networks for Audio Pattern Recognition},
@@ -83,16 +77,17 @@
     pages={2880-2894},
     year={2020},
     publisher={IEEE}
-}
+} // Original PANNs
 
-@article{Ivanny2014Banding,
-    author = {Ivanny Kasenda and Sylviah Marunduh and Herlina Wungouw},
-    title = {PERBANDINGAN DENYUT NADI ANTARA PENDUDUK YANG TINGGAL DI DATARAN TINGGI DAN DATARAN RENDAH},
-    journal = {Jurnal e-Biomedik (eBM)},
-    volume = {2},
-    number = {2},
-    year = {2014}
-}
+@inproceedings{gemmeke2017audioset,
+  title={Audio set: An ontology and human-labeled dataset for audio events},
+  author={Gemmeke, Jort F and Ellis, Daniel PW and Freedman, Dylan and Jansen, Aren and Lawrence, Wade and Moore, R Channing and Plakal, Manoj and Ritter, Marvin},
+  booktitle={2017 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  pages={776--780},
+  year={2017},
+  organization={IEEE}
+} // 
+
 
 // BAB II : TINJAUAN PUSTAKA
 @article{avadhani2024multi,
@@ -100,35 +95,37 @@
   author={Avadhani, A. and others},
   journal={Journal of Environmental Acoustics}, 
   year={2024}
-}
+} // Jurnal Pertama
 
 @article{mujawar2025urban,
   title={Urban Noise Classification Using Machine Learning Techniques: Comparative Analysis and Future},
   author={Mujawar, Tasmiya and others},
   journal={International Journal of Machine Learning and Computing},
   year={2025}
-}
+} // Jurnal Kedua
 
 @article{nogueira2022transformers,
   title={Transformers for Urban Sound Classification—A Comprehensive Performance Evaluation},
   author={Nogueira, W. and others},
   journal={Applied Sciences},
   year={2022}
-}
+} // Jurnal Ketiga
 
 @article{trivedi2025deep,
   title={Deep Learning for Urban Sound Classification: Using CNN and YAMNet Model Integration},
   author={Trivedi, R. and others},
   journal={IEEE Access},
   year={2025}
-}
+} // Jurnal Keempat
 
-@article{shen2025study,
+@phdthesis{shen2025study,
   title={A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification},
-  author={Yu, Shen},
-  journal={IEEE Transactions on Audio, Speech, and Language Processing},
-  year={2025}
-}
+  author={Shen, Yu},
+  school={University of Ulsan},
+  address={Ulsan, South Korea},
+  year={2025},
+  month={December}
+} // Jurnal (Tesis) Kelima
 
 \\ DASAR TEORI
 
@@ -334,6 +331,23 @@
   pages={1--30},
   year={2006}
 } // Wilcoxon Signed-Rank Test
+
+@inproceedings{jain2020soundwatch,
+  title={SoundWatch: Exploring smartwatch-based deep learning approaches to support sound awareness for deaf and hard of hearing users},
+  author={Jain, Dhruv and others},
+  booktitle={The 22nd International ACM SIGACCESS Conference on Computers and Accessibility},
+  pages={1--13},
+  year={2020}
+} // Berbahayanya suara siren, car-horn, dog bark.
+
+@inproceedings{junghee2014ads,
+  title={A.Ds: Aid Device for Deaf Drivers},
+  author={Junghee, L.},
+  booktitle={12th Latin American and Caribbean Conference for Engineering and Technology (LACCEI)},
+  address={Guayaquil, Ecuador},
+  month={July},
+  year={2014}
+} // Berbahayanya suara klakson tunarungu
 
 @article{Suryanto2019MAE, 
     title={PENERAPAN METODE MEAN ABSOLUTE ERROR (MEA) DALAM ALGORITMA REGRESI LINEAR UNTUK PREDIKSI PRODUKSI PADI}, 

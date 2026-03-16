@@ -17,27 +17,27 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
 
 \begin{enumerate}
     \item \textbf{Identifikasi Domain Penelitian} \\
-    Tahap awal dilakukan dengan mencari referensi domain penelitian untuk klasifikasi suara. Berdasarkan pertimbangan ketersediaan dataset dan urgensi model klasifikasi, domain yang dipilih adalah domain keselamatan publik yang difokuskan untuk alat bantu penyandang tunarungu.
+    Tahap awal dilakukan dengan mencari referensi domain penelitian untuk klasifikasi suara. Berdasarkan pertimbangan ketersediaan kumpulan data (\textit{dataset}) dan urgensi model klasifikasi, domain yang dipilih adalah domain keselamatan publik yang difokuskan untuk alat bantu penyandang tunarungu.
 
     \item \textbf{Studi Literatur} \\
     Dilakukan kajian literatur mendalam untuk menemukan urgensi penelitian, khususnya mengenai kebutuhan teknologi asistif yang mampu mengurangi risiko kecelakaan bagi penyandang tunarungu melalui pengenalan sinyal bahaya. Ini menjadi landasan teoritis bagaimana teknologi klasifikasi suara dapat menjadi solusi yang efektif dalam mengatasi permasalahan tersebut.
 
     \item \textbf{Identifikasi dan Akuisisi Data} \\
-    Akuisisi data dilakukan dengan mengambil dataset sekunder yang sudah terstandarisasi, yaitu UrbanSound8K \cite{salamon2014dataset}. Akuisisi data primer tidak dilakukan demi menghindari \textit{device bias} akibat perekaman dataset dengan perangkat non-standar (seperti smartphone) serta kendala regulasi keamanan pada perekaman kelas \textit{gun\_shot}. Dari dataset tersebut, dilakukan seleksi kelas sinyal bahaya dengan strategi antisipasi terhadap kendala ketidakseimbangan data (\textit{imbalanced data}) yang telah disiapkan sejak awal.    
+    Akuisisi data dilakukan dengan mengambil \textit{dataset} sekunder yang sudah terstandarisasi, yaitu UrbanSound8K \cite{salamon2014dataset}. Akuisisi data primer tidak dilakukan demi menghindari \textit{device bias} akibat perekaman \textit{dataset} dengan perangkat non-standar (seperti smartphone) serta kendala regulasi keamanan pada perekaman kelas \textit{gun\_shot}. Dari \textit{dataset} tersebut, dilakukan seleksi kelas sinyal bahaya dengan strategi antisipasi terhadap kendala ketidakseimbangan data (\textit{imbalanced data}) yang telah disiapkan sejak awal.    
 
     \item \textbf{Pemilihan Model \textit{Pre-trained}} \\
-    Mengingat keterbatasan data berisiko menyebabkan kegagalan pelatihan \textit{from scratch}, digunakan pendekatan \textit{Transfer Learning} dengan memanfaatkan model \textit{Pre-trained}.
-    Tiga varian arsitektur PANNs (\textit{Pre-trained Audio Neural Networks}) \cite{kong2020panns} dipilih untuk mewakili domain input yang berbeda, yaitu \textit{Res1dNet31} (domain waktu), \textit{ResNet38} (domain frekuensi), dan \textit{Wavegram-Logmel-CNN} (\textit{hybrid}). 
-    Arsitektur PANNs dipilih karena telah dilatih pada dataset masif (AudioSet) dan memiliki performa yang teruji. \par
+    Mengingat keterbatasan data berisiko menyebabkan kegagalan pelatihan \textit{from scratch}, digunakan pendekatan \textit{transfer learning} dengan memanfaatkan model \textit{pre-trained}.
+    Tiga varian arsitektur PANNs (\textit{Pre-trained Audio Neural Networks}) \cite{kong2020panns} dipilih untuk mewakili domain \textit{input} yang berbeda, yaitu \textit{Res1dNet31} (domain waktu), \textit{ResNet38} (domain frekuensi), dan \textit{Wavegram-Logmel-CNN} (\textit{hybrid}). 
+    Arsitektur PANNs dipilih karena telah dilatih pada \textit{dataset} masif (AudioSet) dan memiliki performa yang teruji. \par
 
     \item \textbf{Studi Dokumentasi Teknis} \\
     Tahap ini mempelajari karakteristik data dan model yang digunakan.
-    Fokus utama dalam tahap ini adalah memahami mekanisme pembagian data (fold) pada dataset guna mencegah kebocoran data (\textit{data leakage}) dan mempelajari variasi representasi input pada arsitektur PANNs untuk menentukan skenario komparasi yang tepat.
+    Fokus utama dalam tahap ini adalah memahami mekanisme pembagian data (\textit{fold}) pada \textit{dataset} guna mencegah kebocoran data (\textit{data leakage}) dan mempelajari variasi representasi input pada arsitektur PANNs untuk menentukan skenario komparasi yang tepat.
 
     \newpage
     
     \item \textbf{\textit{Pre-processing} Data} \\
-    Serangkaian proses dilakukan untuk mengubah data mentah menjadi format yang siap latih, meliputi penanganan struktur \textit{fold}, seleksi kelas, dan penyesuaian format audio, serta penerapan teknik augmentasi temporal berupa \textit{random cropping} untuk menstandarisasi durasi input.
+    Serangkaian proses dilakukan untuk mengubah data mentah menjadi format yang siap latih, meliputi penanganan struktur \textit{fold}, seleksi kelas, dan penyesuaian format audio, serta penerapan teknik augmentasi temporal berupa \textit{random cropping} untuk menstandarisasi durasi \textit{input}.
 
     \item \textbf{Penyesuaian Konfigurasi Model} \\
     Dilakukan modifikasi pada arsitektur model agar sesuai dengan tujuan klasifikasi 4 kelas bahaya, serta penerapan strategi untuk menangani ketidakseimbangan data.
@@ -47,7 +47,7 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
     Proses ini bersifat iteratif. Apabila performa model belum mencapai target yang diharapkan, maka akan dilakukan penyesuaian ulang pada tahap \textit{pre-processing} data untuk melakukan penyesuaian data dan melakukan pelatihan kembali hingga diperoleh model yang optimal.
 
     \item \textbf{Evaluasi dan Analisis Hasil} \\
-    Performa model hasil \textit{fine-tuning} dievaluasi menggunakan metrik \textit{F1-Score}, nilai \textit{Loss}, dan analisis \textit{Confusion Matrix}.
+    Performa model hasil \textit{fine-tuning} dievaluasi menggunakan metrik \textit{F1-score}, nilai \textit{loss}, dan analisis \textit{confusion matrix}.
     Evaluasi ini bertujuan untuk membandingkan dan menganalisis performa antara ketiga model dalam melakukan klasifikasi suara ancaman bahaya.
 
     \item \textbf{Kesimpulan} \\
@@ -55,20 +55,23 @@ Penjelasan rinci mengenai tahapan penelitian adalah sebagai berikut:
 \end{enumerate}
 
 \section{Pengumpulan dan Prapemrosesan Data} \label{III.Preprocessing}
-Sumber data utama dalam penelitian ini adalah dataset publik \textbf{UrbanSound8K} \cite{salamon2014dataset}.
-Dataset ini diunduh dalam format terkompresi (\texttt{.zip}).
-Setelah diekstraksi, struktur dataset terdiri dari 10 folder (masing-masing mewakili satu \textit{fold}) beserta satu file metadata (\texttt{.csv}) yang memuat informasi nama file audio, \textit{class ID}, dan \textit{fold} asal. \par
+Sumber data utama dalam penelitian ini adalah \textit{dataset} publik \textbf{UrbanSound8K} \cite{salamon2014dataset}.
+\textit{Dataset} ini diunduh dalam format terkompresi (\texttt{.zip}).
+Setelah diekstraksi, struktur \textit{dataset} terdiri dari 10 folder (masing-masing mewakili satu \textit{fold}) beserta satu file metadata (\texttt{.csv}) yang memuat informasi nama file audio, \textit{class ID}, dan \textit{fold} asal. \par
 
-Namun, dataset mentah ini memerlukan serangkaian penyesuaian agar relevan dengan konteks keselamatan penyandang tunarungu. 
-Mengingat dataset ini awalnya berisi 10 kelas suara umum di perkotaan yang tersebar dalam 10 \textit{fold}, penelitian ini memfokuskan pada seleksi kelas bahaya spesifik serta menyusun ulang data menjadi 5 fold eksperimen.
+Namun, \textit{dataset} mentah ini memerlukan serangkaian penyesuaian agar relevan dengan konteks keselamatan penyandang tunarungu. 
+Mengingat \textit{dataset} ini awalnya berisi 10 kelas suara umum di perkotaan yang tersebar dalam 10 \textit{fold}, penelitian ini memfokuskan pada seleksi kelas bahaya spesifik serta menyusun ulang data menjadi 5 fold eksperimen.
 Sebagai langkah antisipasi terhadap keterbatasan data setelah seleksi kelas, strategi augmentasi temporal diterapkan untuk memperkaya variasi data latih.
 Oleh karena itu, tahap prapemrosesan data menjamin integritas data dan mencegah kebocoran informasi (\textit{data leakage}) selama proses pelatihan, sebagaimana dijabarkan pada tahapan berikut.\par
 
 \subsection{Seleksi Kelas}
-Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan tunarungu. Oleh karena itu, dilakukan penyaringan untuk hanya mengambil 4 kelas prioritas yang merepresentasikan sinyal bahaya, yaitu:
+Tidak seluruh kelas pada \textit{dataset} UrbanSound8K relevan dengan konteks keselamatan tunarungu.
+Pemilihan kelas suara ini didasari oleh tingkat urgensi ancaman dan karakteristik suara yang menuntut respons fisik seketika (\textit{immediate physical response}) bagi penyandang tunarungu di lingkungan luar ruangan \cite{jain2020soundwatch}.
+Oleh karena itu, dilakukan penyaringan untuk hanya mengambil 4 kelas prioritas yang merepresentasikan sinyal bahaya, yaitu:
 \begin{enumerate}
     \item \textbf{\textit{gun\_shot} (Tembakan)} \newline
-    Suara tembakan senjata api merupakan sinyal bahaya dengan tingkat fatalitas yang sangat tinggi. Walaupun kejadiannya jarang terjadi, khususnya di Indonesia, deteksi suara ini menjadi langkah mitigasi risiko yang baik dalam melindungi penyandang tunarungu.
+    Suara tembakan senjata api merupakan sinyal bahaya dengan tingkat fatalitas yang sangat tinggi. 
+    Jika penyandang tunarungu tidak menyadari suara tersebut dan mengambil langkah antisipasi secepatnya, maka mereka berpotensi terkena tembakan senjata api yang dapat melukai bahkan hingga mengancam keselamatan jiwa.
     
     \item \textbf{\textit{siren} (Sirine)} \newline
     Suara sirine menandakan keberadaan kendaraan prioritas (ambulans, pemadam kebakaran, atau patroli polisi) yang sering kali melaju dengan kecepatan tinggi dan memiliki hak prioritas jalan. Dengan deteksi suara tersebut, pengguna dapat mengambil langkah untuk segera menepi dan menghindari jalur lintasan kendaraan tersebut.
@@ -77,11 +80,18 @@ Tidak seluruh kelas pada dataset UrbanSound8K relevan dengan konteks keselamatan
     Suara anjing yang menggonggong berpotensi menjadi sinyal bahaya, terutama jika anjing tersebut berupa anjing liar yang dapat menyerang secara tiba-tiba. Dengan mendeteksi suara ini, pengguna dapat langsung mengetahui di mana posisi anjing tersebut dan mengambil langkah untuk antisipasi ancaman.
     
     \item \textbf{\textit{car\_horn} (Klakson Mobil)} \newline
-    Suara klakson mobil menjadi sinyal penting pada lalu lintas, yang salah satu fungsinya adalah sebagai peringatan dari pengemudi kendaraan tersebut kepada pejalan kaki yang berada di jalur lintasnya. Dengan deteksi ini, pengguna dapat lebih waspada terhadap situasi lalu lintas di sekitarnya.
+    Suara klakson mobil menjadi sinyal penting pada lalu lintas, yang salah satu fungsinya adalah sebagai peringatan dari pengemudi kendaraan tersebut kepada pejalan kaki yang berada di jalur lintasnya.
+    Penyandang tunarungu memiliki risiko kecelakaan di jalan raya 70\% lebih tinggi karena ketidakmampuan mendengar suara peringatan instan seperti klakson kendaraan \cite{junghee2014ads}.
+    Dengan deteksi ini, pengguna dapat lebih waspada terhadap situasi lalu lintas di sekitarnya.
 \end{enumerate}
+\medskip
+
+Sebaliknya, kelas suara yang berpotensi menandakan bahaya seperti mesin bor \textit{drilling} dan pemecah beton \textit{jackhammer} tidak diikutsertakan.
+Hal ini dikarenakan kedua sumber suara tersebut lebih bersifat sebagai gangguan berkelanjutan (\textit{continuous ambient noise}) yang relevan untuk aktivitas kontruksi dan posisinya bersifat statis.
+Karakteristik suara tersebut tidak menuntut respons menghindar yang mendadak, sehingga kurang relevan dengan skenario keselamatan mobilitas darurat yang menjadi batasan pada penelitian ini. \par
 
 \subsection{Strategi Penyusunan Ulang Data (\textit{Fold Mapping})}
-Dataset UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}.
+\textit{Dataset} UrbanSound8K secara bawaan terbagi ke dalam 10 \textit{fold}.
 Untuk efisiensi eksperimen tanpa melanggar aturan independensi data, penelitian ini menyusun ulang 10 \textit{fold} tersebut menjadi 5 \textit{fold} eksperimen baru.
 Penyusunan ini dilakukan secara berurutan (misalnya Fold 1 dan 2 menjadi Fold Baru 1) tanpa pengacakan data antar \textit{fold}.
 Teknik penyusunan tersebut memastikan data latih dan data uji tidak tercampur pada fold yang sama, sehingga teknik penyusunan ini menghindari adanya kebocoran data (\textit{data leakage}) yang menyebabkan model menjadi \textit{overfitting}.
@@ -90,7 +100,7 @@ Teknik penyusunan tersebut memastikan data latih dan data uji tidak tercampur pa
     \centering
     % Ganti 'gambar/alur_penelitian.png' dengan nama file gambar kamu
     \includegraphics[width=1.0\textwidth]{figure/Fold_Map.pdf} 
-    \caption{Ilustrasi Strategi Penyusunan Ulang Fold pada Dataset UrbanSound8K}
+    \caption{Ilustrasi Strategi Penyusunan Ulang \textit{Fold} pada \textit{Dataset} UrbanSound8K}
     \label{fig:strategi_fold_mapping}
 \end{figure}
 
@@ -100,27 +110,27 @@ Dikarenakan skema baru tersebut, maka mekanisme validasi yang digunakan selanjut
 
 \subsection{Standarisasi Format Audio}
 Sebelum data audio dapat diproses oleh model, diperlukan standarisasi format pada data tersebut mengingat data mentah memiliki format yang berbeda-beda.
-Ketidaksesuaian format input dapat menyebabkan kegagalan pada proses ekstraksi fitur, bahkan pelatihan model.
+Ketidaksesuaian format \textit{input} dapat menyebabkan kegagalan pada proses ekstraksi fitur, bahkan pelatihan model.
 Oleh karena itu, standarisasi format menjadi langkah penting untuk memastikan bahwa semua data audio memiliki format yang konsisten dan sesuai dengan kebutuhan model, di mana langkah-langkah tersebut mencakup :
 \begin{enumerate}
     \item \textbf{Konversi \textit{Channel} Audio (\textit{Down-mixing})} \newline
-    Langkah ini diterapkan karena terdapat beberapa data audio pada Dataset UrbanSound8K dengan format stereo (dua saluran). 
-    Untuk menyeragamkan dimensi input pada model nanti, seluruh data audio dikonversi menjadi format mono (satu saluran).
+    Langkah ini diterapkan karena terdapat beberapa data audio pada \textit{Dataset} UrbanSound8K dengan format stereo (dua saluran). 
+    Untuk menyeragamkan dimensi \textit{input} pada model nanti, seluruh data audio dikonversi menjadi format mono (satu saluran).
     Proses \textit{down-mixing} ini menggunakan persamaan \textbf{\ref{eq:channel_convert}} pada Bab II. \par
     
     Konversi ini dilakukan untuk menyederhanakan representasi suara untuk keperluan klasifikasi dan mengurangi kompleksitas komputasi. \par
 
     \item \textbf{Penyesuaian Sampling Rate (\textit{Resampling})} \newline
-    Setelah audio diubah menjadi format mono, dilakukan penyesuaian sampling rate (\textit{resampling}). Sampling rate pada dataset UrbanSound8K bervariatif, sehingga sampling rate pada data diubah menjadi 32.000 Hz agar sesuai dengan standar input pada model PANNs.
+    Setelah audio diubah menjadi format mono, dilakukan penyesuaian sampling rate (\textit{resampling}). Sampling rate pada \textit{dataset} UrbanSound8K bervariatif, sehingga sampling rate pada data diubah menjadi 32.000 Hz agar sesuai dengan standar \textit{input} pada model PANNs.
 \end{enumerate}
 
-\subsection{Augmentasi Temporal (\textit{Random Cropping})}
+\subsection{Augmentasi Temporal (\textit{Cropping})}
 Seleksi kelas bahaya yang telah dilakukan menghasilkan jumlah data yang relatif sedikit pada kelas yang terpilih, yang berpotensi membuat model kekurangan data untuk latih dan uji. 
-Oleh karena itu, teknik augmentasi hadir sebagai solusi untuk memperkaya variasi data tanpa perlu menambah jumlah sampel dengan dataset lain.
+Oleh karena itu, teknik augmentasi hadir sebagai solusi untuk memperkaya variasi data tanpa perlu menambah jumlah sampel dengan \textit{dataset} lain.
 Teknik ini juga mempersingkat waktu dan sumber daya komputasi dikarenakan model hanya mempelajari sebagian fitur penting dari seluruh bagian fitur pada data aslinya.\par
 
 Sebelum melakukan proses augmentasi, durasi audio akan diperiksa terlebih dahulu apakah sesuai dengan standar yang telah ditetapkan, yaitu 5 detik. 
-Durasi 5 detik ini dipilih karena dataset UrbanSound8K memiliki data audio yang berdurasi rata-rata 4 detik, sehingga 5 detik merupakan durasi yang cukup aman untuk dijadikan standar dalam penelitian ini.
+Durasi 5 detik ini dipilih karena \textit{dataset} UrbanSound8K memiliki data audio yang berdurasi rata-rata 4 detik, sehingga 5 detik merupakan durasi yang cukup aman untuk dijadikan standar dalam penelitian ini.
 Jika audio asli berdurasi kurang dari 5 detik, maka audio akan ditambahkan \textit{padding} hingga durasinya mencapai 5 detik.
 Jika audio asli berdurasi lebih dari 5 detik, maka audio akan dipotong hingga berdurasi 5 detik.
 Penetapan standar 5 detik durasi audio merupakan antisipasi terhadap inkonsitensi durasi dan memberikan ruang jelajah yang luas pada algoritma augmentasi. 
@@ -128,7 +138,6 @@ Setelah standarisasi durasi selesai, maka data siap untuk diproses menggunakan t
 
 Teknik augmentasi yang diterapkan adalah \textit{Random Cropping}, yaitu pemotongan acak pada segmen audio sepanjang durasi tertentu.
 Pada setiap \textit{epoch} pelatihan, segmen 1 detik akan diambil secara acak dari durasi 5 detik tersebut. Ini memberikan variasi temporal pada model untuk belajar mengenali karakteristik suara yang berbeda dari berbagai posisi dalam rekaman asli pada setiap \textit{epoch}.
-Teknik \textit{Random Cropping} ini tidak diterapkan pada data uji dikarenakan berpotensi mengubah distribusi data uji, sehingga model tidak dapat mencapai nilai evaluasi secara maksimal. 
 Strategi ini memastikan bahwa data uji memiliki dimensi yang konsisten, sehingga performa model dapat dievaluasi secara stabil dan tolak ukur pengujian dapat direproduksi dengan akurat.\par
 
 \begin{figure}[H]
@@ -138,11 +147,15 @@ Strategi ini memastikan bahwa data uji memiliki dimensi yang konsisten, sehingga
     \label{fig:random_cropping}
 \end{figure}
 
+Teknik \textit{Random Cropping} ini tidak diterapkan pada data uji dikarenakan berpotensi mengubah distribusi data uji, sehingga model tidak dapat mencapai nilai evaluasi secara maksimal.
+Agar tetap menjaga konsistensi performa uji model, diterapkan \textit{Center Cropping} pada data uji dengan mengambil segmen audio sepanjang 1 detik, dimulai dari setengah durasi maksimal audio. 
+Dalam penelitian ini, pada audio dengan durasi maksimal 5 detik, ekstraksi dilakukan dengan menjadikan detik ke-2,5 sebagai titik pusat (\textit{center point}), sehingga model memproses segmen audio yang berada pada rentang detik ke-2 hingga detik ke-3. \par
+
 \section{Konfigurasi Model} \label{sec:konfigurasi_model}
 % Kasih paragraf pembuka
 Model yang digunakan dalam penelitian ini adalah model PANNs \cite{kong2020panns} dengan 3 arsitektur berbeda, yaitu \textit{Res1dNet31}, \textit{ResNet38}, dan \textit{Wavegram-Logmel-CNN}.
-Ketiga arsitektur ini telah terbukti memiliki performa yang baik pada tugas klasifikasi audio berdasarkan masing-masing representasi inputnya. 
-Namun, agar model dapat berfungsi optimal sesuai dengan konteks klasifikasi 4 kelas bahaya pada dataset UrbanSound8K, diperlukan beberapa penyesuaian konfigurasi model, yaitu sebagai berikut. \par
+Ketiga arsitektur ini telah terbukti memiliki performa yang baik pada tugas klasifikasi audio berdasarkan masing-masing representasi \textit{input} nya. 
+Namun, agar model dapat berfungsi optimal sesuai dengan konteks klasifikasi 4 kelas bahaya pada \textit{dataset} UrbanSound8K, diperlukan beberapa penyesuaian konfigurasi model, yaitu sebagai berikut. \par
 
 \subsection{Modifikasi Arsitektur PANNs}
 Modifikasi beberapa komponen pada arsitektur PANNs diperlukan pada lapisan keluaran (\textit{output layer}). 
@@ -158,12 +171,12 @@ Oleh karena itu, dilakukan dua penyesuaian utama:
     Dengan perubahan ini, model akan memilih satu kelas pemenang dengan probabilitas tertinggi daripada kelas lainnya. \par
 \end{enumerate}
 
-\subsection{Parameter Konfigurasi Input}
-Selain melakukan modifikasi arsitektur, konfigurasi parameter input juga disesuaikan dengan standar yang ditetapkan pada PANNs untuk menjamin kompabilitas dimensi fitur antara data input dengan bobot \textit{pre-trained}, sehingga ekstraksi fitur dapat berjalan optimal tanpa adanya kesalahan dimensi. Rincian konfigurasi tersebut meliputi:
+\subsection{Parameter Konfigurasi \textit{Input}}
+Selain melakukan modifikasi arsitektur, konfigurasi parameter \textit{input} juga disesuaikan dengan standar yang ditetapkan pada PANNs untuk menjamin kompabilitas dimensi fitur antara data \textit{input} dengan bobot \textit{pre-trained}, sehingga ekstraksi fitur dapat berjalan optimal tanpa adanya kesalahan dimensi. Rincian konfigurasi tersebut meliputi:
 
 \begin{table}[H]
     \centering
-    \caption{Konfigurasi Parameter Input Audio Model PANNs}
+    \caption{Konfigurasi Parameter \textit{Input} Audio Model PANNs}
     \label{tab:panns_config}
     \small % Opsional: Mengecilkan font tabel sedikit agar terlihat lebih manis
     % Format kolom: 
@@ -185,15 +198,15 @@ Selain melakukan modifikasi arsitektur, konfigurasi parameter input juga disesua
 Penggunaan \textit{sampling rate} 32 kHz dipilih merujuk pada spesifikasi standar PANNs \cite{kong2020panns}. Angka ini juga telah memenuhi kriteria Teorema Nyquist untuk menangkap frekuensi hingga 16 kHz. Rentang ini dinilai efisien karena sebagian besar energi spektral pada suara bahaya (seperti sirine, klakson, dan tembakan) berada pada rentang 50 Hz hingga 14.000 Hz, sehingga parameter ini dapat mempertahankan informasi vital sekaligus mereduksi beban komputasi dibandingkan standar audio 44.1 kHz.
 
 \section{Eksperimen \textit{Transfer Learning}} \label{sec:eksperimen}
-Konsep utama dari \textit{Transfer Learning} adalah memanfaatkan pengetahuan yang telah dipelajari oleh model terlatih sebelumnya (\textit{pre-trained model}) dengan dataset berskala besar untuk diterapkan pada permasalahan spesifik yang memiliki keterbatasan data.
-Dalam penelitian ini, arsitektur PANNs yang digunakan merupakan \textit{pre-trained model} yang sebelumnya telah dilatih menggunakan dataset AudioSet \cite{kong2020panns}.
-AudioSet merupakan sebuah dataset audio berskala besar yang berisi lebih dari 2.084.320 klip suara berdurasi 10 detik yang mencakup berbagai macam suara manusia, hewan, alat musik, genre dan suara lingkungan dengan 632 kategori kelas (\textit{multi-label classification}) \cite{gemmeke2017audioset}.
+Konsep utama dari \textit{transfer learning} adalah memanfaatkan pengetahuan yang telah dipelajari oleh model terlatih sebelumnya (\textit{pre-trained model}) dengan \textit{dataset} berskala besar untuk diterapkan pada permasalahan spesifik yang memiliki keterbatasan data.
+Dalam penelitian ini, arsitektur PANNs yang digunakan merupakan \textit{pre-trained model} yang sebelumnya telah dilatih menggunakan \textit{dataset} AudioSet \cite{kong2020panns}.
+AudioSet merupakan sebuah \textit{dataset} audio berskala besar yang berisi lebih dari 2.084.320 klip suara berdurasi 10 detik yang mencakup berbagai macam suara manusia, hewan, alat musik, genre dan suara lingkungan dengan 632 kategori kelas (\textit{multi-label classification}) \cite{gemmeke2017audioset}.
 Adapun data yang digunakan pada saat melatih model PANNs berjumlah 1,9 juta klip suara yang mencakup 527 kategori kelas dari AudioSet \cite{kong2020panns}. \par
 
-Pada fase \textit{pre-training} tersebut, para peneliti PANNs melatih beberapa varian arsitekturnya menggunakan representasi input yang spesifik, yakni \textit{Raw Waveform}, \textit{Log-mel Spectrogram}, serta kombinasi keduanya (\textit{Hybrid}), untuk mengenali berbagai pola hierarkis suara \cite{kong2020panns}.
+Pada fase \textit{pre-training} tersebut, para peneliti PANNs melatih beberapa varian arsitekturnya menggunakan representasi \textit{input} yang spesifik, yakni \textit{raw waveform}, \textit{log-mel spectrogram}, serta kombinasi keduanya (\textit{hybrid}), untuk mengenali berbagai pola hierarkis suara \cite{kong2020panns}.
 Pengetahuan berupa parameter bobot ekstraktor fitur dari masing-masing varian arsitektur inilah yang nantinya akan diadaptasikan ke dalam domain penelitian ini. \par
 
-Setelah model dikonfigurasi sesuai kebutuhan penelitian, tahap selanjutnya adalah melakukan \textit{fine-tuning model} secara menyeluruh pada dataset UrbanSound8K.
+Setelah model dikonfigurasi sesuai kebutuhan penelitian, tahap selanjutnya adalah melakukan \textit{fine-tuning model} secara menyeluruh pada \textit{dataset} UrbanSound8K.
 Tahapan ini melibatkan konfigurasi hyperparameter pelatihan secara eksperimental dan penerapan beberapa strategi pelatihan yang bertujuan untuk mendapatkan hasil evaluasi yang optimal.
 Beberapa strategi teknis yang diterapkan mencakup pengondisian lingkungan implementasi, penerapan standar reproduksibilitas, penanganan ketidakseimbangan data, serta mekanisme kontrol pelatihan untuk memastikan model mempelajari data dengan baik dan menghindari \textit{overfitting}.
 Penggunaan WandB sebagai alat pemantauan dan pencatatan eksperimen pelatihan model secara \textit{real-time} termasuk ke dalam strategi untuk memastikan transparansi dan menjaga validitas dalam merekam hasil eksperimen.
@@ -218,7 +231,7 @@ Mengingat perangkat keras memiliki dampak signifikan terhadap efisiensi proses \
         Processor (CPU) & Intel Core i7-7700HQ & Bertanggung jawab atas \textit{pre-processing} data, augmentasi dan manajemen \textit{dataloader}. \\ \hline
         Kartu Grafis (GPU) & NVIDIA GeForce GTX 1050 (4 GB VRAM) & Berperan dalam akselerasi komputasi tensor selama pelatihan model. \\ \hline
         Memori (RAM) & 8 GB DDR4 & Menunjang alokasi data sementara dengan kecepatan transfer 2400 MHz. \\ \hline
-        Penyimpanan & 1 TB HDD & Digunakan sebagai repositori penyimpanan dataset utama. \\ \hline
+        Penyimpanan & 1 TB HDD & Digunakan sebagai repositori penyimpanan \textit{dataset} utama. \\ \hline
     \end{tabularx}
 \end{table}
 
@@ -235,9 +248,9 @@ Rincian lengkap \textit{library} yang digunakan beserta fungsinya ditampilkan pa
         \hline
         \textbf{Perangkat Lunak} & \textbf{Fungsi Utama} \\ \hline
         Python & Bahasa pemrograman dasar untuk seluruh implementasi teknis penelitian. \\ \hline
-        PyTorch & Kerangka kerja utama untuk pembangunan, pelatihan, dan evaluasi model \textit{Deep Learning}. \\ \hline
+        PyTorch & Kerangka kerja utama untuk pembangunan, pelatihan, dan evaluasi model \textit{deep learning}. \\ \hline
         NumPy & Pustaka komputasi numerik untuk manipulasi matriks dan array. \\ \hline
-        Scikit-learn & Pustaka untuk perhitungan metrik evaluasi (\textit{F1-Score}) dan \textit{Confusion Matrix}. \\ \hline
+        Scikit-learn & Pustaka untuk perhitungan metrik evaluasi (\textit{F1-score}) dan \textit{confusion matrix}. \\ \hline
         Matplotlib \& Seaborn & Pustaka visualisasi data untuk pembuatan grafik hasil pelatihan. \\ \hline
         Weights \& Biases & Platform pemantauan (\textit{monitoring}) metrik pelatihan secara \textit{real-time}. \\ \hline
     \end{tabularx}
@@ -258,10 +271,10 @@ Keputusan ini diambil untuk memprioritaskan efisiensi sumber daya dan kecepatan 
 Variasi hasil numerik mikroskopis yang mungkin timbul akibat optimasi perangkat keras ini dinilai dapat diabaikan (\textit{negligible}) dan tidak mempengaruhi validitas tren performa model secara keseluruhan. \par
 
 \subsection{Penanganan Ketidakseimbangan Data (\textit{Cost-Sensitive Learning})}
-Meskipun dataset UrbanSound8K memiliki distribusi data yang relatif terstruktur, proses seleksi kelas dan penyusunan ulang \textit{fold} berpotensi menghasilkan ketidakseimbangan jumlah sampel antar kelas.
+Meskipun \textit{dataset} UrbanSound8K memiliki distribusi data yang relatif terstruktur, proses seleksi kelas dan penyusunan ulang \textit{fold} berpotensi menghasilkan ketidakseimbangan jumlah sampel antar kelas.
 Ketidakseimbangan ini dapat memicu bias pada model, di mana model akan cenderung memprediksi kelas mayoritas (jumlah sampel banyak) dan mengabaikan kelas minoritas karena kontribusinya terhadap nilai \textit{loss} yang kecil. \par
 
-Untuk memitigasi risiko tersebut, diterapkan pendekatan \textit{Cost-Sensitive Learning} \cite{elkan2001foundations} atau pemberian bobot penalti pada fungsi kerugian (\textit{Loss Function}).
+Untuk memitigasi risiko tersebut, diterapkan pendekatan \textit{Cost-Sensitive Learning} \cite{elkan2001foundations} atau pemberian bobot penalti pada fungsi kerugian (\textit{loss function}).
 Strategi ini bekerja dengan memberikan bobot \textit{loss} yang besar pada kelas dengan jumlah sampel sedikit, dan sebaliknya. 
 Hal ini memaksa model untuk memberikan perhatian yang setara pada semua kelas selama proses pembaruan gradien tanpa memperhitungkan jumlah sampelnya.
 
@@ -278,7 +291,7 @@ Bobot penalti ($W_j$) untuk setiap kelas ke-$j$ dihitung secara otomatis sebelum
 \noindent Keterangan:
 \begin{itemize}
     \item $W_j$ : Bobot skalar yang dihasilkan untuk kelas $j$.
-    \item $N$ : Total jumlah sampel dalam seluruh dataset latih.
+    \item $N$ : Total jumlah sampel dalam seluruh \textit{dataset} latih.
     \item $C$ : Jumlah kelas total (4 kelas).
     \item $N_j$ : Jumlah sampel spesifik pada kelas $j$.
 \end{itemize}
@@ -290,31 +303,31 @@ Secara matematis, jika model melakukan kesalahan prediksi pada kelas \textit{gun
 
 \subsection{Konfigurasi \textit{Optimizer} dan \textit{Scheduler}}
 Proses \textit{fine-tuning} dilakukan secara menyeluruh, baik pada lapisan \textit{backbone} maupun \textit{head} tanpa melakukan pembekuan bobot (\textit{unfrozen layers}).
-Hal ini bertujuan agar fitur ekstraktor pada model PANNs dapat beradaptasi sepenuhnya terhadap karakteristik fitur yang diambil dari audio dataset UrbanSound8K, khususnya pada 4 kelas yang telah diseleksi. \par
+Hal ini bertujuan agar fitur ekstraktor pada model PANNs dapat beradaptasi sepenuhnya terhadap karakteristik fitur yang diambil dari audio \textit{dataset} UrbanSound8K, khususnya pada 4 kelas yang telah diseleksi. \par
 
 Pembaruan bobot model (\textit{weight update}) dilakukan menggunakan algoritma optimasi \textit{optimizer} \textbf{AdamW} (\textit{Adam with Weight Decay}).
 Pemilihan AdamW didasari oleh kemampuannya dalam memisahkan mekanisme pembaruan bobot dengan \textit{weight decay}, sehingga lebih efektif dalam mencegah \textit{overfitting} dibandingkan algoritma Adam standar.
 Pelatihan dilakukan dalam \textit{batch size} sebesar 8 selama maksimal 50 \textit{epoch}, dengan pengaturan \textit{Learning Rate} awal sebesar 5e-4 dan nilai \textit{Weight Decay} sebesar 1e-4. \par
 
 Untuk mengoptimalkan proses adaptasi pelatihan model, diterapkan pula penyesuaian laju pembelajaran dinamis menggunakan \textit{scheduler} \textbf{\textit{ReduceLROnPlateau}}.
-Mekanisme ini dirancang untuk memantau metrik \textit{Validation Loss}.
+Mekanisme ini dirancang untuk memantau metrik \textit{validation loss}.
 Apabila nilai kerugian validasi tersebut tidak mengalami penurunan selama 3 \textit{epoch} berturut-turut (\textit{patience}), maka nilai \textit{Learning Rate} akan direduksi secara otomatis sebesar setengah dari nilai sebelumnya (faktor 0,5).
 Strategi ini membantu model untuk menemukan detail kecil global dengan lebih presisi (konvergensi) saat mendekati akhir pelatihan.
 
 \subsection{Strategi Optimasi: \textit{Early Stopping} dan \textit{Checkpoint}}
-Mengingat pelatihan dilakukan pada dataset terbatas, risiko \textit{overfitting} pada \textit{epoch} lanjutan menjadi sangat tinggi. Untuk mencegah hal tersebut, diterapkan dua mekanisme pencegahan otomatis:
+Mengingat pelatihan dilakukan pada \textit{dataset} terbatas, risiko \textit{overfitting} pada \textit{epoch} lanjutan menjadi sangat tinggi. Untuk mencegah hal tersebut, diterapkan dua mekanisme pencegahan otomatis:
 \begin{enumerate}
     \item \textbf{\textit{Early Stopping}} \\
     Mekanisme \textit{Early Stopping} berfungsi sebagai penghenti darurat dalam pelatihan model.
     Hal ini dilakukan untuk mencegah model yang sudah mencapai performa maksimal lebih awal menjadi \textit{overfitting} pada data latih. \par
 
-    Secara teknis, meskipun batas maksimal jumlah \textit{epoch} telah ditetapkan sebanyak 50 \textit{epoch}, durasi sebenarnya bergantung pada pemantauan metrik \textit{Validation Loss} sebagai tolak ukur performa model.
+    Secara teknis, meskipun batas maksimal jumlah \textit{epoch} telah ditetapkan sebanyak 50 \textit{epoch}, durasi sebenarnya bergantung pada pemantauan metrik \textit{Validation loss} sebagai tolak ukur performa model.
     Ketika metrik tersebut tidak mengalami penurunan melebihi rekor minimal selama 5 \textit{epoch} berturut-turut (\textit{patience}), pelatihan model akan dihentikan secara paksa lebih awal. 
     Mekanisme ini menyebabkan model tidak diberikan kesempatan untuk terus belajar data yang nantinya akan dihafal oleh model tersebut. \par
 
     \item \textbf{\textit{Model Checkpointing}} \\
     Mekanisme \textit{checkpointing} berfungsi untuk menyimpan parameter bobot model terbaik secara otomatis.
-    Selama proses pelatihan berjalan, sistem secara dinamis hanya akan menyimpan file bobot pada \textit{epoch} yang berhasil mencetak nilai \textit{F1-Score} validasi tertinggi.
+    Selama proses pelatihan berjalan, sistem secara dinamis hanya akan menyimpan file bobot pada \textit{epoch} yang berhasil mencetak nilai \textit{F1-score} validasi tertinggi.
     Jika performa pada \textit{epoch} selanjutnya memburuk, parameter bobot model tidak akan diperbarui, sehingga hasil akhir yang dievaluasi dipastikan adalah versi model dengan konfigurasi bobot paling optimal. \par
 
     \begin{figure}[H]
@@ -325,7 +338,7 @@ Mengingat pelatihan dilakukan pada dataset terbatas, risiko \textit{overfitting}
     \end{figure}
 
     Contoh mekanisme ini dapat dilihat pada Gambar \ref{fig:checkpointing}.
-    Pada \textit{epoch} ke-1 dan ke-2, model mencetak nilai \textit{validation F1-Score} yang terus meningkat, sehingga \textit{checkpointing} dilakukan 2 kali berturut-turut (memperbarui rekor lama).
+    Pada \textit{epoch} ke-1 dan ke-2, model mencetak nilai \textit{validation F1-score} yang terus meningkat, sehingga \textit{checkpointing} dilakukan 2 kali berturut-turut (memperbarui rekor lama).
     Namun pada \textit{epoch} ke-3, nilai tersebut menurun cukup drastis, sehingga sistem tetap mempertahankan bobot dari \textit{epoch} ke-2.
     Walaupun terdapat kenaikan nilai pada \textit{epoch} ke-4, capaiannya belum melampaui rekor \textit{epoch} ke-2, sehingga tidak terjadi \textit{checkpointing} baru.
     Pembaruan \textit{checkpoint} akhirnya dilakukan kembali pada \textit{epoch} ke-5 karena nilainya berhasil mengalahkan rekor \textit{epoch} ke-2.
@@ -334,7 +347,7 @@ Mengingat pelatihan dilakukan pada dataset terbatas, risiko \textit{overfitting}
 \end{enumerate}
 
 \subsection{Pemantauan dan Pencatatan Eksperimen}
-Dalam memantau pergerakan metrik evaluasi pelatihan (termasuk \textit{Train/Validation Loss}, \textit{F1-Score}, dan pergerakan \textit{Learning Rate}), metrik tersebut direkam dan divisualisasikan secara \textit{real-time} menggunakan alat bantu berupa \textit{dashboard} \textbf{Weights \& Biases (WandB)}.
+Dalam memantau pergerakan metrik evaluasi pelatihan (termasuk \textit{Train/Validation loss}, \textit{F1-score}, dan pergerakan \textit{Learning Rate}), metrik tersebut direkam dan divisualisasikan secara \textit{real-time} menggunakan alat bantu berupa \textit{dashboard} \textbf{Weights \& Biases (WandB)}.
 Penggunaan alat ini memastikan transparansi rekam jejak pelatihan model.
 Di akhir setiap pengujian \textit{fold}, sistem juga secara otomatis menggenerasi laporan grafik riwayat pelatihan dengan menampilkan metrik yang dijadikan bahan evaluasi.
 
@@ -366,7 +379,7 @@ Patience & 3 \\ \hline
 Target Metrik & Validation Loss \\ \hline
 \multicolumn{2}{|c|}{\textbf{Early Stopping}} \\ \hline
 Patience & 5 \\ \hline
-Target Metrik & Validation F1-Score \textless= Best Validation F1-Score \\ \hline
+Target Metrik & Validation F1-score \textless= Best Validation F1-score \\ \hline
 \end{tabular}
 \end{table}
 
@@ -374,10 +387,10 @@ Target Metrik & Validation F1-Score \textless= Best Validation F1-Score \\ \hlin
 Setelah proses pelatihan selesai, kinerja model diukur menggunakan tiga indikator evaluasi utama, yaitu:
 
 \begin{enumerate}
-    \item \textbf{\textit{Macro F1-Score}} \\
+    \item \textbf{\textit{Macro F1-score}} \\
     Metrik ini menjadi tolok ukur utama untuk mengevaluasi akurasi dan sensitivitas model secara harmonis.
-    Penggunaan \textit{Macro F1-Score} memastikan setiap kelas diprioritaskan secara setara tanpa dipengaruhi oleh ketidakseimbangan jumlah data (\textit{imbalanced data}).
-    Dikarenakan mekanisme pengujian menggunakan \textit{5-fold cross validation}, maka hasil akhir \textit{Macro F1-Score} pada setiap model dengan representasi input tertentu akan dilaporkan dalam format rata-rata beserta rentang simpangannya (Rata-rata $\pm$ Standar Deviasi).
+    Penggunaan \textit{Macro F1-score} memastikan setiap kelas diprioritaskan secara setara tanpa dipengaruhi oleh ketidakseimbangan jumlah data (\textit{imbalanced data}).
+    Dikarenakan mekanisme pengujian menggunakan \textit{5-fold cross validation}, maka hasil akhir \textit{Macro F1-score} pada setiap model dengan representasi \textit{input} tertentu akan dilaporkan dalam format rata-rata beserta rentang simpangannya (Rata-rata $\pm$ Standar Deviasi).
     \item \textbf{Kurva \textit{Loss} (\textit{Loss Curve})} \\
     Metrik ini digunakan untuk memantau dinamika proses pembelajaran model guna mendeteksi indikasi \textit{overfitting} atau \textit{underfitting} selama proses pelatihan berlangsung.
     \item \textbf{\textit{Confusion Matrix}} \\ 
@@ -385,6 +398,6 @@ Setelah proses pelatihan selesai, kinerja model diukur menggunakan tiga indikato
 \end{enumerate}
 \medskip
 
-Selain menggunakan ketiga indikator tersebut, penelitian ini juga menerapkan uji statistik formal untuk membandingkan performa akhir dari setiap model dengan ketiga representasi input (\textit{Raw Waveform}, \textit{Log-mel Spectrogram}, dan \textit{Hybrid}).
+Selain menggunakan ketiga indikator tersebut, penelitian ini juga menerapkan uji statistik formal untuk membandingkan performa akhir dari setiap model dengan ketiga representasi \textit{input} (\textit{raw waveform}, \textit{log-mel spectrogram}, dan \textit{hybrid}).
 Uji statistik yang digunakan adalah \textit{Wilcoxon Signed-Rank Test}, yaitu sebuah uji non-parametrik yang beroperasi pada hasil evaluasi kelima (\textit{fold}) dari masing-masing model.
 Penerapan uji ini bertujuan untuk membuktikan secara matematis apakah selisih keunggulan performa antar model benar-benar signifikan secara ilmiah (dengan ambang batas probabilitas $p < 0.05$) atau hanya terjadi akibat variansi data acak. \par

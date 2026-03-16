@@ -2,57 +2,67 @@
 \chapter{TINJAUAN PUSTAKA} \label{Bab II}
 
 \section{Tinjauan Pustaka} \label{II.Tinjauan}
-Penelitian ini dibangun dengan fondasi beberapa penelitian terdahulu yang berfokus pada klasifikasi suara lingkungan dan arsitektur \textit{Deep Learning}.
+Penelitian ini dibangun dengan fondasi beberapa penelitian terdahulu yang berfokus pada klasifikasi suara lingkungan dan arsitektur \textit{deep learning}.
 Berikut merupakan lima penelitian dalam empat tahun terakhir yang memiliki relevansi dengan topik yang diangkat. 
 Ringkasan dari tinjauan pustaka ini juga disajikan pada Tabel \ref{table:2.literasi}. \par
 
+% Penelitian Pertama (ACC)
 Penelitian yang dilakukan oleh Avadhani \textit{et al.} (2024) merupakan penelitian yang dilatarbelakangi oleh tantangan dalam klasifikasi suara di perkotaan dengan karakteristik yang beragam.
-Dalam pengerjaannya, penelitian ini melakukan ekstraksi fitur manual pada data suara menggunakan \textit{Mel-Frequency Cepstral Coefficients} (MFCC) dan menggunakan arsitektur \textit{Artificial Neural Network} (ANN), \textit{Convolutional Neural Network} (CNN), \textit{Recurrent Neural Network} (RNN), dan \textit{Long-Short Term Memory} (LSTM) yang dilatih dari awal dengan dataset UrbanSound8K.
+Dalam pengerjaannya, penelitian ini melakukan ekstraksi fitur manual pada data suara berupa \textit{Mel-Frequency Cepstral Coefficients} (MFCC).
+Fitur tersebut diproses pada arsitektur \textit{Artificial Neural Network} (ANN), \textit{Convolutional Neural Network} (CNN), \textit{Recurrent Neural Network} (RNN), dan \textit{Long Short-Term Memory} (LSTM) yang dilatih dari awal dengan kumpulan data (\textit{dataset}) UrbanSound8K.
+Pemrosesan tersebut menghasilkan keluaran klasifikasi berupa \textit{multi-label}.
 Penelitian ini berkontribusi memberikan evaluasi kelebihan serta pertimbangan dari setiap model untuk aplikasi nyata di perkotaan.
-Hasil akurasi yang didapat pada arsitektur ANN sebesar 94,79\%, CNN sebesar 93,64\%, dan LSTM sebesar 86,09\% pada dataset UrbanSound8K. 
-Namun, celah dari penelitian ini adalah tidak adanya mekanisme penanganan ketidakseimbangan antar kelas dataset yang dapat merujuk kepada hasil akurasi yang tidak adil, serta penggunaan ekstraksi fitur manual MFCC yang telah melewati proses transformasi yang berpotensi menghilangkan detail pada karakteristik suara \cite{avadhani2024multi}. \par
+Hasil akurasi yang didapat cukup tinggi pada arsitektur ANN sebesar 94,79\%, CNN sebesar 93,64\%, dan LSTM sebesar 86,09\% pada \textit{dataset} UrbanSound8K. 
+Namun, celah dari penelitian ini adalah tidak adanya mekanisme penanganan ketidakseimbangan antar kelas \textit{dataset} yang dapat merujuk kepada hasil akurasi yang tidak adil, serta penggunaan ekstraksi fitur manual MFCC yang telah melewati proses transformasi yang berpotensi menghilangkan detail pada karakteristik suara \cite{avadhani2024multi}. \par
 
-Penelitian selanjutnya dilakukan oleh Mujawar (2025) dalam rangka menganalisis dan membandingkan model \textit{Machine Learning} yang menawarkan akurasi dan performa tertinggi dalam klasifikasi kebisingan di perkotaan. 
-Beberapa model yang digunakan dalam penelitian ini adalah CNN, \textit{Deep Neural Networks} (DNN), LSTM, dan Random Forest (RF) yang dilatih dari awal dengan dataset UrbanSound8K.
-Kontribusi dari penelitian ini memberikan literatur pada rincian tahapan dalam persiapan data dan pelatihan model, serta menyarankan arah penelitian klasifikasi suara perkotaan di masa depan.
-Keunggulannya dibuktikan dengan pencapaian akurasi yang memuaskan pada setiap modelnya, dimulai dengan model DNN yang mencapai akurasi sebesar 94,5\%, diikuti oleh CNN sebesar 90\%, RF sebesar 87\%, dan LSTM sebesar 79\%.
-Meski begitu, dataset yang digunakan memiliki ketidakseimbangan jumlah data pada setiap kelasnya dan belum ada mekanisme penanganan khusus terkait ketidakseimbangan data tersebut.
-Dibalik akurasi yang memuaskan, pelatihan model dari awal juga menyebabkan komputasi yang cukup berat sehingga membuka peluang penelitian dengan melakukan \textit{Transfer Learning}. 
-Peneliti juga menyarankan penelitian terhadap arsitektur model hibrida (\textit{Hybrid}) \cite{mujawar2025urban}. \par
+% Penelitian Kedua (ACC)
+Penelitian selanjutnya dilakukan oleh Mujawar (2025) dalam rangka menganalisis dan membandingkan model \textit{machine learning} yang menawarkan akurasi dan performa tertinggi dalam klasifikasi kebisingan di perkotaan. 
+Beberapa model yang digunakan dalam penelitian ini adalah CNN, \textit{Deep Neural Networks} (DNN), LSTM, dan \textit{Random Forest} (RF) yang dilatih dari awal dengan \textit{dataset} UrbanSound8K untuk klasifikasi \textit{multi-label}.
+Kontribusi dari penelitian ini memberikan literatur mengenai mekanisme penerapan keempat model klasifikasi suara tersebut di lingkungan perkotaan, serta menyarankan arah penelitiannya di masa depan.
+Keunggulan pada penelitian ini dibuktikan dengan pencapaian akurasi yang memuaskan pada setiap modelnya, dimulai dengan model DNN yang mencapai akurasi sebesar 94,5\%, diikuti oleh CNN sebesar 90\%, RF sebesar 87\%, dan LSTM sebesar 79\%.
+Meski begitu, \textit{dataset} yang digunakan memiliki ketidakseimbangan jumlah data pada setiap kelasnya dan belum ada mekanisme penanganan khusus terkait ketidakseimbangan data tersebut.
+Dibalik akurasi yang memuaskan, pelatihan model dari awal juga menyebabkan komputasi yang cukup berat sehingga membuka peluang penelitian dengan melakukan \textit{transfer learning}. 
+Peneliti juga menyarankan penelitian terhadap arsitektur model hibrida (\textit{hybrid}) \cite{mujawar2025urban}. \par
 
-Menyadari perlunya penerapan \textit{Transfer Learning} dengan model \textit{pre-trained}, penelitian yang dilakukan oleh Nogueira \textit{et al.} (2022) menerapkan metode tersebut untuk mengidentifikasi suara-suara abnormal dan relevan di lingkungan perkotaan.
-Metodenya diawali dengan mengekstraksi fitur dalam bentuk \textit{Spectrogram}, kemudian dilakukan \textit{Transfer Learning} menggunakan arsitektur model pre-trained Transformer dengan bobot pre-trained dari AudioSet, serta penerapan augmentasi data.
-Dataset yang digunakan merupakan dataset publik seperti UrbanSound8K, ESC-50, dan ESC-10.
-Hasil penelitian ini memberikan perbandingan performa model Transformer dengan model CNN konvensional, serta mengusulkan penggunaan \textit{optimizer} Adam dengan \textit{Weight Decay} untuk optimalisasi klasifikasi suara lingkungan.
-Penelitian ini berhasil menunjukkan performa akurasi klasifikasi yang baik pada model Transformer, yaitu 89,8\% untuk dataset UrbanSound8K, 95,8\% untuk dataset ESC-50, dan 99\% untuk dataset ESC-10.
-Demi performa yang maksimal, sumber daya komputasi yang digunakan pada pelatihan Transformer cukup berat.
-Penggunaan teknik augmentasi data audio dalam menangani ketidakseimbangan kelas pada dataset juga berpotensi mengubah karakteristik suara \cite{nogueira2022transformers}. \par
+% Penelitian Ketiga (ACC)
+Menyadari perlunya penerapan \textit{transfer learning} dengan model \textit{pre-trained}, penelitian yang dilakukan oleh Nogueira \textit{et al.} (2022) menerapkan metode tersebut untuk mengidentifikasi suara-suara abnormal dan relevan di lingkungan perkotaan.
+Penelitian ini menganalisis dan membandingkan performa arsitektur Transformer dengan arsitektur konvensional (\textit{baseline}) maupun CNN untuk klasifikasi suara perkotaan.
+\textit{Dataset} yang digunakan merupakan \textit{dataset} publik, yaitu UrbanSound8K, ESC-50, dan ESC-10.
+Untuk evaluasi model \textit{baseline}, peneliti mengekstraksi kombinasi fitur akustik yang kompleks, seperti MFCC dan Chroma.
+Namun, pendekatan ekstraksi ini berbeda pada arsitektur Transformer.
+Model tersebut langsung menerima \textit{input} berupa \textit{spectrogram} dengan memanfaatkan bobot yang telah dilatih sebelumnya (\textit{pre-trained}) pada \textit{dataset} AudioSet, diiringi dengan penerapan augmentasi data.
+Eksperimen tersebut juga mengusulkan penggunaan \textit{optimizer} Adam dengan \textit{weight decay} (AdamW) sebagai algoritma optimasi terbaik untuk klasifikasi suara lingkungan.
+Penelitian ini berhasil menunjukkan performa akurasi klasifikasi yang superior pada model Transformer, yaitu 89,8\% untuk \textit{dataset} UrbanSound8K, 95,8\% untuk \textit{dataset} ESC-50, dan 99\% untuk \textit{dataset} ESC-10.
+Meskipun menawarkan performa yang sangat kompetitif, model Transformer menuntut kapasitas memori GPU yang cukup berat, yakni mencapai hampir 40 GB VRAM.
+Selain itu, penerapan teknik augmentasi data suara (seperti \textit{time stretching} dan \textit{pitch shifting}) dalam menangani ketidakseimbangan kelas pada penelitian ini juga berpotensi mendistorsi bahkan menghilangkan karakteristik asli dari sinyal suara \cite{nogueira2022transformers}. \par
 
-Metode pembelajaran yang sama diterapkan pada penelitian yang dilakukan oleh Trivedi \textit{et al.} (2025), yang melihat bagaimana otak manusia dapat mengidentifikasi suara di perkotaan sehingga ingin menerapkan \textit{Deep Learning} dengan representasi data yang tepat. 
-Ekstraksi fitur yang digunakan adalah \textit{Spectrogram}, Mel-Frequency Cepstral Coefficients (MFCC), \textit{linear predictive coding}, dan dekomposisi \textit{wavelet}. 
-Beberapa model CNN yang dilatih adalah CNN, CNN-LSTM, CNN-YAMnet dan CNN-Transfer Model dengan dataset UrbanSound8K.
-Penelitian ini membuktikan efektivitas integrasi model prapelatihan (\textit{pre-trained}) YAMNet dengan CNN untuk tugas kategorisasi suara perkotaan dibandingkan dengan arsitektur hibrida konvensional (CNN-LSTM).
-Model CNN-YAMNet berhasil mencapai tingkat akurasi yang sangat mengesankan, yaitu sebesar 98\%, membuktikan keunggulan \textit{Transfer Learning} dalam memproses dataset audio yang kompleks. 
-Penelitian ini belum mengeksplorasi potensi penggabungan representasi sinyal secara langsung (\textit{Raw Waveform}) dan \textit{Spectrogram}. 
-Selain itu, meskipun akurasi globalnya tinggi, model ini belum mengimplementasikan mekanisme intervensi matematis seperti \textit{Cost-Sensitive Learning} untuk memastikan performa yang adil pada kelas minoritas akibat distribusi data yang tidak seimbang di UrbanSound8K \cite{trivedi2025deep}. \par
+% Penelitian Keempat (ACC)
+Metode pembelajaran yang sama diterapkan pada penelitian yang dilakukan oleh Trivedi \textit{et al.} (2025), yang terinspirasi dari mekanisme kognitif otak manusia dalam mengidentifikasi suara perkotaan, yang bertujuan untuk menerapkan \textit{deep learning} dengan representasi data yang tepat.
+Penelitian ini menganalisis dan membandingkan beberapa model CNN, yaitu CNN, CNN-LSTM, dan CNN-YAMnet (model \textit{pre-trained} dengan AudioSet) pada \textit{dataset} UrbanSound8K. 
+Ekstraksi fitur yang digunakan adalah \textit{spectrogram}, MFCC, \textit{Linear Predictive Coding} (LPC), dan dekomposisi \textit{wavelet}. 
+Hasil penelitian ini membuktikan efektivitas integrasi model prapelatihan (\textit{pre-trained}) CNN-YAMNet untuk tugas kategorisasi suara perkotaan dibandingkan dengan arsitektur hibrida konvensional (CNN dan CNN-LSTM).
+Model CNN-YAMNet berhasil mencapai tingkat akurasi yang sangat mengesankan, yaitu sebesar 98\%, membuktikan keunggulan \textit{transfer learning} dalam memproses \textit{dataset} suara yang kompleks.
+Namun, pemilihan ekstraksi fitur seperti LPC kurang relevan dengan suara perkotaan serta dekomposisi \textit{wavelet} memiliki beban komputasi yang cukup berat.
+Meskipun hasil akurasi globalnya tinggi, model ini belum mengimplementasikan mekanisme intervensi matematis seperti \textit{Cost-Sensitive Learning} untuk memastikan performa yang adil pada kelas minoritas akibat distribusi data yang tidak seimbang pada UrbanSound8K \cite{trivedi2025deep}. \par
 
-Sebagai penutup, penelitian terakhir yang dilakukan oleh Shen Yu (2025) mengangkat masalah terkait kurangnya keragaman skenario pada sumber daya akustik di perkotaan dan penggunaan metode augmentasi umum yang rentan merusak karakteristik suara. 
-Permasalahan tersebut juga didukung dengan pemilihan jaringan saraf tiruan yang tidak interpretabel dan tangguh.
-Oleh karena itu, metodologi penelitian ini melatih model ResNet-TF dari awal dengan dataset yang berisikan kumpulan akustik di perkotaan, yaitu UN15. 
-Dalam kontribusinya, penelitian ini telah menciptakan standar pra-pemrosesan data, pemodelan dalam domain waktu-frekuensi (grafis), serta augmentasi yang ditambah dengan screening sebagai mekanisme penanganan ketidakseimbangan data pada kelas minoritas.
-Hasil dari penelitian ini berhasil mengintegrasikan pemodelan domain waktu-frekuensi secara grafis yang mampu menangkap detail suara dengan lebih baik pada domain dataset suara perkotaan. 
-Akan tetapi, penelitian ini masih bergantung pada pembuatan data buatan (sintetik) dengan melakukan augmentasi dan screening untuk kelas minoritas, yang rentan mengubah keaslian suara asli. 
+% Penelitian Kelima (ACC)
+Sebagai penutup, penelitian terakhir yang dilakukan oleh Shen (2025) mengangkat masalah terkait kurangnya keragaman skenario pada sumber daya akustik di perkotaan dan penggunaan metode augmentasi umum yang rentan merusak karakteristik suara. 
+Permasalahan tersebut juga didukung oleh pemilihan jaringan saraf tiruan pada penelitian sebelumnya yang tidak interpretabel dan tangguh.
+Oleh karena itu, metodologi penelitian ini melatih model ResNet-TF dari awal dengan \textit{dataset} yang berisikan kumpulan akustik di perkotaan, yaitu UN15. 
+Dalam kontribusinya, penelitian ini telah menciptakan standar pra-pemrosesan data, pemodelan dalam domain waktu-frekuensi (\textit{spectrogram}), serta augmentasi yang ditambah dengan \textit{screening} sebagai mekanisme penanganan ketidakseimbangan data pada kelas minoritas.
+Hasil dari penelitian ini berhasil mengintegrasikan pemodelan domain waktu-frekuensi secara grafis yang mampu menangkap detail suara dengan lebih baik pada domain \textit{dataset} suara perkotaan. 
+Akan tetapi, penelitian ini masih bergantung pada pembuatan data buatan (sintetik) dengan melakukan augmentasi dan \textit{screening} untuk kelas minoritas, yang rentan mengubah keaslian suara asli. 
 Pemrosesan tersebut juga memakan waktu yang cukup lama \cite{shen2025study}. \par
 
 Berdasarkan kelima literatur di atas, celah penelitian (\textit{research gap}) terlihat dengan jelas. 
-Arsitektur model yang digunakan pada penelitian sebelumnya belum menerapkan pendekatan hibrida (\textit{Hybrid}) yang memanfaatkan fitur suara satu dan dua dimensi.  
-Mekanisme penanganan ketidakseimbangan distribusi data pada setiap kelas juga masih belum diterapkan, mengingat dataset seperti UrbanSound8K memiliki keterbatasan tersebut. 
+Arsitektur model yang digunakan pada penelitian sebelumnya belum menerapkan pendekatan hibrida (\textit{hybrid}) yang memanfaatkan fitur suara satu dan dua dimensi.  
+Mekanisme penanganan ketidakseimbangan distribusi data pada setiap kelas juga masih belum diterapkan, mengingat \textit{dataset} seperti UrbanSound8K memiliki keterbatasan tersebut. 
 Tidak adanya mekanisme tersebut dapat memengaruhi performa model yang cenderung mendapatkan akurasi tinggi pada kelas yang dominan saja. 
-Adapun penelitian terakhir yang menggunakan augmentasi dalam penanganan ketidakseimbangan data juga berpotensi mengubah karakteristik suara, sehingga diperlukan sebuah algoritma yang menangani kendala tersebut tanpa mengubah karakteristiknya. 
-Oleh karena itu, penelitian ini menjawab tantangan beserta celah penelitian tersebut dengan \textit{Transfer Learning} menggunakan arsitektur PANNs, yang mengoptimalkan ekstraksi fitur dengan pendekatan hibrida (\textit{Raw Waveform} dan \textit{Log-mel Spectrogram}).
-Penelitian ini juga menerapkan \textit{Cost-Sensitive Learning} untuk menangani ketidakseimbangan kelas tanpa memanipulasi data asli. \par
+Adapun penelitian sebelumnya yang menggunakan augmentasi dalam penanganan ketidakseimbangan data juga berpotensi mengubah karakteristik suara, sehingga diperlukan sebuah algoritma yang menangani kendala tersebut tanpa mengubah karakteristiknya. 
+Oleh karena itu, penelitian ini menjawab tantangan beserta celah penelitian tersebut dengan \textit{transfer learning} menggunakan arsitektur \textit{Pre-trained Audio Neural Networks} (PANNs), yang mengoptimalkan ekstraksi fitur dengan pendekatan hibrida (\textit{raw waveform} dan \textit{log-mel spectrogram}).
+Penelitian ini juga menerapkan \textit{cost-sensitive learning} untuk menangani ketidakseimbangan kelas tanpa memanipulasi data asli. \par
 
-\begin{longtable}{| >{\raggedright\arraybackslash}b{0.05\textwidth} | >{\raggedright\arraybackslash}p{0.2\textwidth} | >{\raggedright\arraybackslash}p{0.2\textwidth} | >{\raggedright\arraybackslash}p{0.2\textwidth} | >{\raggedright\arraybackslash}p{0.25\textwidth} |} % Ditambah garis vertikal penutup di akhir
+\begin{longtable}{| >{\raggedright\arraybackslash}b{0.05\textwidth} | >{\raggedright\arraybackslash}p{0.2\textwidth} | >{\raggedright\arraybackslash}p{0.22\textwidth} | >{\raggedright\arraybackslash}p{0.23\textwidth} | >{\raggedright\arraybackslash}p{0.22\textwidth} |} 
     \caption{Literatur Penelitian Terdahulu}
     \label{table:2.literasi}\\
     \hline
@@ -63,42 +73,47 @@ Penelitian ini juga menerapkan \textit{Cost-Sensitive Learning} untuk menangani 
     \textbf{No.} & \textbf{Judul [Tahun]} & \textbf{Masalah \& Metode} & \textbf{Kontribusi \& Keunggulan} & \textbf{Keterbatasan} \\
     \hline
     \endhead % Header tabel untuk halaman selanjutnya
+    
     1. & 
     Multi-Class Urban Sound Classification with Deep Learning Architectures [2024] & 
-    Tantangan keberagaman suara perkotaan. Ekstraksi fitur manual MFCC dengan melatih model dasar ANN, CNN, RNN, dan LSTM dari awal. & 
-    Mengevaluasi kelebihan model dasar untuk aplikasi perkotaan. Akurasi tertinggi pada ANN (94,79\%), CNN (93,64\%), dan LSTM (86,09\%). & 
-    Absennya penanganan ketidakseimbangan kelas (berisiko bias akurasi) dan fitur MFCC berpotensi menghilangkan detail karakteristik suara.\\ 
+    Tantangan keberagaman suara perkotaan. Ekstraksi fitur manual MFCC dengan melatih model dasar ANN, CNN, RNN, dan LSTM dari awal pada \textit{dataset} UrbanSound8K. & 
+    Mengevaluasi kelebihan model dasar untuk aplikasi nyata. Akurasi tertinggi dicapai oleh ANN (94,79\%), CNN (93,64\%), dan LSTM (86,09\%). & 
+    Absennya mekanisme penanganan kelas tidak seimbang, serta ekstraksi MFCC berpotensi menghilangkan detail karakteristik suara asli.\\ 
     \hline
+    
     2. & 
     Urban Noise Classification Using Machine Learning Techniques: Comparative Analysis and Future [2025] & 
-    Mencari model berakurasi tertinggi. Melatih CNN, DNN, LSTM, dan Random Forest dari awal dengan dataset UrbanSound8K. & 
-    Menjadi acuan persiapan pelatihan model. Model DNN unggul dengan akurasi 94,5\%, diikuti oleh CNN (90\%). & 
-    Pelatihan dari awal sangat membebani komputasi, serta belum ada intervensi algoritmik (\textit{Cost-Sensitive}) untuk menyelesaikan masalah data timpang.\\ 
+    Pencarian model berakurasi tertinggi dalam klasifikasi suara perkotaan. Melatih CNN, DNN, LSTM, dan \textit{Random Forest} dari awal dengan \textit{dataset} UrbanSound8K. & 
+    Memberikan literatur komparasi performa. Model DNN unggul dengan akurasi 94,5\%, diikuti oleh CNN sebesar 90\%. & 
+    Belum ada penanganan data yang tidak seimbang. Pelatihan dari awal membebani komputasi, serta belum mengeksplorasi \textit{transfer learning} atau arsitektur hibrida.\\ 
     \hline
+    
     3. & 
     Transformers for Urban Sound Classification --- A Comprehensive Performance Evaluation [2022] & 
-    Identifikasi suara abnormal secara cepat. Menggunakan \textit{Transfer Learning} arsitektur Transformer (bobot AudioSet) pada ekstraksi \textit{Spectrogram} dan augmentasi data. & 
-    Memberikan komparasi performa Transformer. Mencapai akurasi 89,8\% untuk UrbanSound8K, 95,8\% untuk ESC-50, dan 99\% untuk ESC-10. & 
-    Sumber daya komputasi sangat berat, serta sangat bergantung pada augmentasi sintetik untuk menangani data timpang yang berisiko merusak suara asli.\\ 
+    Klasifikasi suara abnormal. \textit{Transfer learning} Transformer (bobot AudioSet) berbasis \textit{spectrogram} dan penerapan augmentasi data. & 
+    Memberikan komparasi performa Transformer. Mencapai akurasi 89,8\% (UrbanSound8K), 95,8\% (ESC-50), dan 99\% (ESC-10). & 
+    Kebutuhan memori GPU sangat berat (40 GB VRAM), serta augmentasi struktural yang berisiko mendistorsi karakteristik sinyal suara.\\ 
     \hline
+    
     4. & 
     Deep Learning for Urban Sound Classification: Using CNN and YAMNet Model Integration [2025] & 
-    Representasi data untuk klasifikasi. Ekstraksi \textit{Spectrogram}, MFCC, dll., menggunakan integrasi \textit{pre-trained} YAMNet dengan CNN. & 
-    Membuktikan efektivitas YAMNet dibandingkan model hibrida konvensional (CNN-LSTM) dengan akurasi mengesankan sebesar 98\%. & 
-    Belum mengeksplorasi \textit{Hybrid Input} (\textit{Raw Waveform} dan spektral) serta absennya implementasi \textit{Cost-Sensitive Learning} untuk kelas minoritas.\\
+    Representasi kognitif untuk klasifikasi. Integrasi model \textit{pre-trained} YAMNet dengan ekstraksi \textit{spectrogram}, MFCC, LPC, dan \textit{wavelet}. & 
+    Membuktikan efektivitas CNN-YAMNet dibandingkan arsitektur hibrida konvensional dengan tingkat akurasi yang mengesankan sebesar 98\%. & 
+    Fitur LPC kurang relevan, beban komputasi \textit{wavelet} berat, serta absennya intervensi \textit{cost-sensitive learning} untuk kelas minoritas.\\
     \hline
+    
     5. & 
     A Study on AI-Driven Acoustic Feature Design for Urban Noise Classification [2025] & 
-    Kurangnya keragaman skenario dan augmentasi yang merusak suara. Melatih ResNet-TF pada domain waktu-frekuensi secara grafis. & 
-    Menciptakan standar pra-pemrosesan data dan augmentasi \textit{screening}. Mampu menangkap detail suara perkotaan secara lebih baik. & 
-    Sangat bergantung pada pembuatan data sintetik yang memakan waktu lama dan rentan mengubah keaslian suara asli (kelas minoritas).\\
+    Kurangnya keragaman skenario bising. Melatih ResNet-TF dari awal pada domain waktu-frekuensi dengan \textit{dataset} mandiri (UN15). & 
+    Menciptakan standar pra-pemrosesan baru dan augmentasi dengan \textit{screening}. Mampu menangkap detail suara dengan sangat baik. & 
+    Sangat bergantung pada data sintetik yang memakan waktu komputasi lama dan tetap rentan mengubah keaslian suara asli kelas minoritas.\\
     \hline
 \end{longtable}
 
 \section{Dasar Teori} \label{II.Teori}
 Dasar teori ini akan menjadi fondasi utama dalam menyusun metode dalam penelitian ini.
-Pemaparan diawali dengan membahas mengenai asal usul klasifikasi suara lingkungan (ESC), konsep dasar suara digital, pemrosesan audio digital, serta teknik ekstraksi fitur suara masukan (input) yang digunakan untuk menerjemahkan sinyal audio ke dalam format yang dapat diproses oleh mesin.
-Selanjutnya, pembahasan akan diarahkan pada inti dari penelitian ini, yaitu arsitektur \textit{Deep Learning} yang digunakan, mekanisme \textit{Transfer Learning}, hingga berbagai strategi optimasi dan regulasi pelatihan model.
+Pemaparan diawali dengan membahas mengenai asal usul klasifikasi suara lingkungan (ESC), konsep dasar suara digital, pemrosesan audio digital, serta teknik ekstraksi fitur suara masukan (\textit{input}) yang digunakan untuk menerjemahkan sinyal audio ke dalam format yang dapat diproses oleh mesin.
+Selanjutnya, pembahasan akan diarahkan pada inti dari penelitian ini, yaitu arsitektur \textit{deep learning} yang digunakan, mekanisme \textit{transfer learning}, hingga berbagai strategi optimasi dan regulasi pelatihan model.
 Sebagai penutup, metrik evaluasi akan diuraikan pada bab ini sebagai bahan analisis untuk menyimpulkan hasil dari penelitian ini.
 
 \subsection{\textit{Environmental Sound Classification} (ESC)} \label{II.Teori1}
@@ -122,7 +137,7 @@ Keterbatasan visual penyandang tunarungu dapat dijembatani melalui teknologi pen
 % Tantangan
 Namun, klasifikasi suara lingkungan memiliki tantangan tersendiri.
 Tantangan tersebut terletak pada variasi jarak pengambilan sampel dan pencampuran dengan kebisingan latar belakang \cite{bansal2022environmental}.
-Oleh karena itu, diperlukan pendekatan komputasi yang kuat, seperti \textit{Deep Learning} untuk mengekstraksi pola inti fitur dan mengatasi variasi akustik pada ESC \cite{piczak2015environmental}. \par
+Oleh karena itu, diperlukan pendekatan komputasi yang kuat, seperti \textit{deep learning} untuk mengekstraksi pola inti fitur dan mengatasi variasi akustik pada ESC \cite{piczak2015environmental}. \par
 
 \subsection{Konsep Suara Digital} \label{II.Teori2}
 Pada mulanya, suara yang didengar manusia memiliki sinyal fisik yang tidak dapat dilihat secara langsung.
@@ -168,12 +183,12 @@ Adapun tiga komponen utama yang membentuk karakteristik dari suara digital adala
 		
 		Dalam proses komputasi, format saluran ini secara langsung memengaruhi dimensi struktur data pada memori mesin.
 		Suara dengan format \textit{mono} direpresentasikan sebagai satu baris deret (\textit{array}) nilai amplitudo, sedangkan suara \textit{stereo} direpresentasikan sebagai dua baris \textit{array} nilai amplitudo terpisah \cite{li2014fundamentals}.
-		Dalam tahap prapemrosesan (\textit{preprocessing}) data untuk pelatihan model kecerdasan buatan (\textit{Deep Learning}), keberagaman format saluran suara dari data mentah seringkali diseragamkan (\textit{down-mixing}) menjadi format \textit{mono} \cite{kong2020panns}. 
-		Hal ini dilakukan untuk menjaga konsistensi dimensi data input pada model dan meminimalkan beban komputasi tanpa menghilangkan fitur utama dari sinyal suara tersebut. \par
+		Dalam tahap prapemrosesan (\textit{preprocessing}) data untuk pelatihan model kecerdasan buatan (\textit{deep learning}), keberagaman format saluran suara dari data mentah seringkali diseragamkan (\textit{down-mixing}) menjadi format \textit{mono} \cite{kong2020panns}. 
+		Hal ini dilakukan untuk menjaga konsistensi dimensi data \textit{input} pada model dan meminimalkan beban komputasi tanpa menghilangkan fitur utama dari sinyal suara tersebut. \par
 \end{enumerate}
 
-\subsection{Dataset UrbanSound8K} \label{II.Teori3}
-Dataset UrbanSound8K merupakan kumpulan data yang mengandung 8732 suara kejadian di lingkungan perkotaan.
+\subsection{\textit{Dataset} UrbanSound8K} \label{II.Teori3}
+\textit{Dataset} UrbanSound8K merupakan kumpulan data yang mengandung 8732 suara kejadian di lingkungan perkotaan.
 Semua \textit{file} audio di dalam UrbanSound8K berdurasi maksimal 4 detik dan berekstensi \texttt{.wav} \cite{salamon2014dataset}. 
 UrbanSound8K mengelompokkan label datanya ke dalam 10 kelas, di mana kategori tersebut mencakup :
 
@@ -190,23 +205,23 @@ UrbanSound8K mengelompokkan label datanya ke dalam 10 kelas, di mana kategori te
 	\item street music (musik jalanan)
 \end{enumerate}
  
-Selain \textit{file} audio, dataset ini juga menyediakan \textit{file} \texttt{.csv} sebagai informasi metadata untuk setiap \textit{file} audionya.
+Selain \textit{file} audio, \textit{dataset} ini juga menyediakan \textit{file} \texttt{.csv} sebagai informasi metadata untuk setiap \textit{file} audionya.
 Terdapat format penamaan \textit{file} audio di dalam \textit{file} metadata tersebut dengan format : \texttt{[fsID]-[classID]-[occurrenceID]-[sliceID].wav}.
 Penomoran \texttt{classID} dimulai dari angka 0 sampai 9, sesuai dengan urutan yang tertera di atas \cite{salamon2014dataset}. \par
 
 Semua file audio telah disusun ke dalam 10 fold, dengan format penamaan folder : `fold1` - `fold10`.
 Penyusunan ini dibuat sedemikian rupa karena ada beberapa \textit{file} audio yang direkam di tempat dan kejadian yang sama, sehingga beberapa rekaman tersebut disatukan pada fold yang sama demi menghindari kebocoran data.
 Kebocoran data merupakan fenomena yang terjadi saat data yang seharusnya menjadi data uji, tercampur dengan data latih sehingga model mendapatkan karakteristik suara yang sama saat validasi pembelajaran (dan berlaku sebaliknya).
-Maka dari itu, pembuat dataset sangat tidak menganjurkan pengacakan data ulang karena berpotensi mengakibatkan model mengalami overfitting, yaitu model memiliki nilai akurasi tinggi hanya saat memprediksi data latihnya saja \cite{salamon2014dataset}.
+Maka dari itu, pembuat \textit{dataset} sangat tidak menganjurkan pengacakan data ulang karena berpotensi mengakibatkan model mengalami overfitting, yaitu model memiliki nilai akurasi tinggi hanya saat memprediksi data latihnya saja \cite{salamon2014dataset}.
 Ketika diberikan data baru yang belum pernah dipelajari sebelumnya, maka model akan gagal memahami data dan mengalami penurunan performa ketika dihadapkan pada suara baru dengan label yang sama. \par
 
-Dalam dataset UrbanSound8K, \textit{file} audionya merupakan hasil kompilasi rekaman dari berbagai kontributor di situs repositori Freesound, sehingga \textit{sampling rate}, \textit{bit depth}, dan format saluran suara tidak seragam \cite{salamon2014dataset}.
-Agar model memiliki dimensi input yang sesuai dan seragam, diperlukan tahap prapemrosesan data untuk menyamaratakan dimensi data pada UrbanSound8K.
+Dalam \textit{dataset} UrbanSound8K, \textit{file} audionya merupakan hasil kompilasi rekaman dari berbagai kontributor di situs repositori Freesound, sehingga \textit{sampling rate}, \textit{bit depth}, dan format saluran suara tidak seragam \cite{salamon2014dataset}.
+Agar model memiliki dimensi \textit{input} yang sesuai dan seragam, diperlukan tahap prapemrosesan data untuk menyamaratakan dimensi data pada UrbanSound8K.
 
 \subsection{Prapemrosesan Data} \label{II.Teori4}
 Salah satu kunci utama penentu keberhasilan model kecerdasan buatan dalam tugas klasifikasi adalah kualitas data yang digunakan \cite{han2011data}.
-Mengingat tingginya variasi karakteristik fisik audio pada dataset mentah UrbanSound8K, tahap prapemrosesan (\textit{preprocessing}) data perlu dilakukan sebelum data tersebut digunakan untuk pelatihan model.
-Tahapan ini bertujuan untuk menyamaratakan karakteristik kualitas data sesuai dengan kebutuhan input model untuk mendapatkan hasil performa maksimal \cite{han2011data}. \par
+Mengingat tingginya variasi karakteristik fisik audio pada \textit{dataset} mentah UrbanSound8K, tahap prapemrosesan (\textit{preprocessing}) data perlu dilakukan sebelum data tersebut digunakan untuk pelatihan model.
+Tahapan ini bertujuan untuk menyamaratakan karakteristik kualitas data sesuai dengan kebutuhan \textit{input} model untuk mendapatkan hasil performa maksimal \cite{han2011data}. \par
 Adapun tahapan prapemrosesan data yang diterapkan pada sinyal suara digital dijelaskan sebagai berikut:
 
 \begin{enumerate}
@@ -238,18 +253,18 @@ Adapun tahapan prapemrosesan data yang diterapkan pada sinyal suara digital dije
 	
 	\item \textbf{\textit{Resampling}} \\
 	\textit{Resampling} adalah proses transformasi digital untuk mengubah \textit{sampling rate} dari suatu sinyal audio \cite{oppenheim2010discrete}.
-	Dalam konteks tugas klasifikasi, proses ini sangat krusial karena arsitektur model klasifikasi mensyaratkan dimensi input yang seragam.
-	Jika dataset terdiri dari berbagai rekaman audio dengan \textit{sampling rate} yang bervariasi (misalnya 16.000 Hz, 44.100 Hz, 48.000 Hz), model akan kesulitan memproses panjang \textit{array} yang berbeda-beda untuk durasi rekaman yang sama. 
+	Dalam konteks tugas klasifikasi, proses ini sangat krusial karena arsitektur model klasifikasi mensyaratkan dimensi \textit{input} yang seragam.
+	Jika \textit{dataset} terdiri dari berbagai rekaman audio dengan \textit{sampling rate} yang bervariasi (misalnya 16.000 Hz, 44.100 Hz, 48.000 Hz), model akan kesulitan memproses panjang \textit{array} yang berbeda-beda untuk durasi rekaman yang sama. 
 	Oleh karena itu, seluruh audio mentah tersebut harus diseragamkan ke satu nilai \textit{sampling rate} standar. \par
 	
 	Demi menjaga karakteristik suara, proses \textit{resampling} harus tetap mematuhi Teorema Nyquist-Shannon yang telah diuraikan sebelumnya. 
 	Hal ini bertujuan agar frekuensi tertinggi yang merepresentasikan karakteristik utama suara tidak hilang atau mengalami distorsi (\textit{aliasing}) \cite{oppenheim2010discrete}. \par
 	
 	\item \textbf{Penyeragaman Durasi (\textit{Zero-Padding} dan \textit{Truncating})} \\
-	Karakteristik model klasifikasi pada umumnya mensyaratkan dimensi input yang bernilai tetap (\textit{fixed-length}) untuk dapat memproses data tersebut \cite{goodfellow2016deep}.
+	Karakteristik model klasifikasi pada umumnya mensyaratkan dimensi \textit{input} yang bernilai tetap (\textit{fixed-length}) untuk dapat memproses data tersebut \cite{goodfellow2016deep}.
 	Panjang rekaman audio yang bervariasi menghasilkan panjang \textit{array} sinyal digital yang tidak seragam, sehingga model akan gagal melakukan komputasi jika data mentah tersebut dimasukkan. \par 
 	
-	Untuk mengatasi inkonsistensi durasi ini, diterapkan teknik \textit{zero-padding} pada sinyal yang berdurasi lebih pendek dari target durasi input, dan \textit{truncating} (pemotongan) pada sinyal yang melebihi target.
+	Untuk mengatasi inkonsistensi durasi ini, diterapkan teknik \textit{zero-padding} pada sinyal yang berdurasi lebih pendek dari target durasi \textit{input}, dan \textit{truncating} (pemotongan) pada sinyal yang melebihi target.
 	\textit{Zero-padding} adalah metode penambahan deret nilai amplitudo nol, yang berarti keheningan (\textit{silence}) pada bagian ujung akhir \textit{array} sinyal audio \cite{proakis2006digital}. 
 	Karena nilai nol merepresentasikan ketiadaan suara, penambahan ini memperpanjang durasi audio tanpa mengubah karakteristik frekuensi maupun informasi dari sinyal aslinya. \par
 
@@ -278,24 +293,24 @@ Adapun tahapan prapemrosesan data yang diterapkan pada sinyal suara digital dije
   \end{itemize}
   \medskip
 
-	Melalui standarisasi ini, seluruh data audio memiliki dimensi ruang yang seragam sehingga kompatibel dengan persyaratan input arsitektur model klasifikasi dan siap untuk diekstraksi fiturnya. \par 
+	Melalui standarisasi ini, seluruh data audio memiliki dimensi ruang yang seragam sehingga kompatibel dengan persyaratan \textit{input} arsitektur model klasifikasi dan siap untuk diekstraksi fiturnya. \par 
 
 \end{enumerate}
 
-\subsection{Representasi Input Suara} \label{II.Teori5}
-Setelah menjalani seluruh tahap prapemrosesan, dilakukan pembentukan representasi input untuk model yang dikenal sebagai ekstraksi fitur.
-Sinyal audio digital dalam bentuk mentah, yang disebut \textit{Raw Waveform}, merupakan deretan nilai amplitudo satu dimensi (1D) yang diurutkan berdasarkan indeks waktu.
+\subsection{Representasi \textit{Input} Suara} \label{II.Teori5}
+Setelah menjalani seluruh tahap prapemrosesan, dilakukan pembentukan representasi \textit{input} untuk model yang dikenal sebagai ekstraksi fitur.
+Sinyal audio digital dalam bentuk mentah, yang disebut \textit{raw waveform}, merupakan deretan nilai amplitudo satu dimensi (1D) yang diurutkan berdasarkan indeks waktu.
 Meskipun kaya akan informasi, representasi mentah ini mengandung dimensi deretan nilai yang sangat besar dan dinamika amplitudo yang cukup kompleks sehingga dapat menyulitkan model klasifikasi dalam menemukan pola inti pada sinyal \cite{virtanen2018computational}.
-Untuk menonjolkan inti karakteristik suara, serangkaian proses transformasi matematis buatan (\textit{hand-crafted features}) diterapkan pada \textit{Raw Waveform} untuk diubah ke dalam representasi berdomain frekuensi, yaitu \textit{Log-mel Spectrogram} \cite{virtanen2018computational}.
+Untuk menonjolkan inti karakteristik suara, serangkaian proses transformasi matematis buatan (\textit{hand-crafted features}) diterapkan pada \textit{raw waveform} untuk diubah ke dalam representasi berdomain frekuensi, yaitu \textit{log-mel spectrogram} \cite{virtanen2018computational}.
 Representasi ini memproyeksikan sinyal ke dalam bentuk dua dimensi (2D) dengan pemetaan nilai frekuensi pada setiap indeks waktu, sehingga informasi sinyal audio lebih mudah untuk dipelajari. 
 Meski memudahkan pemrosesan, representasi ini tidak menyajikan informasi yang lengkap akibat tahapan reduksi informasi melalui transformasi matematis buatan tersebut.
-Dimensi representasi input yang berbeda ini dapat memengaruhi cara arsitektur model klasifikasi mengekstraksi pola serta beban komputasinya. \par
+Dimensi representasi \textit{input} yang berbeda ini dapat memengaruhi cara arsitektur model klasifikasi mengekstraksi pola serta beban komputasinya. \par
 
 \subsubsection{\textit{Raw Waveform}} \label{II.Teori5.1}
-Raw Waveform merupakan representasi digital satu dimensi (1D) yang berisikan deretan nilai diskrit amplitudo pada audio, yang jika divisualisasikan akan membentuk sebuah gelombang audio tersebut.
+\textit{Raw waveform} merupakan representasi digital satu dimensi (1D) yang berisikan deretan nilai diskrit amplitudo pada audio, yang jika divisualisasikan akan membentuk sebuah gelombang audio tersebut.
 Audio dengan representasi tersebut umumnya memiliki format ekstensi berupa \texttt{.wav}, yang berisikan data PCM (\textit{Pulse-Code Modulation}) berupa representasi sinyal digital yang belum terkompresi (\textit{lossless}).
 Format tersebut menandakan kualitas serta informasi pada audio tersebut masih murni dan lengkap. 
-Semua \textit{file} audio pada UrbanSound8K memiliki format \texttt{.wav}, sehingga keutuhan informasi akustik terjaga pada dataset ini.
+Semua \textit{file} audio pada UrbanSound8K memiliki format \texttt{.wav}, sehingga keutuhan informasi akustik terjaga pada \textit{dataset} ini.
 
 \begin{figure}[H]
     \centering
@@ -304,8 +319,8 @@ Semua \textit{file} audio pada UrbanSound8K memiliki format \texttt{.wav}, sehin
     \label{fig:waveform}
 \end{figure}
 
-Proses pembentukan \textit{Raw Waveform} seperti pada Gambar \ref{fig:waveform} berawal dari gelombang sinyal suara yang sudah mengalami konversi digital, yang kemudian direpresentasikan ke dalam bentuk \textit{array} dengan dimensi berdasarkan indeks durasinya.
-Total dimensi panjang \textit{array} ($N$) pada \textit{Raw Waveform} merupakan hasil kali antara durasi rekaman dalam detik ($T$) dengan \textit{sampling rate} ($f_s$).
+Proses pembentukan \textit{raw waveform} seperti pada Gambar \ref{fig:waveform} berawal dari gelombang sinyal suara yang sudah mengalami konversi digital, yang kemudian direpresentasikan ke dalam bentuk \textit{array} dengan dimensi berdasarkan indeks durasinya.
+Total dimensi panjang \textit{array} ($N$) pada \textit{raw waveform} merupakan hasil kali antara durasi rekaman dalam detik ($T$) dengan \textit{sampling rate} ($f_s$).
 Nilai amplitudo dapat berupa nilai positif bahkan negatif yang umumnya berada pada rentang -1 sampai 1 \cite{proakis2006digital}.
 Semakin jauh nilai tersebut dari titik nol, maka intensitas suara yang dihasilkan semakin tinggi (kencang).
 
@@ -326,7 +341,7 @@ Rangkaian spektrum dari setiap bingkai ini kemudian disusun secara temporal memb
 Setelah mendapatkan gabungan spektrum frekuensi tersebut, skala frekuensi yang digunakan masih berupa skala linear (teratur) dan tidak sesuai dengan pendengaran manusia.
 Pada kenyataannya, telinga manusia sangat sensitif membedakan nada rendah (misal membedakan 100 Hz dan 200 Hz), tetapi sangat susah membedakan nada tinggi (10.000 Hz dan 10.100 Hz terdengar sama saja).
 Maka dari itu, Skala Mel (\textit{Mel-Scale}) digunakan untuk mengubah resolusi pembacaan frekuensi suara agar menyerupai persepsi pendengaran manusia, sehingga membuat representasi fitur suara menjadi lebih realistis \cite{muller2015fundamentals}.
-\textit{Spectrogram} yang telah diproses dengan \textit{Mel-Scale} disebut \textit{Mel-Spectrogram}. \par
+\textit{Spectrogram} yang telah diproses dengan \textit{Mel-Scale} disebut \textit{mel-spectrogram}. \par
 
 \begin{figure}[H]
     \centering
@@ -335,11 +350,11 @@ Maka dari itu, Skala Mel (\textit{Mel-Scale}) digunakan untuk mengubah resolusi 
     \label{fig:mel_spectro}
 \end{figure}
 
-Namun, proyeksi pada \textit{Mel-Spectrogram} masih memberikan rentang intensitas suara yang cukup jauh, sehingga grafik hanya menampilkan warna terang pada titik intensitas suara yang cukup tinggi.
+Namun, proyeksi pada \textit{mel-spectrogram} masih memberikan rentang intensitas suara yang cukup jauh, sehingga grafik hanya menampilkan warna terang pada titik intensitas suara yang cukup tinggi.
 Ini mengakibatkan nilai warna pada detail minor suara yang ingin dipelajari tidak terproyeksi dengan maksimal, sehingga sulit untuk mengklasifikasi dengan detail yang seharusnya penting pada pendengaran manusia.
-Maka dari itu, operasi logaritmik menjadi solusi dengan mengompresi rentang dinamis (\textit{dynamic range compression}) nilai amplitudo pada \textit{Mel-Spectrogram}.
+Maka dari itu, operasi logaritmik menjadi solusi dengan mengompresi rentang dinamis (\textit{dynamic range compression}) nilai amplitudo pada \textit{mel-spectrogram}.
 Seluruh nilai amplitudo pada grafik tersebut dikonversi menggunakan operasi logaritmik ke dalam satuan Desibel (dB) \cite{muller2015fundamentals}.
-Proyeksi \textit{Mel-Spectrogram} yang telah diberikan transformasi logaritmik (dapat disebut \textit{Log-mel Spectrogram}) sangat menyerupai pendengaran manusia sehingga mesin dapat mempelajari suara tersebut layaknya manusia mempelajarinya. \par
+Proyeksi \textit{mel-spectrogram} yang telah diberikan transformasi logaritmik (dapat disebut \textit{log-mel spectrogram}) sangat menyerupai pendengaran manusia sehingga mesin dapat mempelajari suara tersebut layaknya manusia mempelajarinya. \par
 
 \begin{figure}[H]
     \centering
@@ -349,7 +364,7 @@ Proyeksi \textit{Mel-Spectrogram} yang telah diberikan transformasi logaritmik (
 \end{figure}
 
 \subsection{Augmentasi Data} \label{II.Teori6}
-Augmentasi data merupakan salah satu teknik yang efektif dalam memperbanyak variasi data dalam ranah pembelajaran mesin (\textit{Machine Learning}).
+Augmentasi data merupakan salah satu teknik yang efektif dalam memperbanyak variasi data dalam ranah pembelajaran mesin (\textit{machine learning}).
 Variasi tersebut dilakukan dengan cara memanipulasi bagian data, seperti menambahkan gangguan (\textit{noise}) atau melakukan pemotongan durasi secara acak.
 Proses augmentasi dilakukan secara dinamis pada setiap iterasi pelatihan, sehingga model mendapatkan variasi data yang selalu baru.
 Teknik ini berguna untuk mencegah model menghafal data latih (\textit{overfitting}).
@@ -358,143 +373,147 @@ Dengan demikian, model memiliki tingkat generalisasi yang tinggi, yakni kemampua
 Pada penelitian ini, teknik augmentasi yang digunakan berfokus pada ranah temporal, yaitu pemotongan durasi audio secara acak (\textit{Random Cropping}). \par
 
 \subsubsection{\textit{Random Cropping}} \label{II.Teori6.1}
-\textit{Random Cropping} pada audio adalah teknik memperluas variasi data yang beroperasi pada domain waktu (temporal) dengan cara mengambil potongan data audio dengan durasi yang lebih pendek dari durasi keseluruhan sinyal input.
+\textit{Random Cropping} pada audio adalah teknik memperluas variasi data yang beroperasi pada domain waktu (temporal) dengan cara mengambil potongan data audio dengan durasi yang lebih pendek dari durasi keseluruhan sinyal \textit{input}.
 Teknik ini diterapkan pada setiap iterasi pelatihan, diawali dengan memilih titik awal pemotongan secara acak ($t_0$), dengan $t_c$ sebagai panjang durasi pemotongan. 
 Penempatan titik awal pemotongan diperbolehkan pada rentang durasi $0 \le f_0(n) \le T-n$ di mana $T$ merupakan total keseluruhan durasi audio.
 Pengambilan cuplikan secara acak ini memaksa model klasifikasi untuk tidak terpaku pada posisi absolut suatu fitur suara, melainkan belajar mengenali pola suara tersebut terlepas dari waktu kemunculannya \cite{salamon2014dataset}. \par
 
 \subsection{\textit{Convolutional Neural Network} (CNN)} \label{II.Teori7}
-\textit{Convolutional Neural Network} (CNN) adalah arsitektur model \textit{Deep Learning} berupa jaringan saraf khusus yang bekerja dengan cara mengenali pola kisi (\textit{grid}) pada data dan meringkas informasi penting yang didapatkan melalui setiap lapisannya.
+\textit{Convolutional Neural Network} (CNN) adalah arsitektur model \textit{deep learning} berupa jaringan saraf khusus yang bekerja dengan cara mengenali pola kisi (\textit{grid}) pada data dan meringkas informasi penting yang didapatkan melalui setiap lapisannya.
 Data yang dikenali oleh jaringan ini dapat berupa data dengan domain waktu (\textit{time-series}) yang bersifat satu dimensi (1D) atau dalam bentuk gambar yang berisikan \textit{grid} atau piksel (2D).
 Arsitektur ini bekerja dengan memanfaatkan operasi matematika (konvolusi) dengan menggerakkan sebuah kernel konvolusi (\textit{filter}) berukuran tertentu ke sebuah gambar, sehingga didapatkan representasi fitur baru yang dikenal sebagai peta fitur (\textit{feature map}) \cite{goodfellow2016deep}. \par
 
-% [GAMBAR STRUKTUR SEDERHANA]
-
 Arsitektur CNN dibagi menjadi dua bagian besar, yaitu lapisan ekstraksi fitur (\textit{Feature Extraction Layer}) dan lapisan klasifikasi (\textit{Classification Layer}).
-\textit{Feature Extraction Layer} merupakan lapisan yang menerima dan mengekstraksi fitur input yang telah diberikan ke dalam peta fitur (\textit{Feature Map}) multidimensi.
+\textit{Feature Extraction Layer} merupakan lapisan yang menerima dan mengekstraksi fitur \textit{input} yang telah diberikan ke dalam peta fitur (\textit{Feature Map}) multidimensi.
 Pada tahap akhir ekstraksi, peta fitur tersebut diratakan (\textit{flatten}) menjadi vektor satu dimensi (1D).  
 \textit{Classification Layer} akan memproses hasil vektor dari lapisan sebelumnya dan melakukan klasifikasi terhadap fitur-fitur tersebut ke dalam kelas yang telah dipetakan \cite{goodfellow2016deep}. \par
 
-\subsubsection{\textit{Kernel} dan \textit{Stride}} \label{II.Teori7.1}
-\textit{Kernel} (filter) adalah komponen berupa matriks 2 dimensi yang berisi nilai-nilai bobot (\textit{weights}).
-Umumnya ukuran \textit{kernel} yang digunakan berupa persegi $3 \times 3$, $5 \times 5$, dan $7 \times 7$. 
-Saat lapisan ekstraksi bekerja, komponen ini terus bergeser menimpa gambar dan mengkalkulasikan nilai di dalam kernel dengan nilai \textit{pixel} gambar di bawahnya dengan operasi perkalian titik (\textit{dot product}). 
-Hasil operasi tersebut dijumlahkan menjadi satu nilai baru pada \textit{feature map} \cite{goodfellow2016deep}.
-Melalui banyaknya iterasi pelatihan, nilai bobot awal terus diperbarui dari evaluasi pelatihan.
-Kemampuan ini yang membuat model dapat mengekstraksi pola fitur penting pada gambar. \par
+\textit{Feature extraction layer} biasanya memiliki beberapa komponen lapisan yang menjalankan aktivitas ekstraksi tersebut.
+Beberapa komponen tersebut diantaranya adalah \textit{kernel} sebagai jendela pengamat fitur, \textit{stride} yang mengatur langkah \textit{kernel}, \textit{Batch Normalization} (BN) sebagai pengatur rentang nilai fitur, \textit{Rectified Linear Unit} (ReLU) yang mengubah nilai negatif menjadi nol, dan \textit{Pooling} untuk mereduksi dimensi ukuran fitur.
+Setelah lapisan ekstraksi, terdapat \textit{classification layer} yang berupa \textit{fully connected layer} yang menghasilkan angka mentah untuk setiap pilihan kelas data.
+Untuk memperjelas nilai, maka digunakan beberapa fungsi aktivasi untuk mengubah angka mentah tersebut menjadi probabilitas.
+Dalam kasus klasifikasi \textit{single-label}, digunakan fungsi aktivasi \textit{softmax} dan klasifikasi \textit{multi-label} menggunakan \textit{sigmoid}. \par
 
-\textit{Stride} merupakan mekanisme yang mendukung \textit{kernel} dalam pengaturan langkah pergeseran dengan nilai tertentu.
-Jika \textit{stride} bernilai 2, maka \textit{kernel} akan bergeser dengan jarak sebesar 2 \textit{pixel}.
-Semakin besar nilai \textit{stride} yang ditetapkan, maka ukuran dimensi spasial pada \textit{feature map} semakin menyusut \cite{dumoulin2016guide}.
-Mekanisme ini penting dalam menjaga beban komputasi dan memori yang tidak berlebihan pada lapisan berikutnya. \par
+% \subsubsection{\textit{Kernel} dan \textit{Stride}} \label{II.Teori7.1}
+% \textit{Kernel} (filter) adalah komponen berupa matriks 2 dimensi yang berisi nilai-nilai bobot (\textit{weights}).
+% Umumnya ukuran \textit{kernel} yang digunakan berupa persegi $3 \times 3$, $5 \times 5$, dan $7 \times 7$. 
+% Saat lapisan ekstraksi bekerja, komponen ini terus bergeser menimpa gambar dan mengkalkulasikan nilai di dalam kernel dengan nilai \textit{pixel} gambar di bawahnya dengan operasi perkalian titik (\textit{dot product}). 
+% Hasil operasi tersebut dijumlahkan menjadi satu nilai baru pada \textit{feature map} \cite{goodfellow2016deep}.
+% Melalui banyaknya iterasi pelatihan, nilai bobot awal terus diperbarui dari evaluasi pelatihan.
+% Kemampuan ini yang membuat model dapat mengekstraksi pola fitur penting pada gambar. \par
 
-\subsubsection{\textit{Batch Normalization} (BN)} \label{II.Teori7.2}
-Nilai-nilai yang telah dipetakan ke dalam \textit{feature map} pada setiap lapisannya memiliki rentang dinamika nilai yang tidak teratur pada kumpulan representasi fiturnya (\textit{batch}).
-Hal tersebut menyebabkan arah pembelajaran model menjadi tidak stabil dan memperlambat proses pencapaian nilai optimal, sehingga diperlukan proses normalisasi pada kumpulan nilai tersebut \cite{ioffe2015batch}. \par
+% \textit{Stride} merupakan mekanisme yang mendukung \textit{kernel} dalam pengaturan langkah pergeseran dengan nilai tertentu.
+% Jika \textit{stride} bernilai 2, maka \textit{kernel} akan bergeser dengan jarak sebesar 2 \textit{pixel}.
+% Semakin besar nilai \textit{stride} yang ditetapkan, maka ukuran dimensi spasial pada \textit{feature map} semakin menyusut \cite{dumoulin2016guide}.
+% Mekanisme ini penting dalam menjaga beban komputasi dan memori yang tidak berlebihan pada lapisan berikutnya. \par
 
-\textit{Batch Normalization} (BN) merupakan mekanisme normalisasi rentang nilai yang diperoleh dari setiap \textit{feature map} sebelum diproses oleh lapisan selanjutnya.
-Normalisasi tersebut dilakukan dengan mengurangkan setiap nilai fitur dengan rata-rata (\textit{mean}) dari \textit{batch} tersebut, kemudian membaginya dengan standar deviasi \cite{ioffe2015batch}.
-Tujuan dari operasi ini adalah untuk memetakan rata-rata nilai \textit{batch} menjadi nol dan variansi nilai menjadi satu. 
-Mekanisme ini menghasilkan nilai fitur yang lebih mudah untuk diproses menuju lapisan berikutnya. \par
+% \subsubsection{\textit{Batch Normalization} (BN)} \label{II.Teori7.2}
+% Nilai-nilai yang telah dipetakan ke dalam \textit{feature map} pada setiap lapisannya memiliki rentang dinamika nilai yang tidak teratur pada kumpulan representasi fiturnya (\textit{batch}).
+% Hal tersebut menyebabkan arah pembelajaran model menjadi tidak stabil dan memperlambat proses pencapaian nilai optimal, sehingga diperlukan proses normalisasi pada kumpulan nilai tersebut \cite{ioffe2015batch}. \par
 
-Setelah nilai dinormalisasikan, BN memiliki dua parameter yang dapat dipelajari, yaitu skala ($\gamma$) dan pergeseran ($\beta$).
-Kedua parameter tersebut berfungsi untuk memanipulasi ulang rentang nilai tersebut jika dibutuhkan oleh lapisan selanjutnya \cite{ioffe2015batch}. \par
+% \textit{Batch Normalization} (BN) merupakan mekanisme normalisasi rentang nilai yang diperoleh dari setiap \textit{feature map} sebelum diproses oleh lapisan selanjutnya.
+% Normalisasi tersebut dilakukan dengan mengurangkan setiap nilai fitur dengan rata-rata (\textit{mean}) dari \textit{batch} tersebut, kemudian membaginya dengan standar deviasi \cite{ioffe2015batch}.
+% Tujuan dari operasi ini adalah untuk memetakan rata-rata nilai \textit{batch} menjadi nol dan variansi nilai menjadi satu. 
+% Mekanisme ini menghasilkan nilai fitur yang lebih mudah untuk diproses menuju lapisan berikutnya. \par
 
-\subsubsection{\textit{Rectified Linear Unit} (ReLU)} \label{II.Teori7.3}
-\textit{Rectified Linear Unit} (ReLU) merupakan fungsi aktivasi non-linear yang mengubah nilai negatif pada peta fitur menjadi nol.
-Fungsi tersebut berisikan persamaan matematis sederhana berupa $f(x)=\max(0, x)$, di mana $x$ adalah nilai awal yang dibandingkan dengan nilai nol.
-Jika nilai $x$ bernilai positif ($x > 0$), maka nilai tersebut dipertahankan ($f(x) = x$). Sebaliknya, jika $x$ bernilai negatif atau batas nol ($x \le 0$), maka nilainya diubah menjadi nol \cite{nair2010rectified}. \par 
+% Setelah nilai dinormalisasikan, BN memiliki dua parameter yang dapat dipelajari, yaitu skala ($\gamma$) dan pergeseran ($\beta$).
+% Kedua parameter tersebut berfungsi untuk memanipulasi ulang rentang nilai tersebut jika dibutuhkan oleh lapisan selanjutnya \cite{ioffe2015batch}. \par
 
-Operasi pada lapisan konvolusi dengan komponen \textit{Kernel} dan \textit{Stride} bersifat linear, yang hanya mengandung operasi perkalian dan penjumlahan.
-Jika proses ekstraksi tersebut tidak diberi fungsi aktivasi, maka model tersebut hanya bersifat satu model regresi linear besar yang tidak mampu memahami pola-pola kompleks dan non-linear pada data \cite{goodfellow2016deep}. 
-Dengan adanya fungsi ReLU, proses ekstraksi fitur menghasilkan nilai spesifik dan memudahkan komputasi pada lapisan model. \par
+% \subsubsection{\textit{Rectified Linear Unit} (ReLU)} \label{II.Teori7.3}
+% \textit{Rectified Linear Unit} (ReLU) merupakan fungsi aktivasi non-linear yang mengubah nilai negatif pada peta fitur menjadi nol.
+% Fungsi tersebut berisikan persamaan matematis sederhana berupa $f(x)=\max(0, x)$, di mana $x$ adalah nilai awal yang dibandingkan dengan nilai nol.
+% Jika nilai $x$ bernilai positif ($x > 0$), maka nilai tersebut dipertahankan ($f(x) = x$). Sebaliknya, jika $x$ bernilai negatif atau batas nol ($x \le 0$), maka nilainya diubah menjadi nol \cite{nair2010rectified}. \par 
 
-\subsubsection{\textit{Max Pooling}} \label{II.Teori7.4}
-\textit{Max Pooling} merupakan salah satu teknik \textit{Pooling} yang mengurangi dimensi data dengan memangkas ukuran spasial peta fitur (\textit{feature map}). 
-Pengurangan dimensi tersebut membuat model benar-benar mempelajari inti fitur, sehingga menghindari model mengalami \textit{overfitting} serta mengurangi beban komputasi memori \cite{scherer2010evaluation}.
-Mekanisme \textit{Max Pooling} bekerja menggunakan sebuah jendela berukuran tertentu yang bergeser di atas \textit{feature map}.
-Pada setiap area yang disorot oleh jendela tersebut, mekanisme ini hanya mengambil satu nilai terbesar dan membuang nilai di sekitarnya. \par
+% Operasi pada lapisan konvolusi dengan komponen \textit{Kernel} dan \textit{Stride} bersifat linear, yang hanya mengandung operasi perkalian dan penjumlahan.
+% Jika proses ekstraksi tersebut tidak diberi fungsi aktivasi, maka model tersebut hanya bersifat satu model regresi linear besar yang tidak mampu memahami pola-pola kompleks dan non-linear pada data \cite{goodfellow2016deep}. 
+% Dengan adanya fungsi ReLU, proses ekstraksi fitur menghasilkan nilai spesifik dan memudahkan komputasi pada lapisan model. \par
 
-Pada data gambar atau \textit{spectrogram} suara, nilai piksel yang besar merepresentasikan fitur yang paling tajam, di mana dalam \textit{spectrogram} berarti sinyal suara yang paling dominan \cite{scherer2010evaluation}.
-Penggunaan \textit{Max Pooling} akan mempertahankan fitur penting tersebut, sehingga karakteristik sinyal suara yang kuat tidak akan hilang walaupun dimensi data semakin mengecil. 
-Selain itu, mekanisme pengambilan nilai maksimal ini membuat model memiliki sifat kebal terhadap pergeseran posisi fitur (\textit{Translation Invariance}) pada data \textit{spectrogram} \cite{goodfellow2016deep}. \par
+% \subsubsection{\textit{Max Pooling}} \label{II.Teori7.4}
+% \textit{Max Pooling} merupakan salah satu teknik \textit{Pooling} yang mengurangi dimensi data dengan memangkas ukuran spasial peta fitur (\textit{feature map}). 
+% Pengurangan dimensi tersebut membuat model benar-benar mempelajari inti fitur, sehingga menghindari model mengalami \textit{overfitting} serta mengurangi beban komputasi memori \cite{scherer2010evaluation}.
+% Mekanisme \textit{Max Pooling} bekerja menggunakan sebuah jendela berukuran tertentu yang bergeser di atas \textit{feature map}.
+% Pada setiap area yang disorot oleh jendela tersebut, mekanisme ini hanya mengambil satu nilai terbesar dan membuang nilai di sekitarnya. \par
 
-\subsubsection{\textit{Fully Connected Layer}} \label{II.Teori7.5}
-\textit{Fully Connected} (FC) \textit{Layer} merupakan lapisan pada bagian \textit{Classification Layer} yang berperan dalam pengambilan keputusan klasifikasi akhir.
-Syarat utama input pada lapisan ini adalah data harus berbentuk vektor satu dimensi (1D).
-Oleh karena itu, \textit{feature map} pada lapisan konvolusi sebelumnya yang berbentuk multidimensi diratakan menjadi satu deret baris data melalui proses \textit{flattening}. 
-Proses \textit{flattening} ini dilakukan karena lapisan FC tidak melihat posisi titik fitur secara spasial, melainkan hanya perlu melihat keberadaan kumpulan titik fitur yang menjadi ciri karakteristiknya \cite{goodfellow2016deep}. \par
+% Pada data gambar atau \textit{spectrogram} suara, nilai piksel yang besar merepresentasikan fitur yang paling tajam, di mana dalam \textit{spectrogram} berarti sinyal suara yang paling dominan \cite{scherer2010evaluation}.
+% Penggunaan \textit{Max Pooling} akan mempertahankan fitur penting tersebut, sehingga karakteristik sinyal suara yang kuat tidak akan hilang walaupun dimensi data semakin mengecil. 
+% Selain itu, mekanisme pengambilan nilai maksimal ini membuat model memiliki sifat kebal terhadap pergeseran posisi fitur (\textit{Translation Invariance}) pada data \textit{spectrogram} \cite{goodfellow2016deep}. \par
 
-Berbeda dengan lapisan konvolusi yang hanya melihat sebagian kecil area, lapisan FC menghubungkan setiap titik neuron dari lapisan sebelumnya dengan seluruh neuron pada lapisan berikutnya secara penuh (\textit{fully connected}).
-Cara kerja dari lapisan ini adalah menggabungkan seluruh inti fitur pada lapisan-lapisan sebelumnya untuk mempelajari kombinasi non-linear untuk keputusan akhir \cite{lecun2015deep}.
-Hasil dari lapisan ini merupakan nilai setiap kelas karakteristik yang ditentukan dengan representasi angka mentah (\textit{logits}) \cite{goodfellow2016deep}. \par
+% \subsubsection{\textit{Fully Connected Layer}} \label{II.Teori7.5}
+% \textit{Fully Connected} (FC) \textit{Layer} merupakan lapisan pada bagian \textit{Classification Layer} yang berperan dalam pengambilan keputusan klasifikasi akhir.
+% Syarat utama \textit{input} pada lapisan ini adalah data harus berbentuk vektor satu dimensi (1D).
+% Oleh karena itu, \textit{feature map} pada lapisan konvolusi sebelumnya yang berbentuk multidimensi diratakan menjadi satu deret baris data melalui proses \textit{flattening}. 
+% Proses \textit{flattening} ini dilakukan karena lapisan FC tidak melihat posisi titik fitur secara spasial, melainkan hanya perlu melihat keberadaan kumpulan titik fitur yang menjadi ciri karakteristiknya \cite{goodfellow2016deep}. \par
 
-\subsubsection{\textit{Sigmoid}} \label{II.Teori7.6}
-\textit{Logits} yang dihasilkan oleh lapisan FC masih memiliki nilai ekstrem, di mana angka ini tidak memiliki batasan rentang nilai.
-Oleh karena itu, digunakan fungsi aktivasi \textit{Sigmoid} yang memetakan hasil angka mentah tersebut ke dalam rentang probabilitas yang ketat, yaitu $0$ hingga $1$ \cite{bishop2006pattern}. 
-Mekanisme \textit{Sigmoid} digambarkan melalui operasi matematis berikut:
+% Berbeda dengan lapisan konvolusi yang hanya melihat sebagian kecil area, lapisan FC menghubungkan setiap titik neuron dari lapisan sebelumnya dengan seluruh neuron pada lapisan berikutnya secara penuh (\textit{fully connected}).
+% Cara kerja dari lapisan ini adalah menggabungkan seluruh inti fitur pada lapisan-lapisan sebelumnya untuk mempelajari kombinasi non-linear untuk keputusan akhir \cite{lecun2015deep}.
+% Hasil dari lapisan ini merupakan nilai setiap kelas karakteristik yang ditentukan dengan representasi angka mentah (\textit{logits}) \cite{goodfellow2016deep}. \par
 
-  \begin{equationcaptioned}{
-      \sigma(x) = \frac{1}{1 + e^{-x}}
-      \label{eq:sigmoid}
-  }{
-      Rumus Fungsi Aktivasi \textit{Sigmoid}
-  }
-  \end{equationcaptioned}
+% \subsubsection{\textit{Sigmoid}} \label{II.Teori7.6}
+% \textit{Logits} yang dihasilkan oleh lapisan FC masih memiliki nilai ekstrem, di mana angka ini tidak memiliki batasan rentang nilai.
+% Oleh karena itu, digunakan fungsi aktivasi \textit{Sigmoid} yang memetakan hasil angka mentah tersebut ke dalam rentang probabilitas yang ketat, yaitu $0$ hingga $1$ \cite{bishop2006pattern}. 
+% Mekanisme \textit{Sigmoid} digambarkan melalui operasi matematis berikut:
 
-  \noindent Keterangan:
-  \begin{itemize}
-      \item $x$ : Nilai \textit{logits} dari lapisan FC
-      \item $e$ : Bilangan Euler ($2.718$)
-      \item $\sigma(x)$ : Keluaran nilai \textit{sigmoid} dari \textit{logits} $x$.
-  \end{itemize}
-  \medskip
+%   \begin{equationcaptioned}{
+%       \sigma(x) = \frac{1}{1 + e^{-x}}
+%       \label{eq:sigmoid}
+%   }{
+%       Rumus Fungsi Aktivasi \textit{Sigmoid}
+%   }
+%   \end{equationcaptioned}
 
-Operasi yang dilakukan oleh fungsi ini menghitung probabilitas setiap kelas secara independen, sehingga memungkinkan suatu masukan data memiliki probabilitas tinggi pada lebih dari satu label kelas secara bersamaan. 
-Maka dari itu, fungsi ini umumnya digunakan dalam kasus klasifikasi \textit{multi-label} \cite{goodfellow2016deep}. \par
+%   \noindent Keterangan:
+%   \begin{itemize}
+%       \item $x$ : Nilai \textit{logits} dari lapisan FC
+%       \item $e$ : Bilangan Euler ($2.718$)
+%       \item $\sigma(x)$ : Keluaran nilai \textit{sigmoid} dari \textit{logits} $x$.
+%   \end{itemize}
+%   \medskip
 
-\subsubsection{\textit{Softmax}} \label{II.Teori7.7}
-\textit{Softmax} adalah fungsi aktivasi yang mengubah nilai \textit{logits} dari lapisan FC menjadi distribusi probabilitas.
-Berbeda dengan \textit{Sigmoid} yang memproses setiap kelas secara independen, \textit{Softmax} mengevaluasi nilai satu kelas dengan membandingkannya terhadap seluruh kelas yang ada.
-Oleh karena itu, total keseluruhan probabilitas dari semua kelas ditetapkan berjumlah $1$ ($100\%$).
-Jika nilai probabilitas pada satu kelas bernilai tinggi, maka secara otomatis nilai probabilitas pada kelas lainnya akan menurun menyesuaikan sisa dari total keseluruhan probabilitas \cite{bishop2006pattern}. \par
+% Operasi yang dilakukan oleh fungsi ini menghitung probabilitas setiap kelas secara independen, sehingga memungkinkan suatu masukan data memiliki probabilitas tinggi pada lebih dari satu label kelas secara bersamaan. 
+% Maka dari itu, fungsi ini umumnya digunakan dalam kasus klasifikasi \textit{multi-label} \cite{goodfellow2016deep}. \par
 
-Cara kerja \textit{Softmax} direpresentasikan ke dalam operasi matematis berikut:
+% \subsubsection{\textit{Softmax}} \label{II.Teori7.7}
+% \textit{Softmax} adalah fungsi aktivasi yang mengubah nilai \textit{logits} dari lapisan FC menjadi distribusi probabilitas.
+% Berbeda dengan \textit{Sigmoid} yang memproses setiap kelas secara independen, \textit{Softmax} mengevaluasi nilai satu kelas dengan membandingkannya terhadap seluruh kelas yang ada.
+% Oleh karena itu, total keseluruhan probabilitas dari semua kelas ditetapkan berjumlah $1$ ($100\%$).
+% Jika nilai probabilitas pada satu kelas bernilai tinggi, maka secara otomatis nilai probabilitas pada kelas lainnya akan menurun menyesuaikan sisa dari total keseluruhan probabilitas \cite{bishop2006pattern}. \par
 
-\begin{equationcaptioned}{
-      f(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{K} e^{x_j}}
-      \label{eq:softmax}
-  }{
-      Rumus Fungsi Aktivasi \textit{Softmax}
-  }
-  \end{equationcaptioned}
+% Cara kerja \textit{Softmax} direpresentasikan ke dalam operasi matematis berikut:
 
-  \noindent Keterangan:
-  \begin{itemize}
-      \item $x_i$ : Nilai \textit{logits} untuk kelas ke-$i$.
-      \item $e$ : Bilangan Euler ($2.718$)
-      \item $K$ : Total jumlah kelas
-      \item $\sum$ : Simbol penjumlahan dari seluruh nilai eksponensial \textit{logits} kelas yang ada.
-  \end{itemize}
-  \medskip
+% \begin{equationcaptioned}{
+%       f(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{K} e^{x_j}}
+%       \label{eq:softmax}
+%   }{
+%       Rumus Fungsi Aktivasi \textit{Softmax}
+%   }
+%   \end{equationcaptioned}
 
-Dengan mekanisme tersebut, fungsi \textit{Softmax} menjadi standar mutlak untuk kasus klasifikasi \textit{single-label} dengan multikelas \cite{goodfellow2016deep}. \par
+%   \noindent Keterangan:
+%   \begin{itemize}
+%       \item $x_i$ : Nilai \textit{logits} untuk kelas ke-$i$.
+%       \item $e$ : Bilangan Euler ($2.718$)
+%       \item $K$ : Total jumlah kelas
+%       \item $\sum$ : Simbol penjumlahan dari seluruh nilai eksponensial \textit{logits} kelas yang ada.
+%   \end{itemize}
+%   \medskip
+
+% Dengan mekanisme tersebut, fungsi \textit{Softmax} menjadi standar mutlak untuk kasus klasifikasi \textit{single-label} dengan multikelas \cite{goodfellow2016deep}. \par
 
 \subsection{\textit{Pre-trained Audio Neural Networks} (PANNs)} \label{II.Teori8}
-Dalam dunia pre-trained model, \textit{Pre-trained Audio Neural Networks} (PANNs) menjadi salah satu pilihan yang menyediakan model klasifikasi suara dengan bobot terlatih dari dataset suara berskala besar (AudioSet).
+\textit{Pre-trained Audio Neural Networks} (PANNs) menjadi salah satu pilihan yang menyediakan model klasifikasi suara dengan bobot terlatih dari \textit{dataset} suara berskala besar (AudioSet).
 Arsitektur ini dikembangkan dan dilatih oleh Kong \textit{et al.} (2020) yang menghasilkan keluaran klasifikasinya berupa \textit{multi-label} (\textit{Multi-label Classification}) ke dalam 527 kelas suara \cite{kong2020panns}. 
 Oleh karena itu, diperlukan penyesuaian pada lapisan akhir model agar dapat menghasilkan \textit{output} yang sesuai dengan target kelas suara pada penelitian ini. \par
 
 Penelitian Kong \textit{et al.} mengenai PANNs juga telah mengevalusi performa setiap arsitektur menggunakan tiga metrik utama, yaitu \textit{mean Average Precision} (mAP), \textit{Area Under the Curve} (AUC), dan \textit{d-prime} yang proyeksikan pada Tabel \ref{tab:panns_performance} \cite{kong2020panns}.
-Semua arsitektur yang tergabung dalam PANNs memiliki representasi input yang berbeda-beda.
-Arsitektur PANNs dengan representasi input satu dimensi (1D) meliputi DaiNet, LeeNet, Res1dNet, dan Wavegram-CNN. 
-Selanjutnya, arsitektur dengan representasi input dua dimensi (2D) meliputi CNN, ResNet, dan MobileNet.
-Terakhir, satu-satunya arsitektur dengan pendekatan input hibrida (\textit{hybrid}) adalah Wavegram-Logmel-CNN \cite{kong2020panns}.
-Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi inputnya masing-masing, yaitu Res1dNet31, ResNet38, dan Wavegram-Logmel-CNN14. \par
+Semua arsitektur yang tergabung dalam PANNs memiliki representasi \textit{input} yang berbeda-beda.
+Arsitektur PANNs dengan representasi \textit{input} satu dimensi (1D) meliputi DaiNet, LeeNet, Res1dNet, dan Wavegram-CNN. 
+Selanjutnya, arsitektur dengan representasi \textit{input} dua dimensi (2D) meliputi CNN, ResNet, dan MobileNet.
+Terakhir, satu-satunya arsitektur dengan pendekatan \textit{input} hibrida (\textit{hybrid}) adalah Wavegram-Logmel-CNN \cite{kong2020panns}.
+Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi \textit{input} nya masing-masing, yaitu Res1dNet31, ResNet38, dan Wavegram-Logmel-CNN. \par
 
 \begin{table}[htbp]
     \centering
-    \caption{Performa Berbagai Arsitektur PANNs pada Dataset AudioSet}
+    \caption{Performa Berbagai Arsitektur PANNs pada \textit{Dataset} AudioSet}
     \label{tab:panns_performance}
     \begin{tabular}{lccc}
         \hline
@@ -524,18 +543,21 @@ Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi inp
 \end{table}
 
 \subsubsection{Res1dNet31} \label{II.Teori8.1}
-Res1dNet31 merupakan arsitektur ResNet (\textit{Residual Network}) 1 dimensi milik PANNs yang paling unggul dalam menangani representasi input domain waktu dibandingkan model lainnya dengan jenis input yang sama \cite{kong2020panns}.
-Arsitektur ini menerima \textit{input} berupa sinyal digital 1 dimensi (\textit{Raw Waveform}) dengan \textit{sampling rate} 32 kHz.
-Keunggulan arsitektur ini adalah kemampuannya dalam mempelajari fitur data suara mentah yang diperoleh secara alami dibandingkan fitur \textit{Logmel-Spectrogram} yang sudah diproses dengan metode buatan manusia (STFT dan Logmel). \par
+Res1dNet31 merupakan arsitektur ResNet (\textit{Residual Network}) yang merupakan turunan dari arsitektur CNN berupa satu dimensi milik PANNs yang paling unggul dalam menangani representasi \textit{input} domain waktu dibandingkan model lainnya dengan jenis \textit{input} yang sama \cite{kong2020panns}.
+Arsitektur ini menerima \textit{input} berupa sinyal digital satu dimensi (\textit{raw waveform}) dengan \textit{sampling rate} 32 kHz.
+Keunggulan arsitektur ini adalah kemampuannya dalam mempelajari fitur data suara mentah yang diperoleh secara alami dibandingkan fitur \textit{log-mel spectrogram} yang merupakan \textit{hand-crafted features}. \par
 
-Proses komputasinya diawali dengan mengekstrak fitur \textit{Raw Waveform} menggunakan lapisan konvolusi awal dengan \textit{kernel} berukuran 3 dan \textit{stride} bernilai 5 \cite{kong2020panns}.
-Informasi diproses lebih dalam melalui \textit{backbone} (jaringan pengekstraksi fitur utama) ResNet dengan 14 blok residu (blok dengan fitur jalur pintas, atau \textit{skip connection}) \cite{he2016deep}, di mana setiap blok terdiri dari 2 lapisan konvolusi residu yang masing-masing mengandung dilatasi (perluasan jangkauan \textit{kernel}) 1 dan 2.
-Akhirnya, hasil dari \textit{backbone} dilanjutkan ke 2 lapisan terakhir untuk mendapatkan kesimpulan klasifikasi final.
+Proses komputasinya diawali dengan mengekstrak fitur \textit{raw waveform} menggunakan lapisan konvolusi awal dengan \textit{kernel} berukuran 3 untuk memindai pola fitur pada data. 
+Pemindaian tersebut dilengkapi \textit{stride} bernilai 5, sehingga \textit{kernel} berpindah sebanyak 5 sampel untuk pemindaian selanjutnya \cite{kong2020panns}.
+Informasi diproses lebih dalam melalui \textit{backbone} (jaringan pengekstraksi fitur utama) ResNet dengan 14 blok residu (blok dengan fitur jalur pintas, atau \textit{skip connection}) \cite{he2016deep}.
+Setiap blok mengandung 2 lapisan konvolusi residu yang masing-masing mengandung dilatasi (perluasan jangkauan \textit{kernel}) 1 dan 2.
+\textit{Skip connection} merupakan mekanisme yang memungkinkan model untuk melewati beberapa lapisan residu, sehingga fitur yang dihasilkan tidak tereduksi secara berlebihan. 
+Akhirnya, hasil dari \textit{backbone} dilanjutkan ke 2 lapisan linear terakhir (\textit{fully connected layer}) untuk mendapatkan kesimpulan klasifikasi final.
 Seluruh lapisan pada arsitektur ini berjumlah 31 lapisan \cite{kong2020panns}. \par
 
 \subsubsection{ResNet38} \label{II.Teori8.2}
-ResNet38 merupakan salah satu arsitektur ResNet 2 dimensi milik PANNs dengan nilai mAP tertinggi dalam menangani jenis input dengan dimensi tersebut \cite{kong2020panns}.
-Berbeda dengan Res1dNet31, arsitektur ini menerima input berupa \textit{Raw Waveform} yang nantinya akan diekstrak dan diproses menjadi \textit{Log-mel Spectrogram} (2D) dengan 1000 \textit{frames} dan 64 \textit{mel bins} \cite{kong2020panns}.
+ResNet38 merupakan salah satu arsitektur ResNet 2 dimensi milik PANNs dengan nilai mAP tertinggi dalam menangani jenis \textit{input} dengan dimensi tersebut \cite{kong2020panns}.
+Berbeda dengan Res1dNet31, arsitektur ini menerima \textit{input} berupa \textit{raw waveform} yang nantinya akan diekstrak dan diproses menjadi \textit{log-mel spectrogram} (2D) dengan 1000 \textit{frames} dan 64 \textit{mel bins} \cite{kong2020panns}.
 
 Arsitektur model diawali dengan dua blok konvolusi 64 \textit{filter}\footnote{Pada tabel arsitektur di naskah publikasi asli PANNs, terdapat kesalahan penulisan (\textit{typographical error}) yang mencantumkan angka 512 \textit{filter} pada lapisan awal. Berdasarkan urutan kelogisan arsitektur ResNet serta repositori kode sumber resmi PANNs, jumlah \textit{filter} awal yang akurat adalah 64.} berukuran $3 \times 3$ dan mengandung \textit{Batch Normalization} (BN) serta ReLU.
 Kemudian, \textit{Max Pooling} berukuran $2 \times 2$ diterapkan setelah dua blok tersebut.
@@ -548,26 +570,26 @@ Sebagai lapisan klasifikasi, \textit{Fully Connected Layer} (FC) 2048 \textit{ne
 Keunggulan arsitektur ini terletak pada kemampuannya dalam menangani \textit{input} domain frekuensi yang sudah tergambar dalam grafis multidimensi.
 Hal ini dapat memudahkan arsitektur mengenali pola yang sudah diproses sedemikian rupa sehingga menyerupai pendengaran manusia \cite{stevens1937scale}. \par
 
-\subsubsection{Wavegram-Logmel-CNN14} \label{II.Teori8.3}
-Wavegram-Logmel-CNN14 merupakan arsitektur dengan pendekatan hibrida (\textit{hybrid}) pada keluarga PANNs yang diperkenalkan oleh Kong \textit{et al.} dalam penelitiannya.
-Arsitektur ini menerima input \textit{Raw Waveform} yang diproses dalam dua pendekatan secara bersamaan, yaitu pembentukan \textit{Wavegram} dan \textit{Log-mel Spectrogram} \cite{kong2020panns}. \par
+\subsubsection{Wavegram-Logmel-CNN} \label{II.Teori8.3}
+Wavegram-Logmel-CNN merupakan arsitektur dengan pendekatan hibrida (\textit{hybrid}) pada keluarga PANNs yang diperkenalkan oleh Kong \textit{et al.} dalam penelitiannya.
+Arsitektur ini menerima \textit{input} \textit{raw waveform} yang diproses dalam dua pendekatan secara bersamaan, yaitu pembentukan \textit{Wavegram} dan \textit{log-mel spectrogram} \cite{kong2020panns}. \par
 
 Untuk membentuk \textit{Wavegram}, lapisan awal memproses \textit{input} menggunakan lapisan konvolusi CNN 1 dimensi dengan panjang \textit{kernel} 11 dan \textit{stride} 5.
 Lalu diikuti dengan 3 blok konvolusi 1 dimensi, di mana setiap blok mengandung 2 lapisan konvolusi residu dengan dilatasi bernilai 1 dan 2.
-Fitur yang dihasilkan kemudian dibentuk ulang (\textit{reshape}) menjadi sebuah \textit{Wavegram}, bersamaan dengan ekstraksi fitur \textit{Log-mel Spectrogram}.
+Fitur yang dihasilkan kemudian dibentuk ulang (\textit{reshape}) menjadi sebuah \textit{Wavegram}, bersamaan dengan ekstraksi fitur \textit{log-mel spectrogram}.
 Kedua representasi fitur dua dimensi ini nantinya akan digabungkan dan diproses melalui \textit{backbone} arsitektur CNN14 \cite{kong2020panns}. \par
 
 Penggabungan kedua pendekatan ini berfungsi untuk menutupi kekurangan masing-masing metode.
-Sinyal \textit{Raw Waveform} murni yang kaya akan informasi namun lebih sulit dipelajari oleh model, dikombinasikan dengan \textit{Log-mel Spectrogram} yang proyeksi polanya lebih mudah dipelajari, meskipun rentan kehilangan sebagian detail informasi akibat proses transformasi matematis \cite{purwins2019deep}. \par
+Sinyal \textit{raw waveform} murni yang kaya akan informasi namun lebih sulit dipelajari oleh model, dikombinasikan dengan \textit{log-mel spectrogram} yang proyeksi polanya lebih mudah dipelajari, meskipun rentan kehilangan sebagian detail informasi akibat proses transformasi matematis \cite{purwins2019deep}. \par
 
 \subsection{\textit{Transfer Learning}} \label{II.Teori9}
-\textit{Transfer Learning} merupakan metode pembelajaran yang bekerja dengan cara mengadaptasi model yang sudah dilatih (\textit{pre-trained}) dengan konteks umum untuk mempelajari data dengan domain yang lebih spesifik \cite{goodfellow2016deep,pan2009survey}.
+\textit{Transfer learning} merupakan metode pembelajaran yang bekerja dengan cara mengadaptasi model yang sudah dilatih (\textit{pre-trained}) dengan konteks umum untuk mempelajari data dengan domain yang lebih spesifik \cite{goodfellow2016deep,pan2009survey}.
 Metode ini memanfaatkan bobot parameter yang sudah matang dari model sebelumnya, sehingga model tidak perlu dilatih dari nol dengan bobot awal yang masih acak.
-Pelatihan model dari nol (\textit{training from scratch}) membutuhkan dataset berskala besar untuk menyetel jutaan bobot parameter agar dapat memahami fitur secara tepat.
-Keterbatasan dataset dapat menyebabkan \textit{overfitting} akibat model yang menghafal sedikit data, sehingga penerapan teknik ini cukup krusial dalam mengatasi masalah tersebut dengan adanya pengaturan bobot parameter yang hanya perlu sedikit penyesuaian \cite{goodfellow2016deep}. \par 
+Pelatihan model dari nol (\textit{training from scratch}) membutuhkan \textit{dataset} berskala besar untuk menyetel jutaan bobot parameter agar dapat memahami fitur secara tepat.
+Keterbatasan \textit{dataset} dapat menyebabkan \textit{overfitting} akibat model yang menghafal sedikit data, sehingga penerapan teknik ini cukup krusial dalam mengatasi masalah tersebut dengan adanya pengaturan bobot parameter yang hanya perlu sedikit penyesuaian \cite{goodfellow2016deep}. \par 
 
 Dalam kasus penelitian ini, model PANNs yang telah paham mengenali suara lingkungan secara umum diarahkan untuk lebih spesifik mengenali suara kedaruratan di perkotaan.
-Dalam penerapannya, terdapat dua jenis pendekatan utama dalam melakukan \textit{Transfer Learning} pada model \textit{pre-trained}, yaitu \textit{freeze base} dan \textit{fine-tuning} \cite{yosinski2014how}. \par
+Dalam penerapannya, terdapat dua jenis pendekatan utama dalam melakukan \textit{transfer learning} pada model \textit{pre-trained}, yaitu \textit{freeze base} dan \textit{fine-tuning} \cite{yosinski2014how}. \par
 
 \subsubsection{\textit{Freeze Base}} \label{II.Teori9.1}
 \textit{Freeze Base} adalah teknik \textit{transfer learning} yang dilakukan dengan membekukan seluruh bobot parameter pada bagian \textit{backbone} arsitektur model \textit{pre-trained}.
@@ -575,8 +597,8 @@ Penyesuaian parameter hanya dilakukan pada bagian \textit{head} atau lapisan kla
 Pembekuan bobot ini melarang model untuk menyetel bobot parameter saat ekstraksi fitur dengan konteks yang lebih spesifik. 
 Hal tersebut membatasi kemampuan model untuk mempelajari pola fitur yang sangat spesifik dari data baru, namun memberikan efisiensi komputasi yang sangat tinggi \cite{yosinski2014how}. \par
 
-Dalam kasus dataset target yang berjumlah sangat minim, teknik pembekuan bobot ini mempertahankan keandalan bobot parameter yang sudah matang sebelumnya \cite{yosinski2014how}.
-Jika mekanisme tidak diterapkan, dataset minim tersebut dapat merusak setelan parameter bobot sebelumnya dan mengakibatkan fenomena \textit{catastrophic forgetting}, di mana model kehilangan pengetahuan awalnya dan gagal mempelajari konteks data yang baru \cite{kirkpatrick2017overcoming}. \par
+Dalam kasus \textit{dataset} target yang berjumlah sangat minim, teknik pembekuan bobot ini mempertahankan keandalan bobot parameter yang sudah matang sebelumnya \cite{yosinski2014how}.
+Jika mekanisme tidak diterapkan, \textit{dataset} minim tersebut dapat merusak setelan parameter bobot sebelumnya dan mengakibatkan fenomena \textit{catastrophic forgetting}, di mana model kehilangan pengetahuan awalnya dan gagal mempelajari konteks data yang baru \cite{kirkpatrick2017overcoming}. \par
 
 \subsubsection{\textit{Fine-tuning}} \label{II.Teori9.2}
 \textit{Fine-tuning} merupakan tahap lanjutan dari \textit{freeze base}, yang mengizinkan penyesuaian bobot parameter pada lapisan \textit{backbone}.
@@ -598,7 +620,7 @@ Oleh karena itu, tahapan ini mencakup penentuan \textit{hyperparameter}, penerap
 Pengaturan nilai bertujuan untuk mendapatkan parameter yang paling optimal sehingga menghasilkan performa model terbaik \cite{goodfellow2016deep}. 
 Terdapat dua \textit{hyperparameter} pelatihan yang paling penting dan mendasar untuk mengatur durasi dan beban komputasi pelatihan, yaitu \textit{epoch} dan \textit{batch size}. \par
 
-\textit{Epoch} merupakan satuan pengukuran untuk keseluruhan proses pelatihan model yang menandakan bahwa model telah melihat dan mempelajari keseluruhan dataset pelatihan sebanyak satu kali (1 \textit{epoch}). 
+\textit{Epoch} merupakan satuan pengukuran untuk keseluruhan proses pelatihan model yang menandakan bahwa model telah melihat dan mempelajari keseluruhan \textit{dataset} pelatihan sebanyak satu kali (1 \textit{epoch}). 
 Penentuan jumlah \textit{epoch} merujuk pada proses model yang tidak dapat menghasilkan performa optimal hanya dalam 1 \textit{epoch} akibat bobot model awal yang masih acak.
 Maka dari itu, model membutuhkan pengulangan \textit{epoch} yang banyak agar fitur inti berhasil disesuaikan dengan bobot parameter. 
 Jumlah \textit{epoch} yang terlalu sedikit menyebabkan model mengalami \textit{underfitting}, yaitu model belum cukup mempelajari data latih. 
@@ -638,7 +660,7 @@ Fungsi ini menggunakan nilai probabilitas pada keluaran prediksi model yang diru
   \medskip
 
 Dalam klasifikasi \textit{single-label}, probabilitas seluruh kelas dihasilkan oleh fungsi \textit{softmax}.
-Pustaka \textit{Deep Learning} \textit{PyTorch} memiliki sebuah fungsi \texttt{nn.CrossEntropyLoss()} yang menggabungkan \texttt{nn.LogSoftmax()} dan \texttt{nn.NLLLoss()} di dalamnya \cite{paszke2019pytorch}.
+Pustaka \textit{deep learning} \textit{PyTorch} memiliki sebuah fungsi \texttt{nn.CrossEntropyLoss()} yang menggabungkan \texttt{nn.LogSoftmax()} dan \texttt{nn.NLLLoss()} di dalamnya \cite{paszke2019pytorch}.
 Penggabungan kedua fungsi tersebut dilakukan demi menjaga stabilitas numerik agar tidak terjadi \textit{error} saat menghitung logaritma dari angka yang sangat kecil.
 Oleh karena itu, penerapan fungsi \textit{softmax} pada arsitektur model asli diganti dengan lapisan \textit{Fully Connected} (FC) biasa, sehingga keluaran dari arsitektur model dibiarkan berupa nilai mentah (\textit{raw logits}) yang akan diproses secara langsung oleh \texttt{nn.CrossEntropyLoss()} \cite{goodfellow2016deep, paszke2019pytorch}. \par
 
@@ -717,7 +739,7 @@ Metrik evaluasi merupakan komponen tolok ukur yang menjadi nilai performa model 
 Dalam model klasifikasi, metrik tersebut mengukur banyak aspek, yakni jumlah kebenaran hasil prediksi model, akurasi model, hingga dinamika pergerakan grafik \textit{loss} selama proses pelatihan. \par
 
 \subsubsection{\textit{Confusion Matrix}} \label{II.Teori11.1}
-\textit{Confusion Matrix} adalah metrik yang memproyeksikan pemetaan jumlah prediksi kelas benar dan salah model pada data uji.
+\textit{Confusion matrix} adalah metrik yang memproyeksikan pemetaan jumlah prediksi kelas benar dan salah model pada data uji.
 Pemetaan tersebut disusun ke dalam tabel dengan jumlah baris dan kolom yang sesuai dengan jumlah kelas data.
 Metrik ini membandingkan hasil kelas prediksi model pada data dengan kelas kebenaran pada data tersebut \cite{fawcett2006introduction}.
 Elemen-elemen hasil evaluasi pada metrik ini dikategorikan ke dalam empat komponen utama, yaitu:
@@ -740,10 +762,10 @@ Elemen-elemen hasil evaluasi pada metrik ini dikategorikan ke dalam empat kompon
     Model keliru memprediksi data kelas aktual X sebagai kelas lain (Y).
 \end{enumerate}
 
-\subsubsection{Metrik Klasifikasi (\textit{Accuracy, Precision, Recall} dan \textit{F1-Score})} \label{II.Teori11.2}
+\subsubsection{Metrik Klasifikasi (\textit{Accuracy, Precision, Recall} dan \textit{F1-score})} \label{II.Teori11.2}
 Evaluasi model klasifikasi umumnya menggunakan sebuah kelompok metrik klasifikasi.
-Kelompok metrik tersebut menggunakan nilai keempat kategori yang digunakan pada \textit{Confusion Matrix} sebelumnya, yakni \textit{True Positive} (TP), \textit{True Negative} (TN), \textit{False Positive} (FP), dan \textit{False Negative} (FN).
-Keempat metrik tersebut terdiri dari \textit{Accuracy}, \textit{Precision}, \textit{Recall}, serta \textit{F1-Score} \cite{fawcett2006introduction}. \par 
+Kelompok metrik tersebut menggunakan nilai keempat kategori yang digunakan pada \textit{confusion matrix} sebelumnya, yakni \textit{True Positive} (TP), \textit{True Negative} (TN), \textit{False Positive} (FP), dan \textit{False Negative} (FN).
+Keempat metrik tersebut terdiri dari \textit{Accuracy}, \textit{Precision}, \textit{Recall}, serta \textit{F1-score} \cite{fawcett2006introduction}. \par 
 
 \textit{Accuracy} merupakan metrik yang mengukur rasio prediksi model yang benar (baik TP maupun TN) dari seluruh prediksi tersebut.
 Perhitungan metrik tersebut dirumuskan ke dalam operasi berikut \cite{fawcett2006introduction}:
@@ -781,27 +803,27 @@ Pengukuran dirumuskan ke dalam rumus berikut \cite{powers2011evaluation}:
   \end{equationcaptioned}
   \medskip
 
-\textit{F1-Score} adalah nilai rata-rata harmonis dari kedua metrik sebelumnya, yaitu \textit{Precision} dan \textit{Recall}.
+\textit{F1-score} adalah nilai rata-rata harmonis dari kedua metrik sebelumnya, yaitu \textit{Precision} dan \textit{Recall}.
 \textit{Precision} yang berfokus pada banyaknya prediksi model kelas tertentu bertolak belakang dengan \textit{Recall} yang berfokus pada seberapa benar model saat data dengan kelas tersebut dipanggil.
 Oleh karena itu, \textit{F1-score} menjadi nilai keseimbangan antara kedua metrik ini, sehingga tingginya \textit{F1-score} menandakan keunggulan model dalam tugas klasifikasinya \cite{powers2011evaluation}.
 Perhitungan rata-rata harmonis dalam \textit{F1-score} dirumuskan sebagai berikut:
 
 \begin{equationcaptioned}{
-      \textit{F1-Score} = 2 \times \frac{\textit{Precision} \times \textit{Recall}}{\textit{Precision} + \textit{Recall}}
+      \textit{F1-score} = 2 \times \frac{\textit{Precision} \times \textit{Recall}}{\textit{Precision} + \textit{Recall}}
       \label{eq:f1-score}
   }{
-      \textit{Perhitungan Metrik \textit{F1-Score}}
+      \textit{Perhitungan Metrik \textit{F1-score}}
   }
   \end{equationcaptioned}
   \medskip
 
-Dalam kasus klasifikasi multikelas (lebih dari dua kelas), perhitungan \textit{F1-Score} dapat diperluas menjadi tiga perhitungan utama untuk mengakomodasi distribusi data pada setiap kelasnya \cite{powers2011evaluation}. 
-Ketiga varian tersebut adalah \textit{Micro F1-Score}, \textit{Weighted F1-Score}, dan \textit{Macro F1-Score}. \par
+Dalam kasus klasifikasi multikelas (lebih dari dua kelas), perhitungan \textit{F1-score} dapat diperluas menjadi tiga perhitungan utama untuk mengakomodasi distribusi data pada setiap kelasnya \cite{powers2011evaluation}. 
+Ketiga varian tersebut adalah \textit{Micro F1-score}, \textit{Weighted F1-score}, dan \textit{Macro F1-score}. \par
 
-\textit{Micro F1-Score} menghitung metrik dengan menjumlahkan seluruh TP, FP, dan FN dari semua kelas, sehingga perhitungan ini rentan didominasi oleh kelas mayoritas. 
-Berbeda dengan \textit{Weighted F1-Score} yang menghitung \textit{F1-Score} untuk setiap kelas secara terpisah, lalu dikalikan dengan bobot persentase jumlah data pada masing-masing kelas tersebut dan dicari nilai rata-ratanya.
-Terakhir, \textit{Macro F1-Score} menghitung \textit{F1-Score} untuk setiap kelas secara terpisah, lalu mencari nilai rata-ratanya secara adil tanpa mempedulikan jumlah data pada kelas tersebut (\textit{unweighted mean}). 
-Varian ini memaksa model untuk mengevaluasi kelas minoritas sama pentingnya dengan kelas mayoritas, sehingga sangat ideal untuk mengukur performa model pada dataset yang tidak seimbang (\textit{imbalanced data}) \cite{powers2011evaluation}. \par
+\textit{Micro F1-score} menghitung metrik dengan menjumlahkan seluruh TP, FP, dan FN dari semua kelas, sehingga perhitungan ini rentan didominasi oleh kelas mayoritas. 
+Berbeda dengan \textit{Weighted F1-score} yang menghitung \textit{F1-score} untuk setiap kelas secara terpisah, lalu dikalikan dengan bobot persentase jumlah data pada masing-masing kelas tersebut dan dicari nilai rata-ratanya.
+Terakhir, \textit{Macro F1-score} menghitung \textit{F1-score} untuk setiap kelas secara terpisah, lalu mencari nilai rata-ratanya secara adil tanpa mempedulikan jumlah data pada kelas tersebut (\textit{unweighted mean}). 
+Varian ini memaksa model untuk mengevaluasi kelas minoritas sama pentingnya dengan kelas mayoritas, sehingga sangat ideal untuk mengukur performa model pada \textit{dataset} yang tidak seimbang (\textit{imbalanced data}) \cite{powers2011evaluation}. \par
 
 \subsubsection{Kurva Evaluasi (\textit{Loss Curve})} \label{II.Teori11.3}
 Kurva evaluasi \textit{loss} merupakan metrik pengukur tingkat kesalahan model dalam memprediksi data latih (\textit{train loss}) maupun data uji (\textit{validation loss}).
@@ -817,12 +839,12 @@ Sedangkan \textit{underfitting} digambarkan dengan kurva \textit{loss} keduanya 
 \end{figure}
 
 \subsubsection{Uji Signifikansi Statistik (\textit{Wilcoxon Signed-Rank Test})} \label{II.Teori11.4}
-Dalam evaluasi model \textit{Machine Learning}, perbedaan nilai rata-rata pada hasil akhir performa model tidak dapat secara langsung menyimpulkan bahwa satu model lebih unggul daripada model lainnya.
+Dalam evaluasi model \textit{machine learning}, perbedaan nilai rata-rata pada hasil akhir performa model tidak dapat secara langsung menyimpulkan bahwa satu model lebih unggul daripada model lainnya.
 Perbedaan nilai tersebut dapat terjadi secara kebetulan disebabkan oleh variansi pembagian data uji. 
 Oleh karena itu, diperlukan sebuah metode uji signifikansi statistik yang bertujuan untuk memvalidasi perbedaan signifikansi tersebut secara ilmiah \cite{demsar2006statistical}. \par
 
 \textit{Wilcoxon Signed-Rank Test} merupakan uji hipotesis statistik non-parametrik yang digunakan untuk membandingkan dua nilai sampel yang berpasangan (\textit{paired samples}) dalam menilai perbedaan rata-rata peringkat (\textit{mean ranks}) yang signifikan di antara keduanya.
-Dalam konteks perbandingan model klasifikasi dengan \textit{k-fold cross validation}, metode uji ini beroperasi pada selisih nilai performa (seperti \textit{F1-Score}) dari kedua model pada setiap lipatan (\textit{fold}) yang bersesuaian \cite{demsar2006statistical}. \par
+Dalam konteks perbandingan model klasifikasi dengan \textit{k-fold cross validation}, metode uji ini beroperasi pada selisih nilai performa (seperti \textit{F1-score}) dari kedua model pada setiap lipatan (\textit{fold}) yang bersesuaian \cite{demsar2006statistical}. \par
 
 Penggunaan uji non-parametrik ini sangat direkomendasikan karena hasil performa algoritma \textit{machine learning} pada beberapa \textit{fold} data umumnya tidak terdistribusi secara normal, sehingga penggunaan uji parametrik standar seperti \textit{t-test} menjadi tidak valid \cite{demsar2006statistical}.
 Jika hasil pengujian menghasilkan nilai probabilitas (\textit{p-value}) di bawah ambang batas signifikansi yang ditetapkan (umumnya $\alpha = 0.05$), maka hipotesis nol (\textit{null hypothesis}) ditolak. 
