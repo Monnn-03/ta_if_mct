@@ -4,6 +4,7 @@
 
 ### 2026-03-16
 - Mereview Bab II : Tinjauan Pustaka.
+- Mereview Bab II : Dasar Teori.
 
 ### 2026-03-15
 - Memastikan konsistensi penulisan istilah asing, dengan membuat `glosarium.md`.

@@ -193,16 +193,16 @@ Semua \textit{file} audio di dalam UrbanSound8K berdurasi maksimal 4 detik dan b
 UrbanSound8K mengelompokkan label datanya ke dalam 10 kelas, di mana kategori tersebut mencakup :
 
 \begin{enumerate}
-	\item air conditioner (pendingin ruangan)
-	\item car horn (klakson mobil)
-	\item children playing (anak-anak sedang bermain)
-	\item dog bark (gonggongan anjing)
-	\item drilling (aktivitas mengebor)
-	\item engine idling (mesin menyala statis)
-	\item gun shot (tembakan senjata)
-	\item jackhammer (penghancur permukaan keras)
-	\item siren (sirene)
-	\item street music (musik jalanan)
+	\item Air conditioner (pendingin ruangan)
+	\item Car horn (klakson mobil)
+	\item Children playing (anak-anak sedang bermain)
+	\item Dog bark (gonggongan anjing)
+	\item Drilling (aktivitas mengebor)
+	\item Engine idling (mesin menyala statis)
+	\item Gun shot (tembakan senjata)
+	\item Jackhammer (penghancur permukaan keras)
+	\item Siren (sirene)
+	\item Street music (musik jalanan)
 \end{enumerate}
  
 Selain \textit{file} audio, \textit{dataset} ini juga menyediakan \textit{file} \texttt{.csv} sebagai informasi metadata untuk setiap \textit{file} audionya.
@@ -308,9 +308,9 @@ Dimensi representasi \textit{input} yang berbeda ini dapat memengaruhi cara arsi
 
 \subsubsection{\textit{Raw Waveform}} \label{II.Teori5.1}
 \textit{Raw waveform} merupakan representasi digital satu dimensi (1D) yang berisikan deretan nilai diskrit amplitudo pada audio, yang jika divisualisasikan akan membentuk sebuah gelombang audio tersebut.
-Audio dengan representasi tersebut umumnya memiliki format ekstensi berupa \texttt{.wav}, yang berisikan data PCM (\textit{Pulse-Code Modulation}) berupa representasi sinyal digital yang belum terkompresi (\textit{lossless}).
+Audio dengan representasi tersebut umumnya memiliki format ekstensi berupa \texttt{.wav}, yang berisikan data PCM (\textit{Pulse-Code Modulation}) berupa representasi sinyal digital yang belum terkompresi (\textit{lossless}) \cite{li2014fundamentals}.
 Format tersebut menandakan kualitas serta informasi pada audio tersebut masih murni dan lengkap. 
-Semua \textit{file} audio pada UrbanSound8K memiliki format \texttt{.wav}, sehingga keutuhan informasi akustik terjaga pada \textit{dataset} ini.
+Semua \textit{file} audio pada UrbanSound8K memiliki format \texttt{.wav}, sehingga keutuhan informasi akustik terjaga pada \textit{dataset} ini \cite{salamon2014dataset}.
 
 \begin{figure}[H]
     \centering
@@ -364,19 +364,19 @@ Proyeksi \textit{mel-spectrogram} yang telah diberikan transformasi logaritmik (
 \end{figure}
 
 \subsection{Augmentasi Data} \label{II.Teori6}
-Augmentasi data merupakan salah satu teknik yang efektif dalam memperbanyak variasi data dalam ranah pembelajaran mesin (\textit{machine learning}).
-Variasi tersebut dilakukan dengan cara memanipulasi bagian data, seperti menambahkan gangguan (\textit{noise}) atau melakukan pemotongan durasi secara acak.
-Proses augmentasi dilakukan secara dinamis pada setiap iterasi pelatihan, sehingga model mendapatkan variasi data yang selalu baru.
-Teknik ini berguna untuk mencegah model menghafal data latih (\textit{overfitting}).
-Dengan demikian, model memiliki tingkat generalisasi yang tinggi, yakni kemampuan model untuk memprediksi dengan benar pada data yang belum pernah didapatkan saat pelatihan sebelumnya. \par
+Augmentasi data merupakan salah satu teknik yang efektif dalam memperbanyak variasi data dalam ranah pembelajaran mesin (\textit{machine learning}) \cite{goodfellow2016deep}.
+Variasi tersebut dilakukan dengan cara memanipulasi karakteristik sinyal suara, seperti menambahkan gangguan (\textit{noise}) atau melakukan pemotongan durasi secara acak.
+Proses augmentasi dilakukan secara dinamis pada setiap iterasi pelatihan, sehingga model selalu mendapatkan variasi data yang baru.
+Teknik ini sangat berguna untuk mencegah model menghafal data latih, atau dikenal dengan fenomena \textit{overfitting} \cite{salamon2017deep}.
+Dengan demikian, model memiliki tingkat generalisasi yang tinggi, yakni kemampuan model untuk memprediksi dengan benar pada data yang belum pernah didapatkan saat pelatihan sebelumnya \cite{goodfellow2016deep}. \par
 
 Pada penelitian ini, teknik augmentasi yang digunakan berfokus pada ranah temporal, yaitu pemotongan durasi audio secara acak (\textit{Random Cropping}). \par
 
 \subsubsection{\textit{Random Cropping}} \label{II.Teori6.1}
 \textit{Random Cropping} pada audio adalah teknik memperluas variasi data yang beroperasi pada domain waktu (temporal) dengan cara mengambil potongan data audio dengan durasi yang lebih pendek dari durasi keseluruhan sinyal \textit{input}.
-Teknik ini diterapkan pada setiap iterasi pelatihan, diawali dengan memilih titik awal pemotongan secara acak ($t_0$), dengan $t_c$ sebagai panjang durasi pemotongan. 
-Penempatan titik awal pemotongan diperbolehkan pada rentang durasi $0 \le f_0(n) \le T-n$ di mana $T$ merupakan total keseluruhan durasi audio.
-Pengambilan cuplikan secara acak ini memaksa model klasifikasi untuk tidak terpaku pada posisi absolut suatu fitur suara, melainkan belajar mengenali pola suara tersebut terlepas dari waktu kemunculannya \cite{salamon2014dataset}. \par
+Teknik ini diterapkan pada setiap iterasi pelatihan, diawali dengan memilih titik awal pemotongan secara acak ($t_0$), dengan $t_c$ sebagai target durasi pemotongan. 
+Penempatan titik awal pemotongan diperbolehkan pada rentang durasi $0 \le t_0 \le T-{t_c}$ di mana $T$ merupakan total keseluruhan durasi audio.
+Pengambilan cuplikan secara acak ini memaksa model klasifikasi untuk tidak terpaku pada posisi absolut suatu fitur suara, melainkan belajar mengenali pola suara tersebut terlepas dari waktu kemunculannya \cite{salamon2017deep}. \par
 
 \subsection{\textit{Convolutional Neural Network} (CNN)} \label{II.Teori7}
 \textit{Convolutional Neural Network} (CNN) adalah arsitektur model \textit{deep learning} berupa jaringan saraf khusus yang bekerja dengan cara mengenali pola kisi (\textit{grid}) pada data dan meringkas informasi penting yang didapatkan melalui setiap lapisannya.
@@ -392,7 +392,7 @@ Pada tahap akhir ekstraksi, peta fitur tersebut diratakan (\textit{flatten}) men
 Beberapa komponen tersebut diantaranya adalah \textit{kernel} sebagai jendela pengamat fitur, \textit{stride} yang mengatur langkah \textit{kernel}, \textit{Batch Normalization} (BN) sebagai pengatur rentang nilai fitur, \textit{Rectified Linear Unit} (ReLU) yang mengubah nilai negatif menjadi nol, dan \textit{Pooling} untuk mereduksi dimensi ukuran fitur.
 Setelah lapisan ekstraksi, terdapat \textit{classification layer} yang berupa \textit{fully connected layer} yang menghasilkan angka mentah untuk setiap pilihan kelas data.
 Untuk memperjelas nilai, maka digunakan beberapa fungsi aktivasi untuk mengubah angka mentah tersebut menjadi probabilitas.
-Dalam kasus klasifikasi \textit{single-label}, digunakan fungsi aktivasi \textit{softmax} dan klasifikasi \textit{multi-label} menggunakan \textit{sigmoid}. \par
+Dalam kasus klasifikasi \textit{single-label}, digunakan fungsi aktivasi \textit{softmax} dan klasifikasi \textit{multi-label} menggunakan \textit{sigmoid} \cite{goodfellow2016deep}. \par
 
 % \subsubsection{\textit{Kernel} dan \textit{Stride}} \label{II.Teori7.1}
 % \textit{Kernel} (filter) adalah komponen berupa matriks 2 dimensi yang berisi nilai-nilai bobot (\textit{weights}).
@@ -504,12 +504,12 @@ Dalam kasus klasifikasi \textit{single-label}, digunakan fungsi aktivasi \textit
 Arsitektur ini dikembangkan dan dilatih oleh Kong \textit{et al.} (2020) yang menghasilkan keluaran klasifikasinya berupa \textit{multi-label} (\textit{Multi-label Classification}) ke dalam 527 kelas suara \cite{kong2020panns}. 
 Oleh karena itu, diperlukan penyesuaian pada lapisan akhir model agar dapat menghasilkan \textit{output} yang sesuai dengan target kelas suara pada penelitian ini. \par
 
-Penelitian Kong \textit{et al.} mengenai PANNs juga telah mengevalusi performa setiap arsitektur menggunakan tiga metrik utama, yaitu \textit{mean Average Precision} (mAP), \textit{Area Under the Curve} (AUC), dan \textit{d-prime} yang proyeksikan pada Tabel \ref{tab:panns_performance} \cite{kong2020panns}.
+Penelitian Kong \textit{et al.} mengenai PANNs juga telah mengevaluasi performa setiap arsitektur menggunakan tiga metrik utama, yaitu \textit{mean Average Precision} (mAP), \textit{Area Under the Curve} (AUC), dan \textit{d-prime} yang diproyeksikan pada Tabel \ref{tab:panns_performance} \cite{kong2020panns}.
 Semua arsitektur yang tergabung dalam PANNs memiliki representasi \textit{input} yang berbeda-beda.
 Arsitektur PANNs dengan representasi \textit{input} satu dimensi (1D) meliputi DaiNet, LeeNet, Res1dNet, dan Wavegram-CNN. 
 Selanjutnya, arsitektur dengan representasi \textit{input} dua dimensi (2D) meliputi CNN, ResNet, dan MobileNet.
-Terakhir, satu-satunya arsitektur dengan pendekatan \textit{input} hibrida (\textit{hybrid}) adalah Wavegram-Logmel-CNN \cite{kong2020panns}.
-Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi \textit{input} nya masing-masing, yaitu Res1dNet31, ResNet38, dan Wavegram-Logmel-CNN. \par
+Terakhir, satu-satunya arsitektur dengan pendekatan representasi fitur hibrida (\textit{hybrid}) adalah Wavegram-Logmel-CNN \cite{kong2020panns}.
+Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi \textit{input}-nya masing-masing, yaitu Res1dNet31, ResNet38, dan Wavegram-Logmel-CNN. \par
 
 \begin{table}[htbp]
     \centering
@@ -556,8 +556,8 @@ Akhirnya, hasil dari \textit{backbone} dilanjutkan ke 2 lapisan linear terakhir 
 Seluruh lapisan pada arsitektur ini berjumlah 31 lapisan \cite{kong2020panns}. \par
 
 \subsubsection{ResNet38} \label{II.Teori8.2}
-ResNet38 merupakan salah satu arsitektur ResNet 2 dimensi milik PANNs dengan nilai mAP tertinggi dalam menangani jenis \textit{input} dengan dimensi tersebut \cite{kong2020panns}.
-Berbeda dengan Res1dNet31, arsitektur ini menerima \textit{input} berupa \textit{raw waveform} yang nantinya akan diekstrak dan diproses menjadi \textit{log-mel spectrogram} (2D) dengan 1000 \textit{frames} dan 64 \textit{mel bins} \cite{kong2020panns}.
+ResNet38 merupakan salah satu arsitektur ResNet dua dimensi milik PANNs dengan nilai mAP tertinggi dalam menangani jenis \textit{input} dengan dimensi tersebut \cite{kong2020panns}.
+Berbeda dengan Res1dNet31, arsitektur ini menerima \textit{input} berupa \textit{raw waveform} yang nantinya akan diekstrak dan diproses menjadi \textit{log-mel spectrogram} (2D) dengan 1000 \textit{frame} dan 64 \textit{mel bin} \cite{kong2020panns}.
 
 Arsitektur model diawali dengan dua blok konvolusi 64 \textit{filter}\footnote{Pada tabel arsitektur di naskah publikasi asli PANNs, terdapat kesalahan penulisan (\textit{typographical error}) yang mencantumkan angka 512 \textit{filter} pada lapisan awal. Berdasarkan urutan kelogisan arsitektur ResNet serta repositori kode sumber resmi PANNs, jumlah \textit{filter} awal yang akurat adalah 64.} berukuran $3 \times 3$ dan mengandung \textit{Batch Normalization} (BN) serta ReLU.
 Kemudian, \textit{Max Pooling} berukuran $2 \times 2$ diterapkan setelah dua blok tersebut.
@@ -691,7 +691,7 @@ Penentuan jumlah bobot pada kelas ke-$i$ ($w_i$) dirumuskan dalam operasi beriku
   \end{itemize}
   \medskip
 
-\subsubsection{\textit{Optimizer} dan \textit{Scheduler}} \label{II.Teori 10.3}
+\subsubsection{\textit{Optimizer} dan \textit{Scheduler}} \label{II.Teori10.3}
 \textit{Optimizer} adalah algoritma yang bertugas memperbarui bobot dan bias pada model berdasarkan nilai \textit{loss} yang didapat.
 Dalam pengerjaannya, algoritma ini juga memiliki elemen wajib dalam penyesuaian bobot model, yaitu \textit{learning rate}.
 \textit{Learning Rate} (laju pembelajaran) mengatur besar bobot yang diubah dalam satu waktu.
