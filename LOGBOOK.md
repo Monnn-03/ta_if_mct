@@ -2,6 +2,9 @@
 
 ## March
 
+### 2026-03-17
+- Melengkapi glosarium dan revisi penulisan.
+
 ### 2026-03-16
 - Mereview Bab II : Tinjauan Pustaka.
 - Mereview Bab II : Dasar Teori.
