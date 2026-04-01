@@ -2,6 +2,12 @@
 
 ## March
 
+### 2026-03-31
+- Membuat PPT Seminar Proposal (Slide pembuka - alur penelitian).
+
+### 2026-03-30
+- Meminta persetujuan seminar proposal dan tanda tangan kartu kendali bimbingan.
+
 ### 2026-03-17
 - Melengkapi glosarium dan revisi penulisan.
 
