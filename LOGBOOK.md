@@ -1,5 +1,10 @@
 # Research Logbook
 
+## April
+
+### 2026-04-01
+- Menyelesaikan draft PPT Seminar Proposal.
+
 ## March
 
 ### 2026-03-31
