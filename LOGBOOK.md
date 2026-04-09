@@ -2,6 +2,25 @@
 
 ## April
 
+### 2026-04-09
+- Menjabarkan revisi awal dari dosen penguji.
+
+### 2026-04-08
+- Seminar Proposal Dilaksanakan
+
+### 2026-04-07
+- Menyelesaikan tabel konteks
+- Mereview penelitian sebelum seminar proposal.
+
+### 2026-04-06
+- Membuat tabel konteks untuk reasoning.
+
+### 2026-04-05
+- Mendapatkan jadwal seminar proposal (08-04-2026)
+
+### 2026-04-04
+- Membuat video presentasi 10 menit.
+
 ### 2026-04-01
 - Menyelesaikan draft PPT Seminar Proposal.
 
