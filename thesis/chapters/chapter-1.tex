@@ -41,8 +41,10 @@ Ketersediaan variasi ini memunculkan urgensi untuk mengevaluasi arsitektur mana 
 
 % PARAGRAF 5: RESEARCH GAP (ARGUMEN ILMIAH UTAMA) -> INI YANG DIPECAH
 Meskipun Kong \textit{et al.} \cite{kong2020panns} telah memaparkan tolok ukur kinerja model-model tersebut pada \textit{dataset} masif AudioSet \cite{gemmeke2017audioset}, performa tersebut belum tentu sebanding ketika diterapkan pada kasus penerapan spesifik dengan ketersediaan data yang terbatas (\textit{data scarcity}), seperti pada kasus klasifikasi suara lingkungan perkotaan.
-Perbedaan karakteristik ukuran data ini memunculkan dugaan bahwa kompleksitas arsitektur model \textit{hybrid} dan \textit{log-mel spectrogram} justru memiliki risiko \textit{overfitting} yang lebih tinggi dibandingkan model \textit{raw waveform} ketika dilatih pada \textit{dataset} yang kecil.
-Ketidakpastian performa inilah yang menjadi celah penelitian (\textit{research gap}) pertama yang belum terjamah. \par
+Mayoritas penelitian ESC saat ini cenderung mengandalkan ekstraksi fitur \textit{log-mel spectrogram} karena selektivitas frekuensinya yang menyerupai pendengaran manusia, sekaligus menghindari tingginya kompleksitas komputasi dari representasi sinyal mentah \cite{salamon2017deep,huzaifah2017}.
+Namun, proses kompresi spektral tersebut pada \textit{log-mel} juga memiliki kelemahan, yaitu tingginya potensi kehilangan informasi penting seperti transien suara darurat akibat proses reduksi kebisingan latar belakang \cite{tokozume2017envnet, dai2017}.
+Di sisi lain, meskipun pendekatan \textit{hybrid} dapat melengkapi kekurangan setiap fiturnya, besarnya kompleksitas pada arsitektur ini memunculkan dugaan kuat akan tingginya risiko \textit{overfitting} yang lebih tinggi ketika dilatih pada \textit{dataset} yang kecil.
+Ketidakpastian performa dan \textit{trade-off} inilah yang menjadi celah penelitian (\textit{research gap}) pertama yang belum terjamah. \par
 
 % PARAGRAF 6 : LIMITASI SINGLE-LABEL
 Selain ketidakpastian tersebut, terdapat juga perbedaan mendasar pada jenis keluaran klasifikasi model. 
@@ -54,7 +56,7 @@ Ketidakmampuan sistem dalam mendeteksi suara sekunder di latar belakang ini disa
 
 % PARAGRAF 7: TUJUAN PENELITIAN
 Berdasarkan celah penelitian mengenai \textit{data scarcity} dan penyesuaian jenis keluaran klasifikasi tersebut, evaluasi ulang terhadap adaptabilitas arsitektur PANNs menjadi sangat krusial.
-Oleh karena itu, penelitian ini bertujuan utama secara teknis untuk menginvestigasi dan membandingkan kinerja tiga pendekatan representasi fitur pada PANNs, yaitu \textit{raw waveform}, \textit{log-mel spectrogram}, dan \textit{hybrid} dalam mengklasifikasikan suara tanda bahaya yang mengancam keselamatan penyandang tunarungu. 
+Oleh karena itu, penelitian ini bertujuan untuk mengevaluasi dan membandingkan tingkat akurasi serta ketahanan model PANNs menggunakan tiga pendekatan representasi fitur yang berbeda, yaitu \textit{raw waveform}, \textit{log-mel spectrogram}, dan \textit{hybrid} dalam mengklasifikasikan suara tanda bahaya di tengah kebisingan lingkungan perkotaan guna mendukung keselamatan penyandang tunarungu. 
 Studi komparasi ini diposisikan sebagai langkah fundamental untuk menemukan konfigurasi model yang paling \textit{robust} terhadap minimnya data, sekaligus meminimalisir kesalahan deteksi fatal. 
 Dengan demikian, hasil evaluasi ini diharapkan dapat menjadi landasan teknis yang valid bagi pengembangan teknologi asistif yang benar-benar andal untuk menjamin keselamatan komunitas tunarungu. \par
  

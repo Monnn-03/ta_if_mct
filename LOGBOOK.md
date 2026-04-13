@@ -2,6 +2,9 @@
 
 ## April
 
+### 2026-04-13
+- Mengerjakan revisi Pak Rahman : Karakteristik Fitur (Bab I).
+
 ### 2026-04-09
 - Menjabarkan revisi awal dari dosen penguji.
 
