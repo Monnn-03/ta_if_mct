@@ -2,8 +2,12 @@
 
 ## April
 
+### 2026-04-15
+- Mengerjakan revisi Pak Rahman : Karakteristik Fitur (Bab II : Memperjelas dasar teori, kelebihan dan kekurangan).
+- Mengerjakan revisi Pak Rahman : Karakteristik Fitur (Bab III : Konfigurasi Model ditambahkan hipotesis).
+
 ### 2026-04-13
-- Mengerjakan revisi Pak Rahman : Karakteristik Fitur (Bab I).
+- Mengerjakan revisi Pak Rahman : Karakteristik Fitur (Bab I : Latar Belakang).
 
 ### 2026-04-09
 - Menjabarkan revisi awal dari dosen penguji.

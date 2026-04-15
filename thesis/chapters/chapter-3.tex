@@ -152,9 +152,16 @@ Agar tetap menjaga konsistensi performa uji model, diterapkan \textit{center cro
 Dalam penelitian ini, pada audio dengan durasi maksimal 5 detik, ekstraksi dilakukan dengan menjadikan detik ke-2,5 sebagai titik pusat (\textit{center point}), sehingga model memproses segmen audio yang berada pada rentang detik ke-2 hingga detik ke-3. \par
 
 \section{Konfigurasi Model} \label{sec:konfigurasi_model}
-% Kasih paragraf pembuka
+% Paragraf pembuka
 Model yang digunakan dalam penelitian ini adalah model PANNs \cite{kong2020panns} dengan 3 arsitektur berbeda, yaitu \textit{Res1dNet31}, \textit{ResNet38}, dan \textit{Wavegram-Logmel-CNN}.
-Ketiga arsitektur ini telah terbukti memiliki performa yang baik pada tugas klasifikasi audio berdasarkan masing-masing representasi fiturnya. 
+Ketiga arsitektur ini telah terbukti memiliki performa yang baik pada tugas klasifikasi audio berdasarkan masing-masing representasi fiturnya. \par
+
+% Paragraf Hipotesis
+Dalam konteks penelitian ini, pemilihan ketiga arsitektur tersebut didasarkan pada perbedaan karakteristik representasi data audio yang digunakan, yaitu \textit{raw waveform}, \textit{log-mel spectrogram}, dan pendekatan \textit{hybrid}.
+Setiap representasi memiliki sifat yang berbeda dalam menangkap informasi sinyal, di mana \textit{raw waveform} mempertahankan informasi temporal secara utuh, sedangkan \textit{log-mel spectrogram} menekankan struktur pola frekuensi yang lebih teratur.
+Berdasarkan perbedaan tersebut, penelitian ini mengajukan hipotesis bahwa pendekatan \textit{hybrid} yang menggabungkan karakteristik komplementer dari kedua representasi berpotensi memberikan performa yang lebih optimal dalam tugas \textit{Environmental Sound Classification} (ESC), meskipun efektivitasnya tetap dipengaruhi oleh kompleksitas model dan keterbatasan data.
+Hipotesis ini selanjutnya akan diuji melalui perbandingan performa ketiga arsitektur yang digunakan dalam penelitian ini. \par
+
 Namun, agar model dapat berfungsi optimal sesuai dengan konteks klasifikasi 4 kelas bahaya pada \textit{dataset} UrbanSound8K, diperlukan beberapa penyesuaian konfigurasi model, yaitu sebagai berikut. \par
 
 \subsection{Modifikasi Arsitektur PANNs}

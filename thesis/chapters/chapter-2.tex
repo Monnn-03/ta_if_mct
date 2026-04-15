@@ -296,14 +296,10 @@ Adapun tahapan prapemrosesan data yang diterapkan pada sinyal suara digital dije
 
 \end{enumerate}
 
-\subsection{Representasi \textit{Input} Suara} \label{II.Teori5}
-Setelah menjalani seluruh tahap prapemrosesan, dilakukan pembentukan representasi \textit{input} untuk model yang dikenal sebagai ekstraksi fitur.
-Sinyal audio digital dalam bentuk mentah, yang disebut \textit{raw waveform}, merupakan deretan nilai amplitudo satu dimensi (1D) yang diurutkan berdasarkan indeks waktu.
-Meskipun kaya akan informasi, representasi mentah ini mengandung dimensi deretan nilai yang sangat besar dan dinamika amplitudo yang cukup kompleks sehingga dapat menyulitkan model klasifikasi dalam menemukan pola inti pada sinyal \cite{virtanen2018computational}.
-Untuk menonjolkan inti karakteristik suara, serangkaian proses transformasi matematis buatan (\textit{hand-crafted features}) diterapkan pada \textit{raw waveform} untuk diubah ke dalam representasi berdomain frekuensi, yaitu \textit{log-mel spectrogram} \cite{virtanen2018computational}.
-Representasi ini memproyeksikan sinyal ke dalam bentuk dua dimensi (2D) dengan pemetaan nilai frekuensi pada setiap indeks waktu, sehingga informasi sinyal audio lebih mudah untuk dipelajari. 
-Meski memudahkan pemrosesan, representasi ini tidak menyajikan informasi yang lengkap akibat tahapan reduksi informasi melalui transformasi matematis buatan tersebut.
-Dimensi representasi \textit{input} yang berbeda ini dapat memengaruhi cara arsitektur model klasifikasi mengekstraksi pola serta beban komputasinya. \par
+\subsection{Representasi Fitur Suara} \label{II.Teori5}
+Dalam arsitektur model klasifikasi suara, representasi fitur suara yang dipelajari akan mempengaruhi performa model mengenali karakteristik suara tersebut. 
+Maka dari itu, pembentukan representasi fitur pada suara dapat dilakukan secara terpisah sebagai \textit{input}, atau melalui proses ekstraksi pada lapisan awal model. 
+Representasi fitur suara yang dibahas pada penelitian ini adalah gelombang suara mentah (\textit{raw waveform}) dan spektral \textit{log-mel} (\textit{log-mel spectrogram}). \par
 
 \subsubsection{\textit{Raw Waveform}} \label{II.Teori5.1}
 \textit{Raw waveform} merupakan representasi digital satu dimensi (1D) yang berisikan deretan nilai diskrit amplitudo pada audio, yang jika divisualisasikan akan membentuk sebuah gelombang audio tersebut.
@@ -322,6 +318,9 @@ Proses pembentukan \textit{raw waveform} seperti pada Gambar~\ref{fig:waveform} 
 Total dimensi panjang \textit{array} ($N$) pada \textit{raw waveform} merupakan hasil kali antara durasi rekaman dalam detik ($T$) dengan \textit{sampling rate} ($f_s$).
 Nilai amplitudo dapat berupa nilai positif bahkan negatif yang umumnya berada pada rentang -1 sampai 1 \cite{proakis2006digital}.
 Semakin jauh nilai tersebut dari titik nol, maka intensitas suara yang dihasilkan semakin tinggi (kencang).
+
+Dalam domain ESC di lingkungan perkotaan, penggunaan \textit{raw waveform} memungkinkan representasi sinyal yang mempertahankan informasi temporal dan spektral secara utuh, sehingga berpotensi menangkap karakteristik suara berdurasi singkat seperti transien awal.
+Namun, keutuhan informasi ini juga menjadi tantangan, karena seluruh spektrum kebisingan lingkungan (\textit{noise clutter}) ikut dipertahankan, sehingga model pembelajaran mendalam memerlukan arsitektur ekstraksi fitur yang lebih kompleks untuk membedakan pola yang saling tumpang tindih \cite{wahyuningtyas2021ekstraksi}. \par
 
 \subsubsection{\textit{Log-mel Spectrogram}} \label{II.Teori5.2}
 \textit{Spectrogram} merupakan representasi grafis fitur suara dalam bentuk domain frekuensi dan waktu.
@@ -353,7 +352,7 @@ Namun, proyeksi pada \textit{mel-spectrogram} masih memberikan rentang intensita
 Ini mengakibatkan nilai warna pada detail minor suara yang ingin dipelajari tidak terproyeksi dengan maksimal, sehingga sulit untuk mengklasifikasi dengan detail yang seharusnya penting pada pendengaran manusia.
 Maka dari itu, operasi logaritmik menjadi solusi dengan mengompresi rentang dinamis (\textit{dynamic range compression}) nilai amplitudo pada \textit{mel-spectrogram}.
 Seluruh nilai amplitudo pada grafik tersebut dikonversi menggunakan operasi logaritmik ke dalam satuan desibel (dB) \cite{muller2015fundamentals}.
-Proyeksi \textit{mel-spectrogram} yang telah diberikan transformasi logaritmik (disebut \textit{log-mel spectrogram}) sangat menyerupai pendengaran manusia sehingga mesin dapat mempelajari suara tersebut layaknya manusia mempelajarinya. \par
+Proyeksi \textit{mel-spectrogram} yang telah diberikan transformasi logaritmik (disebut \textit{log-mel spectrogram}) sangat menyerupai pendengaran manusia sehingga mesin dapat mempelajari suara pada perkotaan layaknya manusia mempelajarinya. \par
 
 \begin{figure}[H]
     \centering
@@ -361,6 +360,10 @@ Proyeksi \textit{mel-spectrogram} yang telah diberikan transformasi logaritmik (
     \caption{\textit{Log-mel Spectrogram}}
     \label{fig:logmel_spectro}
 \end{figure}
+
+Dalam konteks ESC pada lingkungan perkotaan, representasi fitur ini memiliki keunggulan dalam menangkap karakteristik suara yang relevan dengan persepsi pendengaran manusia \cite{muller2015fundamentals}. 
+Transformasi logaritmik yang diterapkan menghasilkan distribusi energi suara menjadi lebih stabil dan pola frekuensi relevan lebih mudah untuk dipelajari oleh model \cite{kong2020panns}.
+Namun, proses transformasi ini juga menyebabkan hilangnya sebagian informasi asli sinyal, seperti detail fase dan resolusi temporal yang lebih halus, sehingga representasi ini memiliki keterbatasan dalam menangkap karakteristik suara berdurasi sangat singkat secara presisi \cite{muller2015fundamentals}. \par
 
 \subsection{Augmentasi Data} \label{II.Teori6}
 Augmentasi data merupakan salah satu teknik yang efektif dalam memperbanyak variasi data dalam ranah pembelajaran mesin (\textit{machine learning}) \cite{goodfellow2016deep}.
@@ -392,111 +395,6 @@ Beberapa komponen tersebut diantaranya adalah \textit{kernel} sebagai jendela pe
 Setelah lapisan ekstraksi, terdapat \textit{classification layer} yang berupa \textit{fully connected layer} (FC \textit{layer}) yang menghasilkan angka mentah untuk setiap pilihan kelas data.
 Untuk memperjelas nilai, maka digunakan beberapa fungsi aktivasi untuk mengubah angka mentah tersebut menjadi probabilitas.
 Dalam kasus klasifikasi \textit{single-label}, digunakan fungsi aktivasi \textit{softmax} dan klasifikasi \textit{multi-label} menggunakan \textit{sigmoid} \cite{goodfellow2016deep}. \par
-
-% \subsubsection{\textit{Kernel} dan \textit{Stride}} \label{II.Teori7.1}
-% \textit{Kernel} (filter) adalah komponen berupa matriks 2 dimensi yang berisi nilai-nilai bobot (\textit{weights}).
-% Umumnya ukuran \textit{kernel} yang digunakan berupa persegi $3 \times 3$, $5 \times 5$, dan $7 \times 7$. 
-% Saat lapisan ekstraksi bekerja, komponen ini terus bergeser menimpa gambar dan mengkalkulasikan nilai di dalam kernel dengan nilai \textit{pixel} gambar di bawahnya dengan operasi perkalian titik (\textit{dot product}). 
-% Hasil operasi tersebut dijumlahkan menjadi satu nilai baru pada \textit{feature map} \cite{goodfellow2016deep}.
-% Melalui banyaknya iterasi pelatihan, nilai bobot awal terus diperbarui dari evaluasi pelatihan.
-% Kemampuan ini yang membuat model dapat mengekstraksi pola fitur penting pada gambar. \par
-
-% \textit{Stride} merupakan mekanisme yang mendukung \textit{kernel} dalam pengaturan langkah pergeseran dengan nilai tertentu.
-% Jika \textit{stride} bernilai 2, maka \textit{kernel} akan bergeser dengan jarak sebesar 2 \textit{pixel}.
-% Semakin besar nilai \textit{stride} yang ditetapkan, maka ukuran dimensi spasial pada \textit{feature map} semakin menyusut \cite{dumoulin2016guide}.
-% Mekanisme ini penting dalam menjaga beban komputasi dan memori yang tidak berlebihan pada lapisan berikutnya. \par
-
-% \subsubsection{\textit{Batch Normalization} (BN)} \label{II.Teori7.2}
-% Nilai-nilai yang telah dipetakan ke dalam \textit{feature map} pada setiap lapisannya memiliki rentang dinamika nilai yang tidak teratur pada kumpulan representasi fiturnya (\textit{batch}).
-% Hal tersebut menyebabkan arah pembelajaran model menjadi tidak stabil dan memperlambat proses pencapaian nilai optimal, sehingga diperlukan proses normalisasi pada kumpulan nilai tersebut \cite{ioffe2015batch}. \par
-
-% \textit{Batch Normalization} (BN) merupakan mekanisme normalisasi rentang nilai yang diperoleh dari setiap \textit{feature map} sebelum diproses oleh lapisan selanjutnya.
-% Normalisasi tersebut dilakukan dengan mengurangkan setiap nilai fitur dengan rata-rata (\textit{mean}) dari \textit{batch} tersebut, kemudian membaginya dengan standar deviasi \cite{ioffe2015batch}.
-% Tujuan dari operasi ini adalah untuk memetakan rata-rata nilai \textit{batch} menjadi nol dan variansi nilai menjadi satu. 
-% Mekanisme ini menghasilkan nilai fitur yang lebih mudah untuk diproses menuju lapisan berikutnya. \par
-
-% Setelah nilai dinormalisasikan, BN memiliki dua parameter yang dapat dipelajari, yaitu skala ($\gamma$) dan pergeseran ($\beta$).
-% Kedua parameter tersebut berfungsi untuk memanipulasi ulang rentang nilai tersebut jika dibutuhkan oleh lapisan selanjutnya \cite{ioffe2015batch}. \par
-
-% \subsubsection{\textit{Rectified Linear Unit} (ReLU)} \label{II.Teori7.3}
-% \textit{Rectified Linear Unit} (ReLU) merupakan fungsi aktivasi non-linear yang mengubah nilai negatif pada peta fitur menjadi nol.
-% Fungsi tersebut berisikan persamaan matematis sederhana berupa $f(x)=\max(0, x)$, di mana $x$ adalah nilai awal yang dibandingkan dengan nilai nol.
-% Jika nilai $x$ bernilai positif ($x > 0$), maka nilai tersebut dipertahankan ($f(x) = x$). Sebaliknya, jika $x$ bernilai negatif atau batas nol ($x \le 0$), maka nilainya diubah menjadi nol \cite{nair2010rectified}. \par 
-
-% Operasi pada lapisan konvolusi dengan komponen \textit{Kernel} dan \textit{Stride} bersifat linear, yang hanya mengandung operasi perkalian dan penjumlahan.
-% Jika proses ekstraksi tersebut tidak diberi fungsi aktivasi, maka model tersebut hanya bersifat satu model regresi linear besar yang tidak mampu memahami pola-pola kompleks dan non-linear pada data \cite{goodfellow2016deep}. 
-% Dengan adanya fungsi ReLU, proses ekstraksi fitur menghasilkan nilai spesifik dan memudahkan komputasi pada lapisan model. \par
-
-% \subsubsection{\textit{Max Pooling}} \label{II.Teori7.4}
-% \textit{Max Pooling} merupakan salah satu teknik \textit{Pooling} yang mengurangi dimensi data dengan memangkas ukuran spasial peta fitur (\textit{feature map}). 
-% Pengurangan dimensi tersebut membuat model benar-benar mempelajari inti fitur, sehingga menghindari model mengalami \textit{overfitting} serta mengurangi beban komputasi memori \cite{scherer2010evaluation}.
-% Mekanisme \textit{Max Pooling} bekerja menggunakan sebuah jendela berukuran tertentu yang bergeser di atas \textit{feature map}.
-% Pada setiap area yang disorot oleh jendela tersebut, mekanisme ini hanya mengambil satu nilai terbesar dan membuang nilai di sekitarnya. \par
-
-% Pada data gambar atau \textit{spectrogram} suara, nilai piksel yang besar merepresentasikan fitur yang paling tajam, di mana dalam \textit{spectrogram} berarti sinyal suara yang paling dominan \cite{scherer2010evaluation}.
-% Penggunaan \textit{Max Pooling} akan mempertahankan fitur penting tersebut, sehingga karakteristik sinyal suara yang kuat tidak akan hilang walaupun dimensi data semakin mengecil. 
-% Selain itu, mekanisme pengambilan nilai maksimal ini membuat model memiliki sifat kebal terhadap pergeseran posisi fitur (\textit{Translation Invariance}) pada data \textit{spectrogram} \cite{goodfellow2016deep}. \par
-
-% \subsubsection{\textit{Fully Connected Layer}} \label{II.Teori7.5}
-% \textit{Fully Connected} (FC) \textit{Layer} merupakan lapisan pada bagian \textit{Classification Layer} yang berperan dalam pengambilan keputusan klasifikasi akhir.
-% Syarat utama \textit{input} pada lapisan ini adalah data harus berbentuk vektor satu dimensi (1D).
-% Oleh karena itu, \textit{feature map} pada lapisan konvolusi sebelumnya yang berbentuk multidimensi diratakan menjadi satu deret baris data melalui proses \textit{flattening}. 
-% Proses \textit{flattening} ini dilakukan karena lapisan FC tidak melihat posisi titik fitur secara spasial, melainkan hanya perlu melihat keberadaan kumpulan titik fitur yang menjadi ciri karakteristiknya \cite{goodfellow2016deep}. \par
-
-% Berbeda dengan lapisan konvolusi yang hanya melihat sebagian kecil area, lapisan FC menghubungkan setiap titik neuron dari lapisan sebelumnya dengan seluruh neuron pada lapisan berikutnya secara penuh (\textit{fully connected}).
-% Cara kerja dari lapisan ini adalah menggabungkan seluruh inti fitur pada lapisan-lapisan sebelumnya untuk mempelajari kombinasi non-linear untuk keputusan akhir \cite{lecun2015deep}.
-% Hasil dari lapisan ini merupakan nilai setiap kelas karakteristik yang ditentukan dengan representasi angka mentah (\textit{logits}) \cite{goodfellow2016deep}. \par
-
-% \subsubsection{\textit{Sigmoid}} \label{II.Teori7.6}
-% \textit{Logits} yang dihasilkan oleh lapisan FC masih memiliki nilai ekstrem, di mana angka ini tidak memiliki batasan rentang nilai.
-% Oleh karena itu, digunakan fungsi aktivasi \textit{Sigmoid} yang memetakan hasil angka mentah tersebut ke dalam rentang probabilitas yang ketat, yaitu $0$ hingga $1$ \cite{bishop2006pattern}. 
-% Mekanisme \textit{Sigmoid} digambarkan melalui operasi matematis berikut:
-
-%   \begin{equationcaptioned}{
-%       \sigma(x) = \frac{1}{1 + e^{-x}}
-%       \label{eq:sigmoid}
-%   }{
-%       Rumus Fungsi Aktivasi \textit{Sigmoid}
-%   }
-%   \end{equationcaptioned}
-
-%   \noindent Keterangan:
-%   \begin{itemize}
-%       \item $x$ : Nilai \textit{logits} dari lapisan FC
-%       \item $e$ : Bilangan Euler ($2.718$)
-%       \item $\sigma(x)$ : Keluaran nilai \textit{sigmoid} dari \textit{logits} $x$.
-%   \end{itemize}
-%   \medskip
-
-% Operasi yang dilakukan oleh fungsi ini menghitung probabilitas setiap kelas secara independen, sehingga memungkinkan suatu masukan data memiliki probabilitas tinggi pada lebih dari satu label kelas secara bersamaan. 
-% Maka dari itu, fungsi ini umumnya digunakan dalam kasus klasifikasi \textit{multi-label} \cite{goodfellow2016deep}. \par
-
-% \subsubsection{\textit{Softmax}} \label{II.Teori7.7}
-% \textit{Softmax} adalah fungsi aktivasi yang mengubah nilai \textit{logits} dari lapisan FC menjadi distribusi probabilitas.
-% Berbeda dengan \textit{Sigmoid} yang memproses setiap kelas secara independen, \textit{Softmax} mengevaluasi nilai satu kelas dengan membandingkannya terhadap seluruh kelas yang ada.
-% Oleh karena itu, total keseluruhan probabilitas dari semua kelas ditetapkan berjumlah $1$ ($100\%$).
-% Jika nilai probabilitas pada satu kelas bernilai tinggi, maka secara otomatis nilai probabilitas pada kelas lainnya akan menurun menyesuaikan sisa dari total keseluruhan probabilitas \cite{bishop2006pattern}. \par
-
-% Cara kerja \textit{Softmax} direpresentasikan ke dalam operasi matematis berikut:
-
-% \begin{equationcaptioned}{
-%       f(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{K} e^{x_j}}
-%       \label{eq:softmax}
-%   }{
-%       Rumus Fungsi Aktivasi \textit{Softmax}
-%   }
-%   \end{equationcaptioned}
-
-%   \noindent Keterangan:
-%   \begin{itemize}
-%       \item $x_i$ : Nilai \textit{logits} untuk kelas ke-$i$.
-%       \item $e$ : Bilangan Euler ($2.718$)
-%       \item $K$ : Total jumlah kelas
-%       \item $\sum$ : Simbol penjumlahan dari seluruh nilai eksponensial \textit{logits} kelas yang ada.
-%   \end{itemize}
-%   \medskip
-
-% Dengan mekanisme tersebut, fungsi \textit{Softmax} menjadi standar mutlak untuk kasus klasifikasi \textit{single-label} dengan multikelas \cite{goodfellow2016deep}. \par
 
 \subsection{\textit{Pre-trained Audio Neural Networks} (PANNs)} \label{II.Teori8}
 \textit{Pre-trained Audio Neural Networks} (PANNs) menjadi salah satu pilihan yang menyediakan model klasifikasi suara dengan bobot terlatih dari \textit{dataset} suara berskala besar (AudioSet).
