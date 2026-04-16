@@ -401,13 +401,6 @@ Dalam kasus klasifikasi \textit{single-label}, digunakan fungsi aktivasi \textit
 Arsitektur ini dikembangkan dan dilatih oleh Kong \textit{et al.} (2020) yang menghasilkan keluaran klasifikasi \textit{multi-label} ke dalam 527 kelas suara \cite{kong2020panns}. 
 Oleh karena itu, diperlukan penyesuaian pada lapisan akhir model agar dapat menghasilkan \textit{output} yang sesuai dengan target kelas suara pada penelitian ini. \par
 
-Penelitian Kong \textit{et al.} mengenai PANNs juga telah mengevaluasi performa setiap arsitektur menggunakan tiga metrik utama, yaitu \textit{mean average precision} (mAP), \textit{area under the curve} (AUC), dan \textit{d-prime} yang diproyeksikan pada Tabel~\ref{tab:panns_performance} \cite{kong2020panns}.
-Semua arsitektur yang tergabung dalam PANNs memiliki representasi \textit{input} yang berbeda-beda.
-Arsitektur PANNs dengan representasi \textit{input} satu dimensi (1D) meliputi DaiNet, LeeNet, Res1dNet, dan Wavegram-CNN. 
-Selanjutnya, arsitektur dengan representasi \textit{input} dua dimensi (2D) meliputi CNN, ResNet, dan MobileNet.
-Terakhir, satu-satunya arsitektur dengan pendekatan representasi fitur hibrida (\textit{hybrid}) adalah Wavegram-Logmel-CNN \cite{kong2020panns}.
-Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi fiturnya masing-masing, yaitu Res1dNet31, ResNet38, dan Wavegram-Logmel-CNN. \par
-
 \begin{table}[htbp]
     \centering
     \caption{Performa Berbagai Arsitektur PANNs pada \textit{Dataset} AudioSet}
@@ -439,6 +432,13 @@ Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi fit
     \end{tabular}
 \end{table}
 
+Penelitian Kong \textit{et al.} mengenai PANNs juga telah mengevaluasi performa setiap arsitektur menggunakan tiga metrik utama, yaitu \textit{mean average precision} (mAP), \textit{area under the curve} (AUC), dan \textit{d-prime} yang diproyeksikan pada Tabel~\ref{tab:panns_performance} \cite{kong2020panns}.
+Semua arsitektur yang tergabung dalam PANNs memiliki representasi \textit{input} yang berbeda-beda.
+Arsitektur PANNs dengan representasi \textit{input} satu dimensi (1D) meliputi DaiNet, LeeNet, Res1dNet, dan Wavegram-CNN. 
+Selanjutnya, arsitektur dengan representasi \textit{input} dua dimensi (2D) meliputi CNN, ResNet, dan MobileNet.
+Terakhir, satu-satunya arsitektur dengan pendekatan representasi fitur hibrida (\textit{hybrid}) adalah Wavegram-Logmel-CNN \cite{kong2020panns}.
+Dalam penelitian ini, akan diambil 3 model unggul yang mewakili representasi fiturnya masing-masing, yaitu Res1dNet31, ResNet38, dan Wavegram-Logmel-CNN. \par
+
 \subsubsection{Res1dNet31} \label{II.Teori8.1}
 Res1dNet31 merupakan arsitektur ResNet (\textit{residual network}) yang merupakan turunan dari arsitektur CNN berupa satu dimensi milik PANNs yang paling unggul dalam menangani representasi \textit{input} domain waktu dibandingkan model lainnya dengan jenis \textit{input} yang sama \cite{kong2020panns}.
 Arsitektur ini menerima \textit{input} berupa sinyal digital satu dimensi (\textit{raw waveform}) dengan \textit{sampling rate} 32 kHz.
@@ -452,9 +452,18 @@ Setiap blok mengandung 2 lapisan konvolusi residu yang masing-masing mengandung 
 Akhirnya, hasil dari \textit{backbone} dilanjutkan ke 2 lapisan linear terakhir (FC \textit{layer}) untuk mendapatkan kesimpulan klasifikasi final.
 Seluruh lapisan pada arsitektur ini berjumlah 31 lapisan \cite{kong2020panns}. \par
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figure/Res1dNet31_old.pdf}
+    \caption{Arsitektur Res1dNet31 (diadaptasi dari Kong \textit{et al.} \cite{kong2020panns})}
+    \label{fig:res1dnet31}
+\end{figure}
+
+Gambar~\ref{fig:res1dnet31} menunjukkan struktur umum arsitektur Res1dNet31 dalam mengekstraksi fitur dari sinyal \textit{raw waveform}.
+
 \subsubsection{ResNet38} \label{II.Teori8.2}
 ResNet38 merupakan salah satu arsitektur ResNet dua dimensi milik PANNs dengan nilai mAP tertinggi dalam menangani jenis \textit{input} dengan dimensi tersebut \cite{kong2020panns}.
-Berbeda dengan Res1dNet31, arsitektur ini menerima \textit{input} berupa \textit{raw waveform} yang nantinya akan diekstrak dan diproses menjadi \textit{log-mel spectrogram} (2D) dengan 1000 \textit{frame} dan 64 \textit{mel bin} \cite{kong2020panns}.
+Berbeda dengan Res1dNet31, arsitektur ini menerima \textit{input} berupa \textit{raw waveform} yang nantinya akan diekstrak dan diproses menjadi \textit{log-mel spectrogram} (2D) dengan 1000 \textit{frame} dan 64 \textit{mel bin} oleh ekstraktor fitur \cite{kong2020panns}.
 
 Arsitektur model diawali dengan dua blok konvolusi 64 \textit{filter}\footnote{Pada tabel arsitektur di naskah publikasi asli PANNs, terdapat kesalahan penulisan (\textit{typographical error}) yang mencantumkan angka 512 \textit{filter} pada lapisan awal. Berdasarkan urutan kelogisan arsitektur ResNet serta repositori kode sumber resmi PANNs, jumlah \textit{filter} awal yang akurat adalah 64.} berukuran $3 \times 3$ dan mengandung BN serta ReLU.
 Kemudian, \textit{max pooling} berukuran $2 \times 2$ diterapkan setelah dua blok tersebut.
@@ -467,6 +476,15 @@ Sebagai lapisan klasifikasi, FC \textit{layer} 2048 \textit{neuron} dengan ReLU 
 Keunggulan arsitektur ini terletak pada kemampuannya dalam menangani \textit{input} domain frekuensi yang sudah tergambar dalam grafis multidimensi.
 Hal ini dapat memudahkan arsitektur mengenali pola yang sudah diproses sedemikian rupa sehingga menyerupai pendengaran manusia \cite{stevens1937scale}. \par
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figure/ResNet38_old.pdf}
+    \caption{Arsitektur ResNet38 (diadaptasi dari Kong \textit{et al.} \cite{kong2020panns})}
+    \label{fig:resnet38}
+\end{figure}
+
+Gambar~\ref{fig:resnet38} menunjukkan struktur umum arsitektur ResNet38 dengan ekstraktor fitur yang mengekstrak sinyal \textit{raw waveform} menjadi \textit{log-mel spectrogram}.
+
 \subsubsection{Wavegram-Logmel-CNN} \label{II.Teori8.3}
 Wavegram-Logmel-CNN merupakan arsitektur dengan pendekatan hibrida (\textit{hybrid}) pada keluarga PANNs yang diperkenalkan oleh Kong \textit{et al.} dalam penelitiannya.
 Arsitektur ini menerima \textit{input} \textit{raw waveform} yang diproses dalam dua pendekatan secara bersamaan, yaitu pembentukan \textit{wavegram} dan \textit{log-mel spectrogram} \cite{kong2020panns}. \par
@@ -478,6 +496,15 @@ Kedua representasi fitur dua dimensi ini nantinya akan digabungkan dan diproses 
 
 Penggabungan kedua pendekatan ini berfungsi untuk menutupi kekurangan masing-masing metode.
 Sinyal \textit{raw waveform} murni yang kaya akan informasi namun lebih sulit dipelajari oleh model, dikombinasikan dengan \textit{log-mel spectrogram} yang proyeksi polanya lebih mudah dipelajari, meskipun rentan kehilangan sebagian detail informasi akibat proses transformasi matematis \cite{purwins2019deep}. \par
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figure/Wavegram-Logmel-CNN_old.pdf}
+    \caption{Arsitektur Wavegram-Logmel-CNN (diadaptasi dari Kong \textit{et al.} \cite{kong2020panns})}
+    \label{fig:wavegram_logmel_cnn}
+\end{figure}
+
+Gambar~\ref{fig:wavegram_logmel_cnn} menunjukkan struktur umum arsitektur Wavegram-Logmel-CNN dengan penggabungan fitur antara \textit{wavegram} dan \textit{log-mel spectrogram}.
 
 \subsection{\textit{Transfer Learning}} \label{II.Teori9}
 \textit{Transfer learning} merupakan metode pembelajaran yang bekerja dengan cara mengadaptasi model yang sudah dilatih (\textit{pre-trained}) dengan konteks umum untuk mempelajari data dengan domain yang lebih spesifik \cite{goodfellow2016deep,pan2009survey}.
