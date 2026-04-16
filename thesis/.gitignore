@@ -15,3 +15,5 @@ thesis.toc
 chapters/.DS_Store
 thesis.bcf
 *.minted
+
+*.pdf
