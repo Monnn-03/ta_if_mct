@@ -4,6 +4,7 @@
 
 ### 2026-04-16
 - Mengerjakan revisi Pak Rahman : Visualisasi Arsitektur Model (Bab II).
+- Mengerjakan revisi Pak Wayan : Rumusan masalah "pengaruh model" atau "pengaruh fitur"?
 
 ### 2026-04-15
 - Mengerjakan revisi Pak Rahman : Karakteristik Fitur (Bab II : Memperjelas dasar teori, kelebihan dan kekurangan).
