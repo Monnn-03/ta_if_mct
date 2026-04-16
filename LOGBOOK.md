@@ -2,6 +2,9 @@
 
 ## April
 
+### 2026-04-16
+- Mengerjakan revisi Pak Rahman : Visualisasi Arsitektur Model (Bab II).
+
 ### 2026-04-15
 - Mengerjakan revisi Pak Rahman : Karakteristik Fitur (Bab II : Memperjelas dasar teori, kelebihan dan kekurangan).
 - Mengerjakan revisi Pak Rahman : Karakteristik Fitur (Bab III : Konfigurasi Model ditambahkan hipotesis).

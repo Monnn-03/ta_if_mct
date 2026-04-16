@@ -178,6 +178,30 @@ Oleh karena itu, dilakukan dua penyesuaian utama:
     Dengan perubahan ini, model akan memilih satu kelas pemenang dengan probabilitas tertinggi daripada kelas lainnya. \par
 \end{enumerate}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figure/Res1dNet31_modifikasi.pdf}
+    \caption{Modifikasi Res1dNet31}
+    \label{fig:res1dnet31_modifikasi}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figure/ResNet38_modifikasi.pdf}
+    \caption{Modifikasi ResNet38}
+    \label{fig:resnet38_modifikasi}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figure/Wavegram-Logmel-CNN_modifikasi.pdf}
+    \caption{Modifikasi Wavegram-Logmel-CNN}
+    \label{fig:wavegram_logmel_cnn_modifikasi}
+\end{figure}
+
+Visualisasi modifikasi bagian arsitektur pada ketiga model PANNs ditunjukkan pada Gambar \ref{fig:res1dnet31_modifikasi}, Gambar \ref{fig:resnet38_modifikasi}, dan Gambar \ref{fig:wavegram_logmel_cnn_modifikasi}.
+
+
 \subsection{Parameter Konfigurasi \textit{Input}}
 Selain melakukan modifikasi arsitektur, konfigurasi parameter \textit{input} juga disesuaikan dengan standar yang ditetapkan pada PANNs untuk menjamin kompatibilitas dimensi fitur antara data \textit{input} dengan bobot \textit{pre-trained}, sehingga ekstraksi fitur dapat berjalan optimal tanpa adanya kesalahan dimensi.
 Rincian konfigurasi tersebut meliputi:
