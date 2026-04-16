@@ -103,6 +103,9 @@ docs/_build/
 .pybuilder/
 target/
 
+# Pdf files
+*.pdf
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
