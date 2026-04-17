@@ -43,7 +43,7 @@ Ketersediaan variasi ini memunculkan urgensi untuk mengevaluasi arsitektur mana 
 Meskipun Kong \textit{et al.} \cite{kong2020panns} telah memaparkan tolok ukur kinerja model-model tersebut pada \textit{dataset} masif AudioSet \cite{gemmeke2017audioset}, performa tersebut belum tentu sebanding ketika diterapkan pada kasus penerapan spesifik dengan ketersediaan data yang terbatas (\textit{data scarcity}), seperti pada kasus klasifikasi suara lingkungan perkotaan.
 Mayoritas penelitian ESC saat ini cenderung mengandalkan ekstraksi fitur \textit{log-mel spectrogram} karena selektivitas frekuensinya yang menyerupai pendengaran manusia, sekaligus menghindari tingginya kompleksitas komputasi dari representasi sinyal mentah \cite{salamon2017deep,huzaifah2017}.
 Namun, proses kompresi spektral tersebut pada \textit{log-mel} juga memiliki kelemahan, yaitu tingginya potensi kehilangan informasi penting seperti transien suara darurat akibat proses reduksi kebisingan latar belakang \cite{tokozume2017envnet, dai2017}.
-Di sisi lain, meskipun pendekatan \textit{hybrid} dapat melengkapi kekurangan setiap fiturnya, besarnya kompleksitas pada arsitektur ini memunculkan dugaan kuat akan tingginya risiko \textit{overfitting} yang lebih tinggi ketika dilatih pada \textit{dataset} yang kecil.
+Di sisi lain, meskipun pendekatan \textit{hybrid} dapat melengkapi kekurangan setiap fiturnya, besarnya kompleksitas pada arsitektur ini memunculkan potensi risiko \textit{overfitting} yang lebih tinggi ketika dilatih pada \textit{dataset} yang terbatas.
 Ketidakpastian performa dan \textit{trade-off} inilah yang menjadi celah penelitian (\textit{research gap}) pertama yang belum terjamah. \par
 
 % PARAGRAF 6 : LIMITASI SINGLE-LABEL
