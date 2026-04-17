@@ -7,6 +7,7 @@
 - Menambahkan secara gambaran kelas suara yang digunakan (beserta suara tidak bahaya).
 - Menambahkan subbab hipotesis dan implikasi eksperimen pada subbab 3.3.1 (Revisi Pak Wayan Poin Rumusan Masalah soal implikasi).
 - Memperjelas hipotesis pada karakteristik log-mel berisiko kehilangan temporal pada Subbab 3.3.1. (Revisi Pak Wayan Poin Hipotesis soal subbab khusus).
+- Menyusun data ulang dengan tambahan kelas normal.
 
 ### 2026-04-16
 - Mengerjakan revisi Pak Rahman : Visualisasi Arsitektur Model (Bab II).

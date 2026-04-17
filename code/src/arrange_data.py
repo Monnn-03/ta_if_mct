@@ -2,9 +2,9 @@ import os
 import shutil
 import pandas as pd
 
-SOURCE_METADATA_FILE = 'UrbanSound8K/metadata/UrbanSound8K.csv'
-SOURCE_AUDIO_DIR = 'UrbanSound8K/audio'
-DEST_DIR = 'data'
+SOURCE_METADATA_FILE = os.path.join("..","UrbanSound8K", "metadata", "UrbanSound8K.csv")
+SOURCE_AUDIO_DIR = os.path.join("..", "UrbanSound8K", "audio")
+DEST_DIR = os.path.join("..", "data")
 
 TARGET_CLASSES = ['siren', 'car_horn', 'gun_shot', 'dog_bark']
 
