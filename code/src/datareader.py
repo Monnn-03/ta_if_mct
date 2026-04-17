@@ -106,7 +106,7 @@ class AudioDataset(Dataset):
 
 # --- BLOK TEST (PENTING) ---
 if __name__ == "__main__":
-    import config # Pastikan config.py ada
+    import src.config as config # Pastikan config.py ada
     
     print("🧪 Testing AudioDataset...")
     

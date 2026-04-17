@@ -8,6 +8,9 @@ DEST_DIR = 'data'
 
 TARGET_CLASSES = ['siren', 'car_horn', 'gun_shot', 'dog_bark']
 
+# Tambahan: kelas-kelas yang akan digabung jadi "normal"
+NORMAL_CLASSES = ['air_conditioner', 'children_playing', 'engine_idling', 'street_music']
+
 def main():
 	if not os.path.exists(SOURCE_METADATA_FILE):
 		print(f"FILE METADATA TIDAK DITEMUKAN DI : {SOURCE_METADATA_FILE}")
@@ -19,7 +22,7 @@ def main():
 	df = pd.read_csv(SOURCE_METADATA_FILE)
 
 	# 2. Memfilter kelas target
-	df_filtered = df[df['class'].isin(TARGET_CLASSES)]
+	df_filtered = df[df['class'].isin(TARGET_CLASSES + NORMAL_CLASSES)]
 
 	print(f"Ditemukan {len(df_filtered)} yang cocok kelasnya.")
 
@@ -30,6 +33,9 @@ def main():
 		class_name = row['class']
 		fold_asli = row['fold']
 		file_name = row['slice_file_name']
+
+		# Remap class: jika termasuk NORMAL_CLASSES, pakai label "normal"
+		label = 'normal' if class_name in NORMAL_CLASSES else class_name
 
 		# LOGIKA PENGGABUNGAN
 		# Fold 1 & 2 -> Fold 1
@@ -44,7 +50,7 @@ def main():
 		else: continue
 
 		# Menentukan direktori tujuan
-		folder_tujuan = os.path.join(DEST_DIR, f"Fold{fold_baru}", class_name)
+		folder_tujuan = os.path.join(DEST_DIR, f"Fold{fold_baru}", label)
 
 		# Buat direktori jika belum ada
 		os.makedirs(folder_tujuan, exist_ok=True)

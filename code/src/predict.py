@@ -1,7 +1,7 @@
 import torch
 import librosa
 import numpy as np
-from model import AudioClassifier 
+from src.model import AudioClassifier 
 
 # --- KONFIGURASI ---
 # Pastikan path model benar

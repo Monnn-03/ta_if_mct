@@ -1,5 +1,5 @@
 import os
-import config
+import src.config as config
 import glob
 import json 
 import numpy as np

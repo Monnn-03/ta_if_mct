@@ -9,8 +9,8 @@ from sklearn.metrics import confusion_matrix, classification_report
 import pandas as pd
 
 # --- UPDATE IMPORT: Gunakan AudioClassifier ---
-from datareader import AudioDataset
-from model import AudioClassifier 
+from src.datareader import AudioDataset
+from src.model import AudioClassifier 
 
 # ==============================================================================
 # KONFIGURASI (UBAH DISINI SEBELUM JALAN)

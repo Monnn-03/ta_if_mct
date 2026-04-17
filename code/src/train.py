@@ -15,8 +15,8 @@ from sklearn.metrics import f1_score, confusion_matrix
 import wandb
 
 # --- IMPORT KODE SENDIRI ---
-from datareader import AudioDataset
-from model import AudioClassifier
+from src.datareader import AudioDataset
+from src.model import AudioClassifier
 
 # ==============================================================================
 # 1. SETUP & UTILS
