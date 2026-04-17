@@ -1,5 +1,5 @@
 import os
-import config as config
+import config
 import glob
 import json 
 import numpy as np
@@ -7,9 +7,9 @@ from sklearn.utils.class_weight import compute_class_weight
 
 # --- BAGIAN 1: KONFIGURASI ---
 # Folder tempat audio kamu berada (hasil dari arrange_data.py)
-DATA_DIR = os.path.join("..", "data")
+DATA_DIR = config.DATA_DIR
 # Nama file output
-OUTPUT_FILE = os.path.join("..", "configs", "split_data.json")
+OUTPUT_FILE = config.JSON_PATH
 # Daftar kelas target (Urutan ini PENTING, 0=siren, 1=car_horn, dst)
 CLASSES = ['siren', 'car_horn', 'gun_shot', 'dog_bark', 'normal']
 

@@ -8,10 +8,14 @@ import warnings
 from torch.utils.data import Dataset
 import torchaudio.transforms as T
 
+import config
+
 warnings.filterwarnings("ignore")
 
+SPLIT_JSON = config.JSON_PATH
+
 class AudioDataset(Dataset):
-    def __init__(self, split_json="split_data.json", fold="fold1", split_type="train", target_sr=32000, fixed_length=160000):
+    def __init__(self, split_json=SPLIT_JSON, fold="fold1", split_type="train", target_sr=32000, fixed_length=160000):
         """
         Args:
             split_json: Path ke file JSON.
@@ -106,16 +110,14 @@ class AudioDataset(Dataset):
 
 # --- BLOK TEST (PENTING) ---
 if __name__ == "__main__":
-    import src.config as config # Pastikan config.py ada
-    
     print("🧪 Testing AudioDataset...")
     
     # Coba load dataset (Pastikan split_data.json sudah ada)
     # Sesuaikan argumen dengan file config kamu
     try:
         ds = AudioDataset(
-            split_json="split_data.json", 
-            fold="fold1", 
+            split_json=SPLIT_JSON,
+            fold="fold1",
             split_type="train",
             target_sr=32000,
             fixed_length=32000 * 5 # 5 Detik
