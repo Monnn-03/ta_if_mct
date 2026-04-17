@@ -83,7 +83,8 @@ Batasan masalah yang didefinisikan dalam penelitian ini adalah sebagai berikut :
 \begin{enumerate}[noitemsep]
   \item Jenis klasifikasi yang digunakan dalam penelitian ini merupakan klasifikasi \textit{single-label}, sehingga keluaran model berupa kelas suara dengan nilai probabilitas tertinggi daripada kelas lainnya.
   \item \textit{Dataset} yang digunakan adalah \textit{dataset} sekunder terstandarisasi, yaitu UrbanSound8K, tanpa melakukan perekaman data primer secara manual.
-  \item Lingkup klasifikasi dibatasi pada kategori suara lingkungan yang merepresentasikan indikator bahaya atau peringatan bagi keselamatan fisik di jalan raya.
+  \item Lingkup klasifikasi dibatasi pada kategori suara lingkungan yang merepresentasikan indikator bahaya atau peringatan di jalan raya (seperti sirine, klakson, dan suara peringatan lainnya) beserta dengan kelas suara yang tidak merepresentasikan bahaya.
+  \item Penelitian ini menggunakan tiga arsitektur PANNs yang masing-masing dirancang untuk jenis representasi fitur tertentu. Oleh karena itu, perbandingan yang dilakukan tidak memisahkan secara independen antara pengaruh representasi fitur dan arsitektur model, melainkan mencerminkan kombinasi keduanya.
   \item Fokus penelitian terbatas pada eksperimen pelatihan (\textit{training}) dan evaluasi performa model \textit{deep learning}, serta tidak mencakup perancangan perangkat keras (\textit{hardware}), pengembangan antarmuka pengguna (\textit{user interface}), maupun implementasi sistem secara \textit{real-time}.
 \end{enumerate}
 

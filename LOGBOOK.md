@@ -2,6 +2,10 @@
 
 ## April
 
+### 2026-04-17
+- Menjelaskan pengaruh fitur juga diikuti dengan arsitektur model pada batasan masalah.
+- Menambahkan secara gambaran kelas suara yang digunakan (beserta suara tidak bahaya).
+
 ### 2026-04-16
 - Mengerjakan revisi Pak Rahman : Visualisasi Arsitektur Model (Bab II).
 - Mengerjakan revisi Pak Wayan : Rumusan masalah "pengaruh model" atau "pengaruh fitur"?
