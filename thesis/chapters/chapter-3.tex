@@ -151,20 +151,32 @@ Teknik \textit{random cropping} ini tidak diterapkan pada data uji dikarenakan b
 Agar tetap menjaga konsistensi performa uji model, diterapkan \textit{center cropping} pada data uji dengan mengambil segmen audio sepanjang 1 detik, dimulai dari setengah durasi maksimal audio. 
 Dalam penelitian ini, pada audio dengan durasi maksimal 5 detik, ekstraksi dilakukan dengan menjadikan detik ke-2,5 sebagai titik pusat (\textit{center point}), sehingga model memproses segmen audio yang berada pada rentang detik ke-2 hingga detik ke-3. \par
 
-\section{Konfigurasi Model} \label{sec:konfigurasi_model}
+\section{Desain Penelitian dan Konfigurasi Model} \label{sec:desain_dan_konfigurasi_model}
 % Paragraf pembuka
-Model yang digunakan dalam penelitian ini adalah model PANNs \cite{kong2020panns} dengan 3 arsitektur berbeda, yaitu \textit{Res1dNet31}, \textit{ResNet38}, dan \textit{Wavegram-Logmel-CNN}.
-Ketiga arsitektur ini telah terbukti memiliki performa yang baik pada tugas klasifikasi audio berdasarkan masing-masing representasi fiturnya. \par
+Penelitian ini disusun dalam suatu desain penelitian yang mencakup perumusan hipotesis dan implikasi eksperimen.
+Desain ini bertujuan untuk menguji hipotesis yang telah dirumuskan berdasarkan dasar teori yang ada, sekaligus memberikan batasan dalam proses analisis hasil evaluasi.
+Selain itu, model PANNs yang digunakan dalam penelitian ini diadaptasi melalui beberapa konfigurasi agar sesuai dengan batasan penelitian serta tujuan yang ingin dicapai. \par
 
-% Paragraf Hipotesis
+\subsection{Hipotesis Penelitian dan Implikasi Eksperimen}
+% Konsep Penelitian
 Dalam konteks penelitian ini, pemilihan ketiga arsitektur tersebut didasarkan pada perbedaan karakteristik representasi data audio yang digunakan, yaitu \textit{raw waveform}, \textit{log-mel spectrogram}, dan pendekatan \textit{hybrid}.
-Setiap representasi memiliki sifat yang berbeda dalam menangkap informasi sinyal, di mana \textit{raw waveform} mempertahankan informasi temporal secara utuh, sedangkan \textit{log-mel spectrogram} menekankan struktur pola frekuensi yang lebih teratur.
+Setiap representasi memiliki sifat yang berbeda dalam menangkap informasi sinyal, di mana \textit{raw waveform} mempertahankan informasi temporal secara utuh, sedangkan \textit{log-mel spectrogram} menekankan struktur pola frekuensi yang lebih teratur. \par
+
+% Hipotesis
 Berdasarkan perbedaan tersebut, penelitian ini mengajukan hipotesis bahwa pendekatan \textit{hybrid} yang menggabungkan karakteristik komplementer dari kedua representasi berpotensi memberikan performa yang lebih optimal dalam tugas \textit{Environmental Sound Classification} (ESC), meskipun efektivitasnya tetap dipengaruhi oleh kompleksitas model dan keterbatasan data.
 Hipotesis ini selanjutnya akan diuji melalui perbandingan performa ketiga arsitektur yang digunakan dalam penelitian ini. \par
 
+% Implikasi Eksperimen
+Perlu diperhatikan bahwa dalam penelitian ini, setiap representasi fitur diimplementasikan menggunakan arsitektur PANNs yang berbeda sesuai dengan karakteristiknya.
+Maka dari itu, perbandingan yang dilakukan tidak sepenuhnya memisahkan pengaruh representasi fitur dan arsitektur model secara independen, melainkan mencerminkan kombinasi keduanya. 
+Implikasi dari pendekatan ini adalah bahwa hasil evaluasi yang diperoleh menunjukkan efektivitas masing-masing pendekatan secara menyeluruh dalam konteks eksperimen yang dilakukan. \par
+
+\subsection{Konfigurasi Model}
+Model yang digunakan dalam penelitian ini adalah model PANNs \cite{kong2020panns} dengan 3 arsitektur berbeda, yaitu \textit{Res1dNet31}, \textit{ResNet38}, dan \textit{Wavegram-Logmel-CNN}.
+Ketiga arsitektur ini telah terbukti memiliki performa yang baik pada tugas klasifikasi audio berdasarkan masing-masing representasi fiturnya.
 Namun, agar model dapat berfungsi optimal sesuai dengan konteks klasifikasi 4 kelas bahaya pada \textit{dataset} UrbanSound8K, diperlukan beberapa penyesuaian konfigurasi model, yaitu sebagai berikut. \par
 
-\subsection{Modifikasi Arsitektur PANNs}
+\subsubsection{Modifikasi Arsitektur PANNs}
 Modifikasi beberapa komponen pada arsitektur PANNs diperlukan pada lapisan keluaran (\textit{output layer}). 
 Langkah ini dilakukan mengingat jumlah kelas pada \textit{output layer} yang belum sesuai dengan target kelas suara yang ditentukan dan penyesuaian jenis \textit{output} klasifikasi PANNs yang awalnya \textit{multi-label}.
 Oleh karena itu, dilakukan dua penyesuaian utama:
@@ -202,7 +214,7 @@ Oleh karena itu, dilakukan dua penyesuaian utama:
 Visualisasi modifikasi bagian arsitektur pada ketiga model PANNs ditunjukkan pada Gambar \ref{fig:res1dnet31_modifikasi}, Gambar \ref{fig:resnet38_modifikasi}, dan Gambar \ref{fig:wavegram_logmel_cnn_modifikasi}.
 
 
-\subsection{Parameter Konfigurasi \textit{Input}}
+\subsubsection{Parameter Konfigurasi \textit{Input}}
 Selain melakukan modifikasi arsitektur, konfigurasi parameter \textit{input} juga disesuaikan dengan standar yang ditetapkan pada PANNs untuk menjamin kompatibilitas dimensi fitur antara data \textit{input} dengan bobot \textit{pre-trained}, sehingga ekstraksi fitur dapat berjalan optimal tanpa adanya kesalahan dimensi.
 Rincian konfigurasi tersebut meliputi:
 

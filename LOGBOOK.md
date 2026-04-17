@@ -3,8 +3,9 @@
 ## April
 
 ### 2026-04-17
-- Menjelaskan pengaruh fitur juga diikuti dengan arsitektur model pada batasan masalah.
+- Menjelaskan pengaruh fitur juga diikuti dengan arsitektur model pada batasan masalah (Revisi Pak Wayan Poin Rumusan Masalah).
 - Menambahkan secara gambaran kelas suara yang digunakan (beserta suara tidak bahaya).
+- Menambahkan subbab hipotesis dan implikasi eksperimen pada subbab 3.3.1 (Revisi Pak Wayan Poin Rumusan Masalah soal implikasi).
 
 ### 2026-04-16
 - Mengerjakan revisi Pak Rahman : Visualisasi Arsitektur Model (Bab II).
