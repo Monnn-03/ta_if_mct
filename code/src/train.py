@@ -51,6 +51,7 @@ CONFIG = {
     # GANTI INI SESUAI GILIRAN (spectrogram / waveform / hybrid)
     "model_type": "spectrogram",
     "freeze_base": False,
+    "undersampling": True,
     "num_classes": 5,
     "batch_size": 8,       # Ukuran batch untuk satu kali epoch training
     "epochs": 50,            
@@ -195,6 +196,7 @@ def run_training():
 
     wandb.init(
         project="TA_SoundClassification", # Nama Proyek di Dashboard
+        settings=wandb.Settings(init_timeout=180),
         config=CONFIG,                     # Kamus settingan (LR, Batch Size, dll)
         name=run_name                    # Nama Run di Dashboard
     )
@@ -221,8 +223,8 @@ def run_training():
         # Mulai Stopwatch per Fold
         fold_start_time = time.time()
 
-        train_ds = AudioDataset(split_json=CONFIG["json_dir"], fold=fold_name, split_type="train", target_sr=CONFIG["target_sr"], fixed_length=CONFIG["fixed_length"])
-        val_ds = AudioDataset(split_json=CONFIG["json_dir"], fold=fold_name, split_type="test", target_sr=CONFIG["target_sr"], fixed_length=CONFIG["fixed_length"])
+        train_ds = AudioDataset(split_json=CONFIG["json_dir"], fold=fold_name, split_type="train", target_sr=CONFIG["target_sr"], fixed_length=CONFIG["fixed_length"], undersample=CONFIG["undersampling"], verbose=False)
+        val_ds = AudioDataset(split_json=CONFIG["json_dir"], fold=fold_name, split_type="test", target_sr=CONFIG["target_sr"], fixed_length=CONFIG["fixed_length"], undersample=False, verbose=False)
         
         train_loader = DataLoader(train_ds, batch_size=CONFIG["batch_size"], shuffle=True, num_workers=CONFIG["num_workers"])
         val_loader = DataLoader(val_ds, batch_size=CONFIG["batch_size"], shuffle=False, num_workers=CONFIG["num_workers"])

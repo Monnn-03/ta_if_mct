@@ -1,0 +1,99 @@
+_wandb:
+    value:
+        cli_version: 0.24.1
+        e:
+            obqtbohlecp7bpnogj8j7b1hpixdcjxt:
+                codePath: code\src\train.py
+                codePathLocal: train.py
+                cpu_count: 4
+                cpu_count_logical: 8
+                cudaVersion: "13.0"
+                disk:
+                    /:
+                        total: "500100493312"
+                        used: "329372467200"
+                executable: E:\Ramon\KULIAH\TA\ta_if_mct\.venv\Scripts\python.exe
+                git:
+                    commit: 46040fb0870254178c3956d5b77ce62a8366a699
+                    remote: https://github.com/Monnn-03/ta_if_mct.git
+                gpu: NVIDIA GeForce GTX 1050
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Pascal
+                      cudaCores: 640
+                      memoryTotal: "4294967296"
+                      name: NVIDIA GeForce GTX 1050
+                      uuid: GPU-05dabae1-e578-bf49-8b7c-5e8ed0562aee
+                host: DESKTOP-5KLO7UA
+                memory:
+                    total: "8468348928"
+                os: Windows-10-10.0.19045-SP0
+                program: E:\Ramon\KULIAH\TA\ta_if_mct\code\src\train.py
+                python: CPython 3.10.16
+                root: E:\Ramon\KULIAH\TA\ta_if_mct\code\src
+                startedAt: "2026-04-18T07:39:19.770481Z"
+                writerId: obqtbohlecp7bpnogj8j7b1hpixdcjxt
+        m: []
+        python_version: 3.10.16
+        t:
+            "1":
+                - 1
+                - 5
+                - 53
+            "2":
+                - 1
+                - 5
+                - 53
+            "3":
+                - 13
+                - 16
+            "4": 3.10.16
+            "5": 0.24.1
+            "8":
+                - 3
+            "12": 0.24.1
+            "13": windows-amd64
+batch_size:
+    value: 8
+device:
+    value: cuda
+epochs:
+    value: 50
+fixed_length:
+    value: 32000
+folds:
+    value: 5
+freeze_base:
+    value: false
+json_dir:
+    value: ..\configs\split_data.json
+learning_rate:
+    value: 0.0005
+model_type:
+    value: spectrogram
+num_classes:
+    value: 5
+num_workers:
+    value: 2
+optimizer:
+    value:
+        name: AdamW
+        weight_decay: 0.0001
+project_name:
+    value: TA_SoundClassification
+report_dir:
+    value: ..\reports
+save_dir:
+    value: ..\checkpoints
+scheduler:
+    value:
+        factor: 0.5
+        patience: 3
+        target_metric: val_loss
+        type: ReduceLROnPlateau
+seed:
+    value: 42
+target_sr:
+    value: 32000
+undersampling:
+    value: true

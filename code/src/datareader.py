@@ -9,13 +9,14 @@ from torch.utils.data import Dataset
 import torchaudio.transforms as T
 
 import config
+from sampler import undersample_normal
 
 warnings.filterwarnings("ignore")
 
 SPLIT_JSON = config.JSON_PATH
 
 class AudioDataset(Dataset):
-    def __init__(self, split_json=SPLIT_JSON, fold="fold1", split_type="train", target_sr=32000, fixed_length=160000):
+    def __init__(self, split_json=SPLIT_JSON, fold="fold1", split_type="train", target_sr=32000, fixed_length=160000, undersample=False, verbose=False):
         """
         Args:
             split_json: Path ke file JSON.
@@ -40,10 +41,31 @@ class AudioDataset(Dataset):
         # Struktur JSON kita: full_data['fold1']['train']['files']
         try:
             target_data = full_data[fold][split_type]
-            self.file_paths = target_data['files']
-            self.labels = target_data['labels']
+            file_paths  = target_data['files']
+            labels      = target_data['labels']
         except KeyError:
             raise KeyError(f"[ERROR] Fold '{fold}' atau tipe '{split_type}' tidak ada di JSON.")
+
+        # --- 3. UNDERSAMPLE (khusus train) ---
+        if undersample and split_type == "train":
+            normal_idx = config.CLASS_TO_IDX['normal']
+            print(f"   📊 Distribusi sebelum undersample: "
+                  f"{ {k: labels.count(k) for k in set(labels)} }")
+
+            file_paths, labels = undersample_normal(
+                file_paths, labels,
+                normal_idx=normal_idx,
+                verbose=verbose
+            )
+
+            print(f"   📊 Distribusi setelah undersample: "
+                  f"{ {k: labels.count(k) for k in set(labels)} }")
+
+        elif undersample and split_type == "test":
+            print("Undersample dilewati untuk split 'test'.")
+
+        self.file_paths = file_paths
+        self.labels     = labels
 
     def __len__(self):
         return len(self.file_paths)
@@ -120,7 +142,8 @@ if __name__ == "__main__":
             fold="fold1",
             split_type="train",
             target_sr=32000,
-            fixed_length=32000 * 5 # 5 Detik
+            fixed_length=32000 * 5,
+            undersample=True
         )
         
         print(f"✅ Dataset berhasil dimuat! Jumlah sample: {len(ds)}")

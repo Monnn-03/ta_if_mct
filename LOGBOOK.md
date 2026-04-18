@@ -2,6 +2,10 @@
 
 ## April
 
+### 2026-04-18
+- Mencari jumlah distribusi yang pas untuk kelas suara normal (ablation study).
+- Membandingkan undersampling dan tanpa undersampling
+
 ### 2026-04-17
 - Menjelaskan pengaruh fitur juga diikuti dengan arsitektur model pada batasan masalah (Revisi Pak Wayan Poin Rumusan Masalah).
 - Menambahkan secara gambaran kelas suara yang digunakan (beserta suara tidak bahaya).

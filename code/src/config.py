@@ -18,6 +18,7 @@ REPORT_PATH = os.path.join(ROOT_DIR, "reports")
 # 0: siren, 1: car_horn, dst.
 TARGET_CLASSES = ['siren', 'car_horn', 'gun_shot', 'dog_bark', 'normal']
 IDX_TO_CLASS = {i: cls_name for i, cls_name in enumerate(TARGET_CLASSES)}
+CLASS_TO_IDX   = {cls_name: i for i, cls_name in enumerate(TARGET_CLASSES)}
 
 # --- TRAINING SETTINGS ---
 BATCH_SIZE = 32
