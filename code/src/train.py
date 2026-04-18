@@ -13,10 +13,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns # Library untuk gambar Confusion Matrix cantik
 from sklearn.metrics import f1_score, confusion_matrix
 import wandb
+import config
 
 # --- IMPORT KODE SENDIRI ---
-from src.datareader import AudioDataset
-from src.model import AudioClassifier
+from datareader import AudioDataset
+from model import AudioClassifier
 
 # ==============================================================================
 # 1. SETUP & UTILS
@@ -48,15 +49,17 @@ def save_config_log(config, path):
 CONFIG = {
     "project_name": "TA_SoundClassification",
     # GANTI INI SESUAI GILIRAN (spectrogram / waveform / hybrid)
-    "model_type": "spectrogram",  
-    "num_classes": 4,
+    "model_type": "spectrogram",
+    "freeze_base": False,
+    "num_classes": 5,
     "batch_size": 8,       # Ukuran batch untuk satu kali epoch training
     "epochs": 50,            
     "folds": 5,              
     "num_workers": 2,      # CPU workers untuk Preprocessing data
     "device": "cuda" if torch.cuda.is_available() else "cpu",
-    "save_dir": "checkpoints",
-    "report_dir": "reports",
+    "save_dir": config.CHECKPOINT_PATH,
+    "report_dir": config.REPORT_PATH,
+    "json_dir": config.JSON_PATH,
     "seed": 42,
     "target_sr": 32000,    # Standar PANNs
     "fixed_length": 32000, # 1 detik pada 32kHz, untuk Augmentasi Temporal
@@ -78,7 +81,7 @@ CONFIG = {
 }
 
 # Mapping label untuk Confusion Matrix
-LABELS = ['Siren', 'Car Horn', 'Gun Shot', 'Dog Bark'] # Pastikan urutan 0,1,2,3
+LABELS = ['Siren', 'Car Horn', 'Gun Shot', 'Dog Bark', 'Normal'] # Pastikan urutan 0,1,2,3
 
 os.makedirs(CONFIG["save_dir"], exist_ok=True)
 os.makedirs(CONFIG["report_dir"], exist_ok=True)
@@ -203,7 +206,7 @@ def run_training():
     log_path = f"{CONFIG['report_dir']}/{CONFIG['model_type']}_parameters.txt"
     save_config_log(CONFIG, log_path)
 
-    with open("split_data.json", 'r') as f:
+    with open(CONFIG["json_dir"], 'r') as f:
         split_data = json.load(f)
 
     # Variabel untuk menampung waktu total seluruh fold
@@ -218,8 +221,8 @@ def run_training():
         # Mulai Stopwatch per Fold
         fold_start_time = time.time()
 
-        train_ds = AudioDataset(split_json="split_data.json", fold=fold_name, split_type="train", target_sr=CONFIG["target_sr"], fixed_length=CONFIG["fixed_length"])
-        val_ds = AudioDataset(split_json="split_data.json", fold=fold_name, split_type="test", target_sr=CONFIG["target_sr"], fixed_length=CONFIG["fixed_length"])
+        train_ds = AudioDataset(split_json=CONFIG["json_dir"], fold=fold_name, split_type="train", target_sr=CONFIG["target_sr"], fixed_length=CONFIG["fixed_length"])
+        val_ds = AudioDataset(split_json=CONFIG["json_dir"], fold=fold_name, split_type="test", target_sr=CONFIG["target_sr"], fixed_length=CONFIG["fixed_length"])
         
         train_loader = DataLoader(train_ds, batch_size=CONFIG["batch_size"], shuffle=True, num_workers=CONFIG["num_workers"])
         val_loader = DataLoader(val_ds, batch_size=CONFIG["batch_size"], shuffle=False, num_workers=CONFIG["num_workers"])
@@ -230,7 +233,7 @@ def run_training():
         weights_tensor = torch.tensor(weights_list).float().to(CONFIG["device"])
         criterion = nn.CrossEntropyLoss(weight=weights_tensor)
         
-        model = AudioClassifier(model_type=CONFIG["model_type"], num_classes=CONFIG["num_classes"], freeze_base=True)
+        model = AudioClassifier(model_type=CONFIG["model_type"], num_classes=CONFIG["num_classes"], freeze_base=CONFIG["freeze_base"])
         model = model.to(CONFIG["device"])
 
         # LOGIKA PEMILIHAN OPTIMIZER BERDASARKAN CONFIG

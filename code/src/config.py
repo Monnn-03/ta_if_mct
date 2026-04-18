@@ -10,6 +10,8 @@ ROOT_DIR = ".."
 DATA_DIR = os.path.join(ROOT_DIR, "data")  # Folder hasil organize kamu
 JSON_PATH = os.path.join(ROOT_DIR, "configs", "split_data.json") # File peta json
 PRETRAINED_PATH = os.path.join(ROOT_DIR, "pretrained")
+CHECKPOINT_PATH = os.path.join(ROOT_DIR, "checkpoints")
+REPORT_PATH = os.path.join(ROOT_DIR, "reports")
 
 # --- LABELS ---
 # Urutan ini PENTING jangan sampai tertukar!
