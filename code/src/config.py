@@ -9,6 +9,7 @@ NUM_SAMPLES = SAMPLE_RATE * DURATION # 160.000 samples
 ROOT_DIR = ".."
 DATA_DIR = os.path.join(ROOT_DIR, "data")  # Folder hasil organize kamu
 JSON_PATH = os.path.join(ROOT_DIR, "configs", "split_data.json") # File peta json
+PRETRAINED_PATH = os.path.join(ROOT_DIR, "pretrained")
 
 # --- LABELS ---
 # Urutan ini PENTING jangan sampai tertukar!

@@ -2,16 +2,22 @@ import torch
 import torch.nn as nn
 import sys
 import os
+import config
+
+PRETRAINED_PATH = config.PRETRAINED_PATH
 
 # --- SETUP IMPORT PANNs ---
 # Pastikan folder ini ada. Kalau belum, git clone dulu.
-panns_path = "audioset_tagging_cnn/pytorch"
-if os.path.exists("audioset_tagging_cnn"):
+panns_repo = os.path.join(config.ROOT_DIR, "audioset_tagging_cnn")
+panns_path = os.path.join(panns_repo, "pytorch")
+
+if os.path.exists(panns_repo):
     if panns_path not in sys.path:
         sys.path.insert(0, panns_path)
 else:
-    print("⚠️ WARNING: Folder 'audioset_tagging_cnn' tidak ditemukan.")
-    print("   Solusi: Jalankan 'git clone https://github.com/qiuqiangkong/audioset_tagging_cnn.git'")
+    print(f"⚠️ WARNING: Folder 'audioset_tagging_cnn' tidak ditemukan di {panns_repo}.")
+    print("   Solusi: Jalankan 'git clone "
+          "https://github.com/qiuqiangkong/audioset_tagging_cnn.git'")
 
 try:
     from models import ResNet38, Res1dNet31, Wavegram_Logmel_Cnn14
@@ -19,12 +25,15 @@ except ImportError:
     print("❌ ERROR: Gagal import model PANNs. Cek struktur folder.")
 
 def download_weights(filename, url):
-    if not os.path.exists(filename):
+    dest_path = os.path.join(config.PRETRAINED_PATH, filename)
+
+    if not os.path.exists(dest_path):
+        os.makedirs(config.PRETRAINED_PATH, exist_ok=True)  # pastikan foldernya ada
         print(f"⬇️ Downloading weights: {filename}...")
-        # Gunakan wget atau curl (biar aman di windows/linux pakai try-except atau library requests)
-        # Tapi os.system curl sudah cukup oke untuk dev
-        os.system(f"curl -L \"{url}\" -o {filename}")
+        os.system(f"curl -L \"{url}\" -o \"{dest_path}\"")
         print("✅ Download selesai.")
+    
+    return dest_path
 
 class AudioClassifier(nn.Module):
     def __init__(self, model_type, num_classes=4, freeze_base=False):
@@ -62,10 +71,10 @@ class AudioClassifier(nn.Module):
             raise ValueError(f"Model '{model_type}' tidak dikenal (pilih: spectrogram, waveform, hybrid)")
 
         # --- LOAD WEIGHTS ---
-        download_weights(path, url)
+        dest_path = download_weights(path, url)
         try:
             # Load ke CPU biar aman memorinya pas inisialisasi
-            ckpt = torch.load(path, map_location='cpu')
+            ckpt = torch.load(dest_path, map_location='cpu')
             self.base.load_state_dict(ckpt['model'], strict=False) 
             print(f"✅ Pre-trained weights loaded: {model_type}")
         except Exception as e:
@@ -96,8 +105,8 @@ class AudioClassifier(nn.Module):
 if __name__ == "__main__":
     # Test instansiasi
     try:
-        model = AudioClassifier("hybrid", num_classes=4)
-        print("Test Hybrid Model:")
+        model = AudioClassifier("hybrid", num_classes=5)
+        print(f"Test {model.model_type} Model:")
         # Buat dummy input 5 detik (Batch=2, Length=160000)
         dummy_input = torch.randn(2, 160000)
         output = model(dummy_input)
